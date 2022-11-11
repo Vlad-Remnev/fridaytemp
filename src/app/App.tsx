@@ -1,17 +1,17 @@
 import React from 'react';
-import './App.css';
 import {Route, Routes} from "react-router-dom";
-import Login from "./pages/Login";
-import NewPassword from "./pages/Login/NewPassword";
-import PasswordRecovery from "./pages/Login/PasswordRecovery";
-import Profile from "./pages/Profile";
-import Registration from "./pages/Registration";
-import Error404 from "./pages/404";
+import Login from "../common/components/Login";
+import NewPassword from "../common/components/Login/NewPassword";
+import PasswordRecovery from "../common/components/Login/PasswordRecovery";
+import Profile from "../common/components/Profile";
+import Registration from "../common/components/Registration";
+import Error404 from "../common/pages/404";
+import Header from "../common/components/Header";
 
 function App() {
   return (
     <div className="App">
-      <h1>Friday Project</h1>
+        <Header />
         <div>
             <Routes>
                 <Route path='/' element={<Login />}/>

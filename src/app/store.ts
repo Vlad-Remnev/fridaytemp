@@ -1,8 +1,8 @@
 import {combineReducers, legacy_createStore as createStore} from "redux";
-import {someReducer} from "../reducers/someReducer";
+import {appReducer} from "./appReducer";
 
 const rootReducer =combineReducers({
-    someState: someReducer
+    someState: appReducer
 })
 
 export type AppRootState = ReturnType<typeof rootReducer>
