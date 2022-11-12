@@ -17,4 +17,11 @@
     border: none;
     color: #FCFCFC;
     font-weight: bold;
+    transition: 1s;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #FCFCFC;
+    color: #000000;
 }

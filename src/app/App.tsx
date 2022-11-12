@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Routes} from "react-router-dom";
+import {Link, Route, Routes} from "react-router-dom";
 import Login from "../common/components/Login";
 import NewPassword from "../common/components/Login/NewPassword";
 import PasswordRecovery from "../common/components/Login/PasswordRecovery";
@@ -12,6 +12,16 @@ function App() {
   return (
     <div className="App">
         <Header />
+        <div>
+            Links to Project
+            (созданы для удобного перехода)
+            <ul>
+                <li><Link to='/newPassword'> Форма пароля </Link></li>
+                <li><Link to='/passwordRecovery'> Форма восстановления пароля</Link></li>
+                <li><Link to='/profile'> Форма профиля</Link></li>
+                <li><Link to='/registration'> Форма регистрации</Link></li>
+            </ul>
+        </div>
         <div>
             <Routes>
                 <Route path='/' element={<Login />}/>
