@@ -1,7 +1,7 @@
 import React, {ChangeEvent, FC, KeyboardEvent, useCallback, useState} from 'react';
 import s from './EditableSpan.module.css'
 import {Button, TextField} from "@mui/material";
-import ModeIcon from "@mui/icons-material/Mode";
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 
 interface IEditableSpan {
     title: string
@@ -52,8 +52,7 @@ const EditableSpan: FC<IEditableSpan> = ({title, onChange, checked}) => {
                 InputProps={{endAdornment: <SearchButton />}}/>
         </>
         : <>
-            <span onDoubleClick={activateEditMode} className={checked ? s.isDone : s.activeDone}>{title}</span>
-            <ModeIcon style={{fontSize: '16px', marginLeft: '5px'}}/>
+            <span onDoubleClick={activateEditMode} className={checked ? s.isDone : s.activeDone}>{title}<BorderColorIcon style={{fontSize: '16px', marginLeft: '5px'}}/></span>
         </>
 }
 

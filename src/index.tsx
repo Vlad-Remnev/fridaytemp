@@ -5,6 +5,8 @@ import {Provider} from "react-redux";
 import {store} from "./app/store";
 import {HashRouter} from "react-router-dom";
 import App from "./app/App";
+import {ThemeProvider} from "@mui/material";
+import {theme} from "./common/themes/themeMaterialUi";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -12,7 +14,9 @@ const root = ReactDOM.createRoot(
 root.render(
     <Provider store={store}>
         <HashRouter>
-            <App/>
+            <ThemeProvider theme={theme}>
+                <App/>
+            </ThemeProvider>
         </HashRouter>
     </Provider>
 );
