@@ -1,7 +1,7 @@
 import React from 'react';
 import s from "./CheckEmail.module.css";
 import {Button, Paper} from "@mui/material";
-import checkEmail from "./../../../../assets/img/emailCheck.svg";
+import checkEmail from "../../../assets/img/emailCheck.svg";
 
 const CheckEmail = () => {
     const buttonStyles = {

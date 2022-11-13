@@ -23,7 +23,7 @@ const NewPassword = () => {
                     color='info'
                     variant="standard"
                     helperText='Enter your email address and we will send you further instructions'
-                    style={{width: '100%'}}
+                    sx={{width: '100%'}}
                     FormHelperTextProps={{
                         className: s.helperText + ' ' + s.mrg2
                     }}

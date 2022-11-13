@@ -1,11 +1,11 @@
 import React from 'react';
 import s from './Profile.module.css'
-import avatar from '../../../assets/img/ava.png'
+import avatar from '../../assets/img/ava.png'
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import {Paper} from "@mui/material";
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
-import EditableSpan from "../EditableSpan";
+import EditableSpan from "../../common/components/EditableSpan/EditableSpan";
 import {Link} from "react-router-dom";
 
 const Profile = () => {
