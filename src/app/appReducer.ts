@@ -1,20 +1,20 @@
-const initialState = {}
+const initialState = {};
 
 export const appReducer = (state: any = initialState, action: ReturnDefaultType) => {
-    switch (action.type) {
-        case "SOME":
-            return state
-        default:
-            return state
-    }
-}
+  switch (action.type) {
+    case 'SOME':
+      return state;
+    default:
+      return state;
+  }
+};
 
-export type ReturnDefaultType = ReturnType<typeof returnDefaultAC>
+export type ReturnDefaultType = ReturnType<typeof returnDefaultAC>;
 export const returnDefaultAC = (someThing: any) => {
-    return {
-        type: 'SOME',
-        payload: {
-            someThing
-        }
-    }as const
-}
+  return {
+    type: 'SOME',
+    payload: {
+      someThing,
+    },
+  } as const;
+};
