@@ -1,10 +1,20 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
-import { Button, Checkbox, FormControlLabel, FormGroup, Paper, TextField } from '@mui/material';
 import s from './SigIn.module.css';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+
+// MUI imports
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import Paper from '@mui/material/Paper';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { loginTC } from '../../../app/authReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppRootStateType, AppThunkType } from '../../../app/store';
 
 type FormikErrorType = {
   email?: string;
@@ -28,7 +38,8 @@ const Login = () => {
     right: '10px',
   };
   const [type, setType] = useState('password');
-
+  const dispatch = useDispatch<AppThunkType>();
+  const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.auth.isLoggedIn);
   const handleToggle = () => {
     if (type === 'password') {
       setType('text');
@@ -58,14 +69,14 @@ const Login = () => {
       return errors;
     },
     onSubmit: (values) => {
-      debugger;
+      dispatch(loginTC(values));
       formik.resetForm();
-      console.log(values);
     },
   });
-  // if (isLoggedIn) {
-  //   return <Navigate to={'/'} />;
-  // }
+  if (isLoggedIn) {
+    debugger;
+    return <Navigate to={'/profile'} />;
+  }
   return (
     <div className={s.container}>
       <Paper elevation={1} className={s.paper + ' ' + s.common}>

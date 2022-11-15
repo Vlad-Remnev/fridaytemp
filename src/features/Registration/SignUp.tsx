@@ -3,11 +3,9 @@ import s from './SignUp.module.css';
 import { Link, Navigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppRootState } from '../../app/store';
+import { AppRootStateType, AppThunkType } from '../../app/store';
 import { RegisterDataType } from '../../app/appApi';
 import { registerTC } from '../../app/authReducer';
-import { ThunkDispatch } from 'redux-thunk';
-import { AnyAction } from 'redux';
 
 // MUI imports
 import Button from '@mui/material/Button';
@@ -31,8 +29,8 @@ const SignUp = () => {
     marginTop: '65px',
     textTransform: 'none',
   };
-  const dispatch = useDispatch<ThunkDispatch<AppRootState, unknown, AnyAction>>();
-  const isRegistered = useSelector<AppRootState, boolean>((state) => state.auth.isRegistered);
+  const dispatch = useDispatch<AppThunkType>();
+  const isRegistered = useSelector<AppRootStateType, boolean>((state) => state.auth.isRegistered);
 
   const formik = useFormik({
     initialValues: {

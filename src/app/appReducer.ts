@@ -1,6 +1,6 @@
 const initialState = {};
 
-export const appReducer = (state: any = initialState, action: ReturnDefaultType) => {
+export const appReducer = (state: InitialStateType = initialState, action: ActionAppType) => {
   switch (action.type) {
     case 'SOME':
       return state;
@@ -9,7 +9,6 @@ export const appReducer = (state: any = initialState, action: ReturnDefaultType)
   }
 };
 
-export type ReturnDefaultType = ReturnType<typeof returnDefaultAC>;
 export const returnDefaultAC = (someThing: any) => {
   return {
     type: 'SOME',
@@ -18,3 +17,9 @@ export const returnDefaultAC = (someThing: any) => {
     },
   } as const;
 };
+
+// type
+
+export type ActionAppType = ReturnDefaultType;
+type InitialStateType = typeof initialState;
+export type ReturnDefaultType = ReturnType<typeof returnDefaultAC>;
