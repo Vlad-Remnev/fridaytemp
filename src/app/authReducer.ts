@@ -58,8 +58,7 @@ export const addUserDataAC = (userData: UserDataType) => {
 // Thunks
 export const registerTC = (data: RegisterDataType) => async (dispatch: Dispatch<ActionAuthType>) => {
   try {
-    let response = await authAPI.register(data);
-    console.log(response);
+    await authAPI.register(data);
     dispatch(setIsRegisteredInAC(true));
   } catch (e) {
     console.log(e);
