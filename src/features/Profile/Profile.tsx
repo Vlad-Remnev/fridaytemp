@@ -10,14 +10,16 @@ import {Link, Navigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType, AppThunkType} from '../../app/store';
 import { UserDataType } from '../../app/appApi';
+import { logoutTC } from '../../app/authReducer';
 import {updateUserTC} from "../../app/authReducer";
 
 const Profile = () => {
-  const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
-  const userData = useSelector<AppRootStateType, UserDataType>((state) => state.auth.userData);
-
-  const dispatch = useDispatch<AppThunkType>()
-
+  const dispatch = useDispatch<AppThunkType>();
+  const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.auth.isLoggedIn);
+  const userData = useSelector<AppRootStateType, UserDataType>((state) => state.profile.userData);
+  const logoutHandler = () => {
+    dispatch(logoutTC());
+  };
   const updateName = (title: string) => {
     dispatch(updateUserTC({name: title}))
   }
@@ -44,7 +46,7 @@ const Profile = () => {
           <EditableSpan title={userData.name} onChange={updateName}/>
         </div>
         <div className={s.mrg}>{userData.email}</div>
-        <button className={s.btn + ' ' + s.mrg2}>
+        <button className={s.btn + ' ' + s.mrg2} onClick={logoutHandler}>
           <LogoutIcon /> <span className={s.logOut}>Log out</span>
         </button>
       </Paper>
