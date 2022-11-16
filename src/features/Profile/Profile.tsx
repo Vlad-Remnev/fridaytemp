@@ -6,12 +6,12 @@ import { Paper } from '@mui/material';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
 import EditableSpan from '../../common/components/EditableSpan/EditableSpan';
-import {Link, Navigate} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppRootStateType, AppThunkType} from '../../app/store';
+import { Link, Navigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppRootStateType, AppThunkType } from '../../app/store';
 import { UserDataType } from '../../app/appApi';
 import { logoutTC } from '../../app/authReducer';
-import {updateUserTC} from "../../app/authReducer";
+import { updateUserTC } from './profileReducer';
 
 const Profile = () => {
   const dispatch = useDispatch<AppThunkType>();
@@ -21,13 +21,11 @@ const Profile = () => {
     dispatch(logoutTC());
   };
   const updateName = (title: string) => {
-    dispatch(updateUserTC({name: title}))
-  }
-
+    dispatch(updateUserTC({ name: title }));
+  };
   if (!isLoggedIn) {
-    return <Navigate to={'/login'}/>
+    return <Navigate to={'/login'} />;
   }
-
   return (
     <div className={s.container}>
       <Link to="/" className={s.link + ' ' + s.mrg2}>
@@ -43,7 +41,7 @@ const Profile = () => {
           </div>
         </div>
         <div className={s.addForm + ' ' + s.common + ' ' + s.mrg}>
-          <EditableSpan title={userData.name} onChange={updateName}/>
+          <EditableSpan title={userData.name} onChange={updateName} />
         </div>
         <div className={s.mrg}>{userData.email}</div>
         <button className={s.btn + ' ' + s.mrg2} onClick={logoutHandler}>
