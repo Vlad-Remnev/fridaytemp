@@ -16,7 +16,10 @@ export const authAPI = {
     return instance.post<ResponseLoginType>(`/auth/login`, data);
   },
   me() {
-    return instance.post<AuthMeResponseType>('/auth/me')
+    return instance.post<AuthMeResponseType>('/auth/me', {});
+  },
+  logout() {
+    return instance.delete(`/auth/me`, {});
   },
 };
 
@@ -27,6 +30,7 @@ export type UserDataType = {
   name: string;
   avatar?: string;
   publicCardPacksCount: number;
+  token?: string;
 };
 export type RegisterDataType = {
   email: string;
@@ -77,6 +81,7 @@ export type AuthMeResponseType = {
   name: string;
   avatar?: string;
   publicCardPacksCount: number; // количество колод
+  token: string;
 
   created: Date;
   updated: Date;
@@ -85,5 +90,4 @@ export type AuthMeResponseType = {
   rememberMe: boolean;
 
   error?: string;
-
-}
+};
