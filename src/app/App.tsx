@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import NewPassword from '../features/Login/NewPassword/NewPassword';
 import PasswordRecovery from '../features/Login/PasswordRecovery/PasswordRecovery';
@@ -8,10 +8,21 @@ import Error404 from '../common/pages/404/404';
 import Header from '../common/components/Header/Header';
 import CheckEmail from '../features/Login/CheckEmail/CheckEmail';
 import Login from '../features/Login/SignIn/SignIn';
+import {ErrorSnackbar} from "../common/components/ErrorSnackbar/ErrorSnackbar";
+import {useDispatch} from "react-redux";
+import {initializeAppTC} from "./authReducer";
+import {AppThunkType} from "./store";
 
 function App() {
+  const dispatch = useDispatch<AppThunkType>()
+
+  useEffect(() => {
+    dispatch(initializeAppTC())
+  }, [])
+
   return (
     <div className="App">
+      <ErrorSnackbar/>
       <Header />
       <div>
         Links to Project (созданы для удобного перехода)

@@ -15,6 +15,9 @@ export const authAPI = {
   login(data: LoginParamsType) {
     return instance.post<ResponseLoginType>(`/auth/login`, data);
   },
+  me() {
+    return instance.post<AuthMeResponseType>('/auth/me')
+  },
 };
 
 // types
@@ -68,3 +71,19 @@ export type ResponseRegisterType = {
   };
   error?: string;
 };
+export type AuthMeResponseType = {
+  _id: string;
+  email: string;
+  name: string;
+  avatar?: string;
+  publicCardPacksCount: number; // количество колод
+
+  created: Date;
+  updated: Date;
+  isAdmin: boolean;
+  verified: boolean; // подтвердил ли почту
+  rememberMe: boolean;
+
+  error?: string;
+
+}

@@ -1,25 +1,28 @@
-const initialState = {};
+const initialState = {
+  error: null as null | string,
+};
 
 export const appReducer = (state: InitialStateType = initialState, action: ActionAppType) => {
   switch (action.type) {
-    case 'SOME':
-      return state;
+    case 'app/SET-ERROR':
+      return {...state, error: action.payload.error};
     default:
       return state;
   }
 };
 
-export const returnDefaultAC = (someThing: any) => {
+// Actions
+export const setAppErrorAC = (error: null | string) => {
   return {
-    type: 'SOME',
+    type: 'app/SET-ERROR',
     payload: {
-      someThing,
+      error,
     },
   } as const;
 };
 
 // type
 
-export type ActionAppType = ReturnDefaultType;
+export type ActionAppType = SetAppErrorType;
 type InitialStateType = typeof initialState;
-export type ReturnDefaultType = ReturnType<typeof returnDefaultAC>;
+export type SetAppErrorType = ReturnType<typeof setAppErrorAC>;

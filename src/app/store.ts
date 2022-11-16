@@ -6,6 +6,7 @@ import thunkMiddleware, { ThunkDispatch } from 'redux-thunk';
 const rootReducer = combineReducers({
   someState: appReducer,
   auth: authReducer,
+  app: appReducer,
 });
 export type ActionsType = ActionAuthType | ActionAppType;
 export type AppThunkType = ThunkDispatch<AppRootStateType, void, ActionsType>;

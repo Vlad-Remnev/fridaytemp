@@ -74,7 +74,6 @@ const Login = () => {
     },
   });
   if (isLoggedIn) {
-    debugger;
     return <Navigate to={'/profile'} />;
   }
   return (

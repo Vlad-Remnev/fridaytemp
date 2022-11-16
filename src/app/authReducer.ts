@@ -1,5 +1,7 @@
 import { authAPI, LoginParamsType, RegisterDataType, UserDataType } from './appApi';
 import { Dispatch } from 'redux';
+import axios, {AxiosError} from "axios";
+import {setAppErrorAC, SetAppErrorType} from "./appReducer";
 
 const initialState = {
   isRegistered: false,
@@ -46,7 +48,6 @@ export const setIsLoggedInAC = (value: boolean) => {
 };
 
 export const addUserDataAC = (userData: UserDataType) => {
-  debugger;
   return {
     type: 'login/ADD-USER-DATA',
     payload: {
@@ -61,7 +62,13 @@ export const registerTC = (data: RegisterDataType) => async (dispatch: Dispatch<
     await authAPI.register(data);
     dispatch(setIsRegisteredInAC(true));
   } catch (e) {
-    console.log(e);
+    const err = e as Error | AxiosError;
+    if( axios.isAxiosError(err)) {
+      const error = err.response?.data
+      ? (err.response.data as {error: string}).error
+          : err.message;
+      dispatch(setAppErrorAC(error))
+    }
   }
 };
 
@@ -82,6 +89,31 @@ export const loginTC = (data: LoginParamsType) => async (dispatch: Dispatch<Acti
     console.log(e);
   }
 };
+
+export const initializeAppTC = () => async (dispatch: Dispatch<ActionAuthType>) => {
+try {
+  let response = await authAPI.me()
+  dispatch(setIsLoggedInAC(true));
+  dispatch(
+      addUserDataAC({
+        _id: response.data._id,
+        email: response.data.email,
+        name: response.data.name,
+        publicCardPacksCount: response.data.publicCardPacksCount,
+      }),
+  );
+
+} catch (e) {
+  const err = e as Error | AxiosError;
+  if( axios.isAxiosError(err)) {
+    const error = err.response?.data
+        ? (err.response.data as {error: string}).error
+        : err.message;
+    dispatch(setAppErrorAC(error))
+  }
+}
+}
+
 // Types
 type InitialStateType = typeof initialState;
 
@@ -89,4 +121,7 @@ export type SetIsRegisteredInACType = ReturnType<typeof setIsRegisteredInAC>;
 export type SetIsLoggedInACType = ReturnType<typeof setIsLoggedInAC>;
 export type SetUserDataACType = ReturnType<typeof addUserDataAC>;
 
-export type ActionAuthType = SetIsRegisteredInACType | SetIsLoggedInACType | SetUserDataACType;
+export type ActionAuthType = SetIsRegisteredInACType
+    | SetIsLoggedInACType
+    | SetUserDataACType
+    | SetAppErrorType;
