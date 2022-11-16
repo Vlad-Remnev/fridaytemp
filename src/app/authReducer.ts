@@ -1,4 +1,4 @@
-import { authAPI, LoginParamsType, RegisterDataType, UserDataType } from './appApi';
+import {authAPI, ForgotDataType, LoginParamsType, RegisterDataType, UserDataType} from './appApi';
 import { Dispatch } from 'redux';
 
 const initialState = {
@@ -68,7 +68,6 @@ export const registerTC = (data: RegisterDataType) => async (dispatch: Dispatch<
 export const loginTC = (data: LoginParamsType) => async (dispatch: Dispatch<ActionAuthType>) => {
   try {
     let response = await authAPI.login(data);
-    debugger;
     dispatch(setIsLoggedInAC(true));
     dispatch(
       addUserDataAC({
@@ -82,6 +81,15 @@ export const loginTC = (data: LoginParamsType) => async (dispatch: Dispatch<Acti
     console.log(e);
   }
 };
+
+export const forgotTC = (data: ForgotDataType) => async (dispatch: Dispatch<ActionAuthType>) => {
+  try {
+    await authAPI.forgot(data);
+  }
+  catch (e) {
+    console.log(e);
+  }
+}
 // Types
 type InitialStateType = typeof initialState;
 

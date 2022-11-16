@@ -66,7 +66,7 @@ const SignUp = () => {
   });
 
   if (isRegistered) {
-    return <Navigate to={'/login'} />;
+    return <Navigate to={'/'} />;
   }
 
   return (

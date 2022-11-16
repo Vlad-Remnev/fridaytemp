@@ -63,7 +63,7 @@ const Login = () => {
       }
       if (!values.password) {
         errors.password = 'Required';
-      } else if (values.password.length < 3) {
+      } else if (values.password.length < 7) {
         errors.password = 'Should be more symbols';
       }
       return errors;
