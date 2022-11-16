@@ -6,7 +6,7 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 interface IEditableSpan {
   title: string;
   checked?: boolean;
-  onChange: (newTitle: string) => void;
+  onChange?: (newTitle: string) => void;
 }
 
 const SearchButton = () => (
@@ -25,7 +25,7 @@ const EditableSpan: FC<IEditableSpan> = ({ title, onChange, checked }) => {
 
   const onBlur = useCallback(() => {
     setEditMode(false);
-    onChange(newTitle);
+    onChange && onChange(newTitle);
   }, [onChange, newTitle]);
 
   const changeKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {

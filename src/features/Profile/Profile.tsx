@@ -6,13 +6,26 @@ import { Paper } from '@mui/material';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
 import EditableSpan from '../../common/components/EditableSpan/EditableSpan';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { AppRootStateType } from '../../app/store';
+import {Link, Navigate} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppRootStateType, AppThunkType} from '../../app/store';
 import { UserDataType } from '../../app/appApi';
+import {updateUserTC} from "../../app/authReducer";
 
 const Profile = () => {
+  const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
   const userData = useSelector<AppRootStateType, UserDataType>((state) => state.auth.userData);
+
+  const dispatch = useDispatch<AppThunkType>()
+
+  const updateName = (title: string) => {
+    dispatch(updateUserTC({name: title}))
+  }
+
+  if (!isLoggedIn) {
+    return <Navigate to={'/login'}/>
+  }
+
   return (
     <div className={s.container}>
       <Link to="/" className={s.link + ' ' + s.mrg2}>
@@ -28,7 +41,7 @@ const Profile = () => {
           </div>
         </div>
         <div className={s.addForm + ' ' + s.common + ' ' + s.mrg}>
-          <EditableSpan title={userData.name} onChange={() => {}} />
+          <EditableSpan title={userData.name} onChange={updateName}/>
         </div>
         <div className={s.mrg}>{userData.email}</div>
         <button className={s.btn + ' ' + s.mrg2}>

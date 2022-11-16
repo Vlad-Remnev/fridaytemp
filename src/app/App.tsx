@@ -37,22 +37,22 @@ function App() {
             <Link to="/checkEmail"> Форма проверить почту(готова стилистика)</Link>
           </li>
           <li>
-            <Link to="/profile"> Форма профиля(готова стилистика)</Link>
+            <Link to="/"> Форма профиля(готова стилистика)</Link>
           </li>
           <li>
             <Link to="/registration"> Форма регистрации</Link>
           </li>
           <li>
-            <Link to="/"> Форма логина</Link>
+            <Link to="/login"> Форма логина</Link>
           </li>
         </ul>
       </div>
       <div>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Profile />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/newPassword" element={<NewPassword />} />
           <Route path="/passwordRecovery" element={<PasswordRecovery />} />
-          <Route path="/profile" element={<Profile />} />
           <Route path="/registration" element={<SignUp />} />
           <Route path="/checkEmail" element={<CheckEmail />} />
           <Route path="*" element={<Error404 />} />
