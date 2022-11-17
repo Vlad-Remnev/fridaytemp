@@ -1,4 +1,4 @@
-import { authAPI, LoginParamsType, RegisterDataType, UserDataType } from './appApi';
+import {authAPI, ForgotDataType, LoginParamsType, RegisterDataType} from './appApi';
 import { Dispatch } from 'redux';
 import axios, { AxiosError } from 'axios';
 import { setAppErrorAC, SetAppErrorType, setInitialisedAC, SetInitialisedType } from './appReducer';
@@ -94,11 +94,24 @@ export const logoutTC = () => async (dispatch: Dispatch<ActionAuthType>) => {
   }
 };
 
+
+export const forgotTC = (data: ForgotDataType) => async (dispatch: Dispatch<ActionAuthType>) => {
+  try {
+    await authAPI.forgot(data);
+  }
+  catch (err) {
+    if (axios.isAxiosError(err)) {
+      const error = err.response?.data ? (err.response.data as { error: string }).error : err.message;
+      dispatch(setAppErrorAC(error));
+    }
+  }
+}
 // Types
 type InitialStateType = typeof initialState;
 export type ModelUpdateType = {
   name?: string;
   avatar?: string;
+  token?: string
 };
 
 export type SetIsRegisteredInACType = ReturnType<typeof setIsRegisteredInAC>;
