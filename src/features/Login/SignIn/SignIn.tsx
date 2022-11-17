@@ -76,6 +76,7 @@ const Login = () => {
   if (isLoggedIn) {
     return <Navigate to={'/'} />;
   }
+
   return (
     <div className={s.container}>
       <Paper elevation={1} className={s.paper + ' ' + s.common}>
@@ -118,7 +119,7 @@ const Login = () => {
               control={<Checkbox {...formik.getFieldProps('rememberMe')} />}
               checked={formik.values.rememberMe}
             />
-            <Link to="/passwordRecovery" className={s.link + ' ' + s.mrg}>
+            <Link to="/newPassword" className={s.link + ' ' + s.mrg}>
               Forgot Password?
             </Link>
             <Button type="submit" variant="contained" sx={buttonStyles}>

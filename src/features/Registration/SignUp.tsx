@@ -13,6 +13,7 @@ import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import Paper from '@mui/material/Paper';
+import {buttonStyles} from "../../common/themes/themeMaterialUi";
 
 type FormikErrorType = {
   email?: string;
@@ -21,14 +22,6 @@ type FormikErrorType = {
 };
 
 const SignUp = () => {
-  const buttonStyles = {
-    width: '100%',
-    background: '#366EFF',
-    boxShadow: '0px 4px 18px rgba(54, 110, 255, 0.35), inset 0px 1px 0px rgba(255, 255, 255, 0.3)',
-    borderRadius: '30px',
-    marginTop: '65px',
-    textTransform: 'none',
-  };
   const dispatch = useDispatch<AppThunkType>();
   const isRegistered = useSelector<AppRootStateType, boolean>((state) => state.auth.isRegistered);
 
@@ -75,7 +68,7 @@ const SignUp = () => {
     <div className={s.container}>
       <Paper elevation={1} className={s.paper + ' ' + s.common}>
         <form onSubmit={formik.handleSubmit}>
-          <FormControl>
+          <FormControl className={s.common}>
             <h2 className={s.title}>Sign Up</h2>
 
             <FormGroup>
@@ -103,7 +96,7 @@ const SignUp = () => {
                 }}
                 {...formik.getFieldProps('password')}
               />
-              {/*<div className={s.passwordControl} onClick={()=>setShowPass(showPass)}></div>*/}
+              <div className={s.passwordControl} onClick={()=>setShowPass(showPass)}></div>
               <span
                 className={showPass ? s.passwordControlView : s.passwordControl}
                 onClick={() => setShowPass(!showPass)}

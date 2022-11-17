@@ -70,6 +70,8 @@ export const setNewPasswordTC = (data: NewPasswordData) => async (dispatch: Disp
     if (axios.isAxiosError(err)) {
       const error = err.response?.data ? (err.response.data as { error: string }).error : err.message;
       dispatch(setAppErrorAC(error));
+    } else {
+      dispatch(setAppErrorAC(`Native error ${err.message}`))
     }
   }
 }
