@@ -1,4 +1,4 @@
-import { authAPI, LoginParamsType, RegisterDataType, UserDataType } from './appApi';
+import {authAPI, ForgotDataType, LoginParamsType, RegisterDataType} from './appApi';
 import { Dispatch } from 'redux';
 import axios, { AxiosError } from 'axios';
 import { setAppErrorAC, SetAppErrorType, setInitialisedAC, SetInitialisedType } from './appReducer';
@@ -7,13 +7,6 @@ import { addUserDataAC } from '../features/Profile/profileReducer';
 const initialState = {
   isRegistered: false,
   isLoggedIn: false,
-  userData: {
-    _id: '',
-    email: '',
-    name: '',
-    avatar: '',
-    publicCardPacksCount: 0,
-  } as UserDataType,
 };
 
 export const authReducer = (state: InitialStateType = initialState, action: ActionAuthType): InitialStateType => {
@@ -100,11 +93,24 @@ export const logoutTC = () => async (dispatch: Dispatch<ActionAuthType>) => {
   }
 };
 
+
+export const forgotTC = (data: ForgotDataType) => async (dispatch: Dispatch<ActionAuthType>) => {
+  try {
+    await authAPI.forgot(data);
+  }
+  catch (err) {
+    if (axios.isAxiosError(err)) {
+      const error = err.response?.data ? (err.response.data as { error: string }).error : err.message;
+      dispatch(setAppErrorAC(error));
+    }
+  }
+}
 // Types
 type InitialStateType = typeof initialState;
 export type ModelUpdateType = {
   name?: string;
   avatar?: string;
+  token?: string
 };
 
 export type SetIsRegisteredInACType = ReturnType<typeof setIsRegisteredInAC>;

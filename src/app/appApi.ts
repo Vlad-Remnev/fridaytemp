@@ -4,7 +4,7 @@ import {ModelUpdateType} from "./authReducer";
 export const instance = axios.create({
   // baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/' ,
   /*baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:7542/2.0/' : 'https://neko-back.herokuapp.com/2.0/',*/
-  baseURL: 'http://localhost:7542/2.0/',
+  baseURL: 'https://neko-back.herokuapp.com/2.0/',
   withCredentials: true,
 });
 
@@ -15,6 +15,12 @@ export const authAPI = {
   },
   login(data: LoginParamsType) {
     return instance.post<ResponseLoginType>(`/auth/login`, data);
+  },
+  forgot(data: ForgotDataType) {
+    return instance.post<ResponseForgotType>(`/auth/forgot`, data)
+  },
+  setNewPassword(data: NewPasswordData) {
+    return instance.post<ResponseForgotType>('/auth/set-new-password', data)
   },
   me() {
     return instance.post<AuthMeResponseType>('/auth/me', {});
@@ -86,16 +92,30 @@ export type AuthMeResponseType = {
   avatar?: string;
   publicCardPacksCount: number; // количество колод
   token: string;
-
   created: Date;
   updated: Date;
   isAdmin: boolean;
   verified: boolean; // подтвердил ли почту
   rememberMe: boolean;
-
   error?: string;
 }
 export type UpdateChangedUserDataType = {
   updatedUser: UserDataType
   error?: string
+}
+
+export type ForgotDataType = {
+  email: string
+  from: string
+  message: string
+}
+
+export type ResponseForgotType = {
+  info: string
+  error: string
+}
+
+export type NewPasswordData = {
+  password: string
+  resetPasswordToken: string
 }

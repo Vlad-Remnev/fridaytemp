@@ -1,4 +1,4 @@
-import { authAPI, UserDataType } from '../../app/appApi';
+import {authAPI, NewPasswordData, UserDataType} from '../../app/appApi';
 import { Dispatch } from 'redux';
 import { AppRootStateType } from '../../app/store';
 import axios, { AxiosError } from 'axios';
@@ -19,9 +19,10 @@ const initialState = {
 export const profileReducer = (state: InitialStateType = initialState, action: ActionProfileType) => {
   switch (action.type) {
     case 'login/ADD-USER-DATA':
+      console.log({ ...state, userData: { ...action.payload.userData } })
       return { ...state, userData: { ...action.payload.userData } };
     case 'profile/UPDATE-USER-DATA':
-      return { ...state, userData: { ...state.userData, name: action.newData.name, avatar: action.newData.avatar } };
+      return { ...state, userData: { ...state.userData, name: action.newData.name, avatar: action.newData.avatar, token: action.newData.token } };
     default:
       return state;
   }
@@ -43,7 +44,7 @@ export const updateUserDataAC = (newData: UserDataType) => {
     newData,
   } as const;
 };
-// tunk
+// thunk
 
 export const updateUserTC =
   (data: ModelUpdateType) => async (dispatch: Dispatch<ActionProfileType>, getState: () => AppRootStateType) => {
@@ -60,6 +61,18 @@ export const updateUserTC =
       }
     }
   };
+
+export const setNewPasswordTC = (data: NewPasswordData) => async (dispatch: Dispatch<ActionProfileType>)  => {
+  try {
+    await authAPI.setNewPassword(data)
+  } catch (e) {
+    const err = e as Error | AxiosError;
+    if (axios.isAxiosError(err)) {
+      const error = err.response?.data ? (err.response.data as { error: string }).error : err.message;
+      dispatch(setAppErrorAC(error));
+    }
+  }
+}
 
 //type
 export type ActionProfileType = SetUserDataACType | UpdateUserDAtaType | SetAppErrorType;

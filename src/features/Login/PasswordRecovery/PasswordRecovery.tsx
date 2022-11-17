@@ -10,6 +10,10 @@ import {
   Paper,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {useNavigate, useParams} from "react-router-dom";
+import {setNewPasswordTC} from "../../Profile/profileReducer";
+import {useDispatch} from "react-redux";
+import {AppThunkType} from "../../../app/store";
 
 interface State {
   amount: string;
@@ -27,11 +31,22 @@ const PasswordRecovery = () => {
     weightRange: "",
     showPassword: false,
   });
+  const dispatch = useDispatch<AppThunkType>();
+    const {token} = useParams()
+    console.log(token)
 
-  const handleChange =
-    (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value });
-    };
+  let navigate = useNavigate()
+  const tokenChange = () => {
+      if (token) {
+        dispatch(setNewPasswordTC({password: values.password, resetPasswordToken: token}))
+      }
+    navigate('/login')
+  }
+
+    const handleChange =
+        (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
+            setValues({...values, [prop]: event.target.value});
+        };
 
   const handleClickShowPassword = () => {
     setValues({
@@ -86,7 +101,7 @@ const PasswordRecovery = () => {
             Create new password and we will send you further instructions to
             email
           </div>
-          <Button variant="contained" sx={buttonStyles}>
+          <Button variant="contained" sx={buttonStyles} onClick={tokenChange}>
             Create new password
           </Button>
         </Paper>
