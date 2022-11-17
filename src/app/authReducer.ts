@@ -7,13 +7,6 @@ import { addUserDataAC } from '../features/Profile/profileReducer';
 const initialState = {
   isRegistered: false,
   isLoggedIn: false,
-  userData: {
-    _id: '',
-    email: '',
-    name: '',
-    avatar: '',
-    publicCardPacksCount: 0,
-  } as UserDataType,
 };
 
 export const authReducer = (state: InitialStateType = initialState, action: ActionAuthType): InitialStateType => {
@@ -71,6 +64,7 @@ export const loginTC = (data: LoginParamsType) => async (dispatch: Dispatch<Acti
         name: response.data.name,
         publicCardPacksCount: response.data.publicCardPacksCount,
         token: response.data.token,
+        avatar: response.data.avatar,
       }),
     );
   } catch (e) {

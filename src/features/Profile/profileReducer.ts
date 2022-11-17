@@ -43,7 +43,7 @@ export const updateUserDataAC = (newData: UserDataType) => {
     newData,
   } as const;
 };
-// tunk
+// thunk
 
 export const updateUserTC =
   (data: ModelUpdateType) => async (dispatch: Dispatch<ActionProfileType>, getState: () => AppRootStateType) => {

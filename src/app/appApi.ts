@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import {ModelUpdateType} from "./authReducer";
+import { ModelUpdateType } from './authReducer';
 
 export const instance = axios.create({
   // baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/' ,
@@ -22,9 +22,9 @@ export const authAPI = {
   logout() {
     return instance.delete(`/auth/me`, {});
   },
-  updateData(data: ModelUpdateType){
-    return instance.put<UpdateChangedUserDataType>('/auth/me', data)
-  }
+  updateData(data: ModelUpdateType) {
+    return instance.put<UpdateChangedUserDataType>('/auth/me', data);
+  },
 };
 
 // types
@@ -59,6 +59,7 @@ export type ResponseLoginType = {
   publicCardPacksCount: number;
   created: string;
   updated: string;
+  avatar: string;
   __v: number;
   token: string;
   tokenDeathTime: number;
@@ -94,8 +95,8 @@ export type AuthMeResponseType = {
   rememberMe: boolean;
 
   error?: string;
-}
+};
 export type UpdateChangedUserDataType = {
-  updatedUser: UserDataType
-  error?: string
-}
+  updatedUser: UserDataType;
+  error?: string;
+};

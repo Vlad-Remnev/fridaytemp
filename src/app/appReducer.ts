@@ -51,6 +51,7 @@ export const isInitializedAppTC = () => async (dispatch: Dispatch<ActionAppType>
         name: response.data.name,
         publicCardPacksCount: response.data.publicCardPacksCount,
         token: response.data.token,
+        avatar: response.data.avatar,
       }),
     );
   } catch (e) {

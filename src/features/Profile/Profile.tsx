@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent, FormEvent } from 'react';
 import s from './Profile.module.css';
 import avatar from '../../assets/img/ava.png';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
@@ -13,16 +13,51 @@ import { UserDataType } from '../../app/appApi';
 import { logoutTC } from '../../app/authReducer';
 import { updateUserTC } from './profileReducer';
 
+const convertFileToBase64 = (file: File, callback: (value: string) => void): void => {
+  const reader = new FileReader();
+  reader.onloadend = () => {
+    const file64 = reader.result as string;
+    callback(file64);
+  };
+  reader.readAsDataURL(file);
+};
+
 const Profile = () => {
   const dispatch = useDispatch<AppThunkType>();
   const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.auth.isLoggedIn);
   const userData = useSelector<AppRootStateType, UserDataType>((state) => state.profile.userData);
+
   const logoutHandler = () => {
     dispatch(logoutTC());
   };
   const updateName = (title: string) => {
     dispatch(updateUserTC({ name: title }));
   };
+
+  // нужно добавить проверку на размер аватара
+  const minFileSize = 400000;
+
+  const uploadHandlerAvatar = (e: ChangeEvent<HTMLInputElement>): void => {
+    if (e.target.files && e.target.files.length) {
+      const file = e.target.files[0];
+
+      // if (file.size < minFileSize) {
+      convertFileToBase64(file, (file64: string) => {
+        dispatch(updateUserTC({ avatar: file64 }));
+        console.log('file64');
+      });
+      // } else {
+
+      // dispatch(
+      //     setAppSnackbarValue({
+      //       type: snackbarType.ERROR,
+      //       message: 'Incorrect file size or type',
+      //     }),
+      // );
+      // }
+    }
+  };
+
   if (!isLoggedIn) {
     return <Navigate to={'/login'} />;
   }
@@ -35,9 +70,18 @@ const Profile = () => {
       <Paper elevation={1} className={s.paper + ' ' + s.common}>
         <h2 className={s.title}>Personal Information</h2>
         <div className={s.avatar}>
-          <img src={avatar} alt="Profile photo" />
+          <img src={userData.avatar !== undefined ? userData.avatar : avatar} alt="Profile photo" />
           <div className={s.addPhoto + ' ' + s.common}>
-            <AddAPhotoIcon />
+            <input
+              id={'input_add_photo'}
+              type={'file'}
+              style={{ display: 'none' }}
+              accept={'image/**'}
+              onChange={uploadHandlerAvatar}
+            />
+            <label htmlFor="input_add_photo">
+              <AddAPhotoIcon />
+            </label>
           </div>
         </div>
         <div className={s.addForm + ' ' + s.common + ' ' + s.mrg}>
