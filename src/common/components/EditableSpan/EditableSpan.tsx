@@ -1,6 +1,7 @@
-import React, { ChangeEvent, FC, KeyboardEvent, useCallback, useState } from 'react';
+import React, { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
 import s from './EditableSpan.module.css';
-import { Button, TextField } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 
 interface IEditableSpan {
@@ -19,14 +20,10 @@ const EditableSpan: FC<IEditableSpan> = ({ title, onChange, checked }) => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [newTitle, setNewTitle] = useState(title);
 
-  const activateEditMode = () => {
-    setEditMode(true);
-  };
-
-  const onBlur = useCallback(() => {
+  const onBlur = () => {
     setEditMode(false);
     onChange && onChange(newTitle);
-  }, [onChange, newTitle]);
+  };
 
   const changeKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && event.ctrlKey) {
@@ -54,7 +51,7 @@ const EditableSpan: FC<IEditableSpan> = ({ title, onChange, checked }) => {
     </>
   ) : (
     <>
-      <span onDoubleClick={activateEditMode} className={checked ? s.isDone : s.activeDone}>
+      <span onDoubleClick={() => setEditMode(true)} className={checked ? s.isDone : s.activeDone}>
         {title}
         <BorderColorIcon style={{ fontSize: '16px', marginLeft: '5px' }} />
       </span>

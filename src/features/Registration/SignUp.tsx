@@ -4,7 +4,6 @@ import { Link, Navigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType, AppThunkType } from '../../app/store';
-import { RegisterDataType } from '../../app/appApi';
 import { registerTC } from '../../app/authReducer';
 
 // MUI imports
@@ -13,7 +12,10 @@ import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import Paper from '@mui/material/Paper';
-import {buttonStyles} from "../../common/themes/themeMaterialUi";
+import { buttonStyles, eyeStyles } from '../../common/themes/themeMaterialUi';
+import { LoginRegisterDataType } from '../../app/appApi';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 type FormikErrorType = {
   email?: string;
@@ -24,16 +26,21 @@ type FormikErrorType = {
 const SignUp = () => {
   const dispatch = useDispatch<AppThunkType>();
   const isRegistered = useSelector<AppRootStateType, boolean>((state) => state.auth.isRegistered);
-
-  const [showPass, setShowPass] = useState<boolean>(false);
-
+  const [type, setType] = useState('password');
+  const handleToggle = () => {
+    if (type === 'password') {
+      setType('text');
+    } else {
+      setType('password');
+    }
+  };
   const formik = useFormik({
     initialValues: {
       email: '',
       password: '',
       confirmPassword: '',
     },
-    validate: (values: RegisterDataType) => {
+    validate: (values: LoginRegisterDataType) => {
       const errors: FormikErrorType = {};
 
       if (!values.email) {
@@ -54,7 +61,7 @@ const SignUp = () => {
 
       return errors;
     },
-    onSubmit: (values: RegisterDataType) => {
+    onSubmit: (values: LoginRegisterDataType) => {
       dispatch(registerTC(values));
       formik.resetForm();
     },
@@ -70,7 +77,6 @@ const SignUp = () => {
         <form onSubmit={formik.handleSubmit}>
           <FormControl className={s.common}>
             <h2 className={s.title}>Sign Up</h2>
-
             <FormGroup>
               <TextField
                 label="Email"
@@ -84,48 +90,42 @@ const SignUp = () => {
                 {...formik.getFieldProps('email')}
               />
               {formik.touched.email && formik.errors.email && <div style={{ color: 'red' }}>{formik.errors.email}</div>}
-              <TextField
-                label="Password"
-                type={showPass ? 'text' : 'password'}
-                color="info"
-                variant="standard"
-                helperText=" "
-                sx={{ width: '300px' }}
-                FormHelperTextProps={{
-                  className: s.helperText + ' ' + s.mrg2,
-                }}
-                {...formik.getFieldProps('password')}
-              />
-              <div className={s.passwordControl} onClick={()=>setShowPass(showPass)}></div>
-              <span
-                className={showPass ? s.passwordControlView : s.passwordControl}
-                onClick={() => setShowPass(!showPass)}
-              ></span>
+              <div className={s.password}>
+                <TextField
+                  label="Password"
+                  type={type}
+                  color="info"
+                  variant="standard"
+                  helperText=" "
+                  sx={{ width: '300px' }}
+                  FormHelperTextProps={{
+                    className: s.helperText + ' ' + s.mrg2,
+                  }}
+                  {...formik.getFieldProps('password')}
+                />
+                {type === 'password' ? <RemoveRedEyeIcon sx={eyeStyles} onClick={handleToggle} /> : <VisibilityOffIcon sx={eyeStyles} onClick={handleToggle} />}
+              </div>
               {formik.touched.password && <div style={{ color: 'red' }}>{formik.errors.password}</div>}
-              <TextField
-                label="Confirm password"
-                type={showPass ? 'text' : 'password'}
-                color="info"
-                variant="standard"
-                helperText=" "
-                sx={{ width: '300px' }}
-                FormHelperTextProps={{
-                  className: s.helperText + ' ' + s.mrg2,
-                }}
-                {...formik.getFieldProps('confirmPassword')}
-              />
-              <span
-                className={showPass ? s.passwordControlView : s.passwordControl}
-                onClick={() => setShowPass(!showPass)}
-              ></span>
+              <div className={s.password}>
+                <TextField
+                  label="Confirm password"
+                  type={type}
+                  color="info"
+                  variant="standard"
+                  helperText=" "
+                  sx={{ width: '300px' }}
+                  FormHelperTextProps={{
+                    className: s.helperText + ' ' + s.mrg2,
+                  }}
+                  {...formik.getFieldProps('confirmPassword')}
+                />
+                {type === 'password' ? <RemoveRedEyeIcon sx={eyeStyles} onClick={handleToggle} /> : <VisibilityOffIcon sx={eyeStyles} onClick={handleToggle} />}
+              </div>
               {formik.touched.confirmPassword && <div style={{ color: 'red' }}>{formik.errors.confirmPassword}</div>}
-              {/*НЕ ТРОГАТЬ<InputAdornments/>*/}
-
               <Button type={'submit'} variant="contained" sx={buttonStyles}>
                 Sign Up
               </Button>
             </FormGroup>
-
             <div className={s.remember + ' ' + s.mrg3}>Already have an account?</div>
             <Link to="/" className={s.link + ' ' + s.mrg}>
               Sign In

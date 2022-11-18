@@ -1,85 +1,89 @@
+.password {
+  position: relative;
+}
+
 .common {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .title {
-    margin: 0;
-    padding-bottom: 20px;
+  margin: 0;
+  padding-bottom: 20px;
 }
 
 .mrg {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .mrg2 {
-    margin-top: 50px;
+  margin-top: 50px;
 }
 
 .mrg3 {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 
 .container {
-    min-height: 100vh;
-    padding: 0 135px;
-    margin: 0 auto;
+  min-height: 100vh;
+  padding: 0 135px;
+  margin: 0 auto;
 }
 
 .paper {
-    flex-direction: column;
-    padding: 25px 35px;
-    max-width: 300px;
-    margin: 20px auto;
+  flex-direction: column;
+  padding: 25px 35px;
+  max-width: 300px;
+  margin: 20px auto;
 }
 
 .helperText {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .remember {
-    font-size: 14px;
-    line-height: 24px;
-    color: gray;
+  font-size: 14px;
+  line-height: 24px;
+  color: gray;
 }
 
 .link {
-    color: #366EFF;
-    font-weight: bold;
+  color: #366eff;
+  font-weight: bold;
 }
 
 .password {
-    width: 300px;
-    margin: 15px auto;
-    position: relative;
+  width: 300px;
+  margin: 15px auto;
+  position: relative;
 }
 #password-input {
-    width: 100%;
-    padding: 5px 0;
-    height: 30px;
-    line-height: 40px;
-    text-indent: 10px;
-    margin: 0 0 15px 0;
-    border-radius: 5px;
-    border: 1px solid #999;
-    font-size: 18px;
+  width: 100%;
+  padding: 5px 0;
+  height: 30px;
+  line-height: 40px;
+  text-indent: 10px;
+  margin: 0 0 15px 0;
+  border-radius: 5px;
+  border: 1px solid #999;
+  font-size: 18px;
 }
 .passwordControl {
-    position: absolute;
-    top: 145px;
-    right: 6px;
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background: url(https://snipp.ru/demo/495/view.svg) 0 0 no-repeat;
+  position: absolute;
+  top: 145px;
+  right: 6px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: url(https://snipp.ru/demo/495/view.svg) 0 0 no-repeat;
 }
 .passwordControlView {
-    position: absolute;
-    top: 145px;
-    right: 6px;
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background: url(https://snipp.ru/demo/495/no-view.svg) 0 0 no-repeat;
+  position: absolute;
+  top: 145px;
+  right: 6px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: url(https://snipp.ru/demo/495/no-view.svg) 0 0 no-repeat;
 }

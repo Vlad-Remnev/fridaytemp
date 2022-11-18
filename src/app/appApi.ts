@@ -3,33 +3,33 @@ import { ModelUpdateType } from './authReducer';
 
 export const instance = axios.create({
   // baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/' ,
-  /*baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:7542/2.0/' : 'https://neko-back.herokuapp.com/2.0/',*/
+  // baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:7542/2.0/' : 'https://neko-back.herokuapp.com/2.0/',
   baseURL: 'https://neko-back.herokuapp.com/2.0/',
   withCredentials: true,
 });
 
 // api
 export const authAPI = {
-  register(data: RegisterDataType) {
-    return instance.post<RegisterDataType, AxiosResponse<ResponseRegisterType>>('/auth/register', data);
+  register(data: LoginRegisterDataType) {
+    return instance.post<LoginRegisterDataType, AxiosResponse<ResponseType>>('/auth/register', data);
   },
-  login(data: LoginParamsType) {
-    return instance.post<ResponseLoginType>(`/auth/login`, data);
+  login(data: LoginRegisterDataType) {
+    return instance.post<LoginRegisterDataType, AxiosResponse<ResponseType>>(`/auth/login`, data);
   },
   forgot(data: ForgotDataType) {
-    return instance.post<ResponseForgotType>(`/auth/forgot`, data)
+    return instance.post<ResponseForgotType>(`/auth/forgot`, data);
   },
   setNewPassword(data: NewPasswordData) {
-    return instance.post<ResponseForgotType>('/auth/set-new-password', data)
+    return instance.post<ResponseForgotType>('/auth/set-new-password', data);
   },
   me() {
-    return instance.post<AuthMeResponseType>('/auth/me', {});
+    return instance.post<ResponseType>('/auth/me', {});
   },
   logout() {
-    return instance.delete(`/auth/me`, {});
+    return instance.delete<AxiosResponse<{ error: string }>>(`/auth/me`, {});
   },
   updateData(data: ModelUpdateType) {
-    return instance.put<UpdateChangedUserDataType>('/auth/me', data);
+    return instance.put<ModelUpdateType, AxiosResponse<UpdateChangedUserDataType>>('/auth/me', data);
   },
 };
 
@@ -42,81 +42,48 @@ export type UserDataType = {
   publicCardPacksCount: number;
   token?: string;
 };
-export type RegisterDataType = {
+
+export type LoginRegisterDataType = {
   email: string;
   password: string;
-  confirmPassword: string;
+  rememberMe?: boolean;
+  confirmPassword?: string;
 };
 
-export type LoginParamsType = {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-  captcha?: string;
-};
-
-export type ResponseLoginType = {
+export type ResponseType = {
   _id: string;
   email: string;
-  rememberMe: boolean;
-  isAdmin: boolean;
   name: string;
-  verified: boolean;
   publicCardPacksCount: number;
-  created: string;
-  updated: string;
-  avatar: string;
-  __v: number;
-  token: string;
-  tokenDeathTime: number;
+  verified?: boolean;
+  rememberMe?: boolean;
+  isAdmin?: boolean;
+  created?: Date;
+  updated?: Date;
+  avatar?: string;
+  __v?: number;
+  token?: string;
+  tokenDeathTime?: number;
+  error?: string;
 };
 
-export type ResponseRegisterType = {
-  addedUser: {
-    _id: string;
-    email: string;
-    rememberMe: boolean;
-    isAdmin: boolean;
-    name: string;
-    verified: boolean;
-    publicCardPacksCount: number;
-    created: string;
-    updated: string;
-    __v: number;
-  };
-  error?: string;
-};
-export type AuthMeResponseType = {
-  _id: string;
-  email: string;
-  name: string;
-  avatar?: string;
-  publicCardPacksCount: number; // количество колод
-  token: string;
-  created: Date;
-  updated: Date;
-  isAdmin: boolean;
-  verified: boolean; // подтвердил ли почту
-  rememberMe: boolean;
-  error?: string;
-};
 export type UpdateChangedUserDataType = {
   updatedUser: UserDataType;
   error?: string;
 };
 
 export type ForgotDataType = {
-  email: string
-  from: string
-  message: string
-}
+  email: string;
+  from: string;
+  message: string;
+};
 
 export type ResponseForgotType = {
-  info: string
-  error: string
-}
+  info: string;
+  error: string;
+};
 
 export type NewPasswordData = {
-  password: string
-  resetPasswordToken: string
-}
+  password: string;
+  resetPasswordToken: string;
+};

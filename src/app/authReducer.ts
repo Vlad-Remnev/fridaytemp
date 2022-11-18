@@ -1,8 +1,9 @@
-import {authAPI, ForgotDataType, LoginParamsType, RegisterDataType} from './appApi';
+import { authAPI, ForgotDataType, LoginRegisterDataType } from './appApi';
 import { Dispatch } from 'redux';
-import axios, { AxiosError } from 'axios';
-import { setAppErrorAC, SetAppErrorType, setInitialisedAC, SetInitialisedType } from './appReducer';
+import { AxiosError } from 'axios';
+import { SetAppErrorType, setInitialisedAC, SetInitialisedType } from './appReducer';
 import { addUserDataAC } from '../features/Profile/profileReducer';
+import { handleServerAppError } from '../common/utils/error-utils';
 
 const initialState = {
   isRegistered: false,
@@ -21,39 +22,24 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
 };
 
 // Actions
-export const setIsRegisteredInAC = (value: boolean) => {
-  return {
+export const setIsRegisteredInAC = (value: boolean) =>
+  ({
     type: 'register/SET-IS-REGISTERED-IN',
-    payload: {
-      value,
-    },
-  } as const;
-};
-
-export const setIsLoggedInAC = (value: boolean) => {
-  return {
-    type: 'login/SET-IS-LOGGED-IN',
-    payload: {
-      value,
-    },
-  } as const;
-};
+    payload: { value },
+  } as const);
+export const setIsLoggedInAC = (value: boolean) => ({ type: 'login/SET-IS-LOGGED-IN', payload: { value } } as const);
 
 // Thunks
-export const registerTC = (data: RegisterDataType) => async (dispatch: Dispatch<ActionAuthType>) => {
+export const registerTC = (data: LoginRegisterDataType) => async (dispatch: Dispatch<ActionAuthType>) => {
   try {
     await authAPI.register(data);
     dispatch(setIsRegisteredInAC(true));
   } catch (e) {
-    const err = e as Error | AxiosError;
-    if (axios.isAxiosError(err)) {
-      const error = err.response?.data ? (err.response.data as { error: string }).error : err.message;
-      dispatch(setAppErrorAC(error));
-    }
+    handleServerAppError(e as Error | AxiosError, dispatch);
   }
 };
 
-export const loginTC = (data: LoginParamsType) => async (dispatch: Dispatch<ActionAuthType>) => {
+export const loginTC = (data: LoginRegisterDataType) => async (dispatch: Dispatch<ActionAuthType>) => {
   try {
     let response = await authAPI.login(data);
     dispatch(setIsLoggedInAC(true));
@@ -68,12 +54,7 @@ export const loginTC = (data: LoginParamsType) => async (dispatch: Dispatch<Acti
       }),
     );
   } catch (e) {
-    const err = e as Error | AxiosError;
-    console.log(err);
-    if (axios.isAxiosError(err)) {
-      const error = err.response?.data ? (err.response.data as { error: string }).error : err.message;
-      dispatch(setAppErrorAC(error));
-    }
+    handleServerAppError(e as Error | AxiosError, dispatch);
   } finally {
     dispatch(setInitialisedAC(true));
   }
@@ -84,43 +65,30 @@ export const logoutTC = () => async (dispatch: Dispatch<ActionAuthType>) => {
     await authAPI.logout();
     dispatch(setIsLoggedInAC(false));
   } catch (e) {
-    const err = e as Error | AxiosError;
-    if (axios.isAxiosError(err)) {
-      const error = err.response?.data ? (err.response.data as { error: string }).error : err.message;
-      dispatch(setAppErrorAC(error));
-    }
+    handleServerAppError(e as Error | AxiosError, dispatch);
   } finally {
     dispatch(setInitialisedAC(true));
   }
 };
 
-
 export const forgotTC = (data: ForgotDataType) => async (dispatch: Dispatch<ActionAuthType>) => {
   try {
     await authAPI.forgot(data);
+  } catch (e) {
+    handleServerAppError(e as Error | AxiosError, dispatch);
   }
-  catch (err) {
-    if (axios.isAxiosError(err)) {
-      const error = err.response?.data ? (err.response.data as { error: string }).error : err.message;
-      dispatch(setAppErrorAC(error));
-    }
-  }
-}
+};
+
 // Types
 type InitialStateType = typeof initialState;
 export type ModelUpdateType = {
   name?: string;
   avatar?: string;
-  token?: string
+  token?: string;
 };
 
 export type SetIsRegisteredInACType = ReturnType<typeof setIsRegisteredInAC>;
 export type SetIsLoggedInACType = ReturnType<typeof setIsLoggedInAC>;
 export type SetUserDataACType = ReturnType<typeof addUserDataAC>;
 
-export type ActionAuthType =
-  | SetIsRegisteredInACType
-  | SetIsLoggedInACType
-  | SetUserDataACType
-  | SetAppErrorType
-  | SetInitialisedType;
+export type ActionAuthType = SetIsRegisteredInACType | SetIsLoggedInACType | SetUserDataACType | SetAppErrorType | SetInitialisedType;

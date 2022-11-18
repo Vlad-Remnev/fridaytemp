@@ -1,27 +1,25 @@
 @font-face {
-  font-family: "MontserratRegular";
-  src: url("./assets/fonts/Montserrat-Regular.ttf");
+  font-family: 'MontserratRegular';
+  src: url('./assets/fonts/Montserrat-Regular.ttf');
 }
 
 @font-face {
-  font-family: "MontserratMedium";
-  src: url("./assets/fonts/Montserrat-Medium.ttf");
+  font-family: 'MontserratMedium';
+  src: url('./assets/fonts/Montserrat-Medium.ttf');
 }
 
 @font-face {
-  font-family: "MontserratSemiBold";
-  src: url("./assets/fonts/Montserrat-SemiBold.ttf");
+  font-family: 'MontserratSemiBold';
+  src: url('./assets/fonts/Montserrat-SemiBold.ttf');
 }
 
 body {
   margin: 0;
-  font-family: "MontserratRegular", "MontserratMedium", "MontserratSemiBold",
-    sans-serif;
+  font-family: 'MontserratRegular', 'MontserratMedium', 'MontserratSemiBold', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }

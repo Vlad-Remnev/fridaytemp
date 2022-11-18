@@ -1,53 +1,53 @@
 .password {
-position: relative;
+  position: relative;
 }
 
 .common {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .container {
-    min-height: 100vh;
-    padding: 0 135px;
+  min-height: 100vh;
+  padding: 0 135px;
 }
 
 .paper {
-    flex-direction: column;
-    padding: 25px 35px;
-    max-width: 300px;
-    margin: 20px auto;
+  flex-direction: column;
+  padding: 25px 35px;
+  max-width: 300px;
+  margin: 20px auto;
 }
 
 .title {
-    margin: 0;
-    padding-bottom: 20px;
+  margin: 0;
+  padding-bottom: 20px;
 }
 
 .link {
-    color: #000000;
-    text-decoration: none;
-    font-weight: bold;
+  color: #000000;
+  text-decoration: none;
+  font-weight: bold;
 }
 .link2 {
-    color: #366eff;
-    font-weight: bold;
+  color: #366eff;
+  font-weight: bold;
 }
 
 .mrg {
-    margin-top: 20px;
-    margin-left: 150px;
+  margin-top: 20px;
+  margin-left: 150px;
 }
 .mrg2 {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 .mrg3 {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 
 .haveAccount {
-    font-size: 14px;
-    line-height: 24px;
-    color: gray;
+  font-size: 14px;
+  line-height: 24px;
+  color: gray;
 }
