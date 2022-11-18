@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import NewPassword from '../features/Login/NewPassword/NewPassword';
 import PasswordRecovery from '../features/Login/PasswordRecovery/PasswordRecovery';
 import Profile from '../features/Profile/Profile';
