@@ -16,8 +16,8 @@ const SearchButton = () => (
   </Button>
 );
 
-const EditableSpan: FC<IEditableSpan> = ({ title, onChange, checked }) => {
-  const [editMode, setEditMode] = useState<boolean>(false);
+export const EditableSpan: FC<IEditableSpan> = ({ title, onChange, checked }) => {
+  const [editMode, setEditMode] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
 
   const onBlur = () => {
@@ -58,5 +58,3 @@ const EditableSpan: FC<IEditableSpan> = ({ title, onChange, checked }) => {
     </>
   );
 };
-
-export default EditableSpan;

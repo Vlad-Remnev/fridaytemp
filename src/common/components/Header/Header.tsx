@@ -1,15 +1,12 @@
 import React from 'react';
 import s from './Header.module.css';
 import logo from '../../../assets/img/logo.svg';
-import avatar from '../../../assets/img/ava.png';
-import { useSelector } from 'react-redux';
-import { AppRootStateType } from '../../../app/store';
-import { UserDataType } from '../../../app/appApi';
+import { useAppSelector } from '../../../app/store';
 import { Link } from 'react-router-dom';
 
-const Header = () => {
-  const userData = useSelector<AppRootStateType, UserDataType>((state) => state.profile.userData);
-  const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.auth.isLoggedIn);
+export const Header = () => {
+  const { name, avatar } = useAppSelector((state) => state.profile.userData);
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   return (
     <div className={s.container}>
       {isLoggedIn ? (
@@ -18,9 +15,9 @@ const Header = () => {
             <img src={logo} alt="logo" />
           </div>
           <Link to="/" className={s.profileLink}>
-            <div className={s.name}>{userData.name}</div>
+            <div className={s.name}>{name}</div>
             <div>
-              <img src={userData.avatar ? userData.avatar : avatar} className={s.avatar} alt="" />
+              <img src={avatar ? avatar : avatar} className={s.avatar} alt="" />
             </div>
           </Link>
         </>
@@ -41,5 +38,3 @@ const Header = () => {
     </div>
   );
 };
-
-export default Header;

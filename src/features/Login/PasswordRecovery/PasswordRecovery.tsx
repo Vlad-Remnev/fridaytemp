@@ -6,11 +6,11 @@ import { setNewPasswordTC } from '../../Profile/profileReducer';
 import { useDispatch } from 'react-redux';
 import { AppThunkType } from '../../../app/store';
 import { buttonStyles } from '../../../common/themes/themeMaterialUi';
-import PasswordForm from '../../../common/components/PasswordForm/PasswordForm';
 import { setAppErrorAC } from '../../../app/appReducer';
+import { PasswordForm } from '../../../common/components/PasswordForm/PasswordForm';
 
-const PasswordRecovery = () => {
-  const [password, setPassword] = useState<string>('');
+export const PasswordRecovery = () => {
+  const [password, setPassword] = useState('');
   const dispatch = useDispatch<AppThunkType>();
   const { token } = useParams();
   let navigate = useNavigate();
@@ -31,7 +31,9 @@ const PasswordRecovery = () => {
           <FormControl sx={{ m: 1, width: '100%' }} variant="standard">
             <PasswordForm setPassword={setPassword} />
           </FormControl>
-          <div className={s.helperText}>Create new password and we will send you further instructions to email</div>
+          <div className={s.helperText}>
+            Create new password and we will send you further instructions to email
+          </div>
           <Button variant="contained" sx={buttonStyles} onClick={tokenChange}>
             Create new password
           </Button>
@@ -40,5 +42,3 @@ const PasswordRecovery = () => {
     </div>
   );
 };
-
-export default PasswordRecovery;

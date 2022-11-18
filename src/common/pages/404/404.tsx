@@ -1,7 +1,7 @@
 import React from 'react';
 import s from './Error404.module.css';
 
-function Error404() {
+export function Error404() {
   return (
     <div className={s.screen}>
       <div className={s.container}>
@@ -18,5 +18,3 @@ function Error404() {
     </div>
   );
 }
-
-export default Error404;

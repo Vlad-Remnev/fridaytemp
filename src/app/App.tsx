@@ -1,22 +1,22 @@
 import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import NewPassword from '../features/Login/NewPassword/NewPassword';
-import PasswordRecovery from '../features/Login/PasswordRecovery/PasswordRecovery';
-import Profile from '../features/Profile/Profile';
-import SignUp from '../features/Registration/SignUp';
-import Error404 from '../common/pages/404/404';
-import Header from '../common/components/Header/Header';
-import CheckEmail from '../features/Login/CheckEmail/CheckEmail';
-import Login from '../features/Login/SignIn/SignIn';
 import { ErrorSnackbar } from '../common/components/ErrorSnackbar/ErrorSnackbar';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppRootStateType, AppThunkType } from './store';
+import { useDispatch } from 'react-redux';
+import { AppThunkType, useAppSelector } from './store';
 import { isInitializedAppTC } from './appReducer';
 import { CircularProgress } from '@mui/material';
+import { NewPassword } from '../features/Login/NewPassword/NewPassword';
+import { Header } from '../common/components/Header/Header';
+import { CheckEmail } from '../features/Login/CheckEmail/CheckEmail';
+import { Error404 } from '../common/pages/404/404';
+import { SignUp } from '../features/Registration/SignUp';
+import { PasswordRecovery } from '../features/Login/PasswordRecovery/PasswordRecovery';
+import { Profile } from '../features/Profile/Profile';
+import { Login } from '../features/Login/SignIn/SignIn';
 
-function App() {
+export function App() {
   const dispatch = useDispatch<AppThunkType>();
-  const isInitialized = useSelector<AppRootStateType, boolean>((state) => state.app.isInitialized);
+  const isInitialized = useAppSelector((state) => state.app.isInitialized);
   useEffect(() => {
     dispatch(isInitializedAppTC());
   }, []);
@@ -45,4 +45,3 @@ function App() {
     </div>
   );
 }
-export default App;

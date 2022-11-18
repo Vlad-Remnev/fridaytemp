@@ -1,20 +1,21 @@
-import { Dispatch } from 'redux';
 import { authAPI } from './appApi';
-import { AxiosError } from 'axios';
 import { setIsLoggedInAC, SetIsLoggedInACType } from './authReducer';
 import { addUserDataAC, SetUserDataACType } from '../features/Profile/profileReducer';
-import { handleServerAppError } from '../common/utils/error-utils';
+import { Dispatch } from 'redux';
 
 const initialState = {
   error: null as null | string,
   isInitialized: false,
 };
 
-export const appReducer = (state: InitialStateType = initialState, action: ActionAppType) => {
+export const appReducer = (
+  state: InitialStateType = initialState,
+  action: ActionAppType,
+): InitialStateType => {
   switch (action.type) {
-    case 'app/SET-ERROR':
+    case 'app/SET_ERROR':
       return { ...state, error: action.payload.error };
-    case 'app/SET-INITIALIZED':
+    case 'app/SET_INITIALIZED':
       return { ...state, isInitialized: action.payload.isInitialized };
     default:
       return state;
@@ -22,10 +23,12 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
 };
 
 // Actions
-export const setAppErrorAC = (error: null | string) => ({ type: 'app/SET-ERROR', payload: { error } } as const);
+export const setAppErrorAC = (error: null | string) =>
+  ({ type: 'app/SET_ERROR', payload: { error } } as const);
+
 export const setInitialisedAC = (isInitialized: boolean) =>
   ({
-    type: 'app/SET-INITIALIZED',
+    type: 'app/SET_INITIALIZED',
     payload: { isInitialized },
   } as const);
 
@@ -45,14 +48,18 @@ export const isInitializedAppTC = () => async (dispatch: Dispatch<ActionAppType>
       }),
     );
   } catch (e) {
-    handleServerAppError(e as Error | AxiosError, dispatch);
+    // handleServerAppError(e as Error | AxiosError, dispatch);
   } finally {
     dispatch(setInitialisedAC(true));
   }
 };
 
 // type
-export type ActionAppType = SetAppErrorType | SetInitialisedType | SetIsLoggedInACType | SetUserDataACType;
+export type ActionAppType =
+  | SetAppErrorType
+  | SetInitialisedType
+  | SetIsLoggedInACType
+  | SetUserDataACType;
 type InitialStateType = typeof initialState;
 export type SetAppErrorType = ReturnType<typeof setAppErrorAC>;
 export type SetInitialisedType = ReturnType<typeof setInitialisedAC>;

@@ -3,15 +3,21 @@ import { ModelUpdateType } from './authReducer';
 
 export const instance = axios.create({
   // baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/' ,
-  baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:7542/2.0/' : 'https://neko-back.herokuapp.com/2.0/',
-  // baseURL: 'https://neko-back.herokuapp.com/2.0/',
+  // baseURL:
+  //   process.env.NODE_ENV === 'development'
+  //     ? 'http://localhost:7542/2.0/'
+  //     : 'https://neko-back.herokuapp.com/2.0/',
+  baseURL: 'https://neko-back.herokuapp.com/2.0/',
   withCredentials: true,
 });
 
 // api
 export const authAPI = {
   register(data: LoginRegisterDataType) {
-    return instance.post<LoginRegisterDataType, AxiosResponse<ResponseType>>('/auth/register', data);
+    return instance.post<LoginRegisterDataType, AxiosResponse<ResponseType>>(
+      '/auth/register',
+      data,
+    );
   },
   login(data: LoginRegisterDataType) {
     return instance.post<LoginRegisterDataType, AxiosResponse<ResponseType>>(`/auth/login`, data);
@@ -29,7 +35,10 @@ export const authAPI = {
     return instance.delete<AxiosResponse<{ error: string }>>(`/auth/me`, {});
   },
   updateData(data: ModelUpdateType) {
-    return instance.put<ModelUpdateType, AxiosResponse<UpdateChangedUserDataType>>('/auth/me', data);
+    return instance.put<ModelUpdateType, AxiosResponse<UpdateChangedUserDataType>>(
+      '/auth/me',
+      data,
+    );
   },
 };
 

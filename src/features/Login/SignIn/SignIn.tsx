@@ -3,8 +3,8 @@ import { useFormik } from 'formik';
 import s from './SigIn.module.css';
 import { Link, Navigate } from 'react-router-dom';
 import { loginTC } from '../../../app/authReducer';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppRootStateType, AppThunkType } from '../../../app/store';
+import { useDispatch } from 'react-redux';
+import { AppThunkType, useAppSelector } from '../../../app/store';
 
 // MUI imports
 import TextField from '@mui/material/TextField';
@@ -23,10 +23,10 @@ type FormikErrorType = {
   rememberMe?: boolean;
 };
 
-const Login = () => {
+export const Login = () => {
   const [type, setType] = useState('password');
   const dispatch = useDispatch<AppThunkType>();
-  const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.auth.isLoggedIn);
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const handleToggle = () => {
     if (type === 'password') {
       setType('text');
@@ -57,7 +57,6 @@ const Login = () => {
     },
     onSubmit: (values) => {
       dispatch(loginTC(values));
-      formik.resetForm();
     },
   });
   if (isLoggedIn) {
@@ -69,14 +68,43 @@ const Login = () => {
         <h2 className={s.title}>Sign In</h2>
         <form onSubmit={formik.handleSubmit}>
           <FormGroup>
-            <TextField label="Email" autoFocus color="info" variant="standard" sx={{ width: '300px' }} {...formik.getFieldProps('email')} />
-            {formik.touched.email && formik.errors.email ? <div style={{ color: 'red', fontSize: '12px' }}>{formik.errors.email}</div> : null}
+            <TextField
+              label="Email"
+              color="info"
+              variant="standard"
+              sx={{ width: '300px' }}
+              {...formik.getFieldProps('email')}
+            />
+            {formik.touched.email && formik.errors.email && (
+              <div style={{ color: 'red', fontSize: '12px' }}>{formik.errors.email}</div>
+            )}
             <div className={s.password}>
-              <TextField type={type} label="Password" autoFocus color="info" variant="standard" sx={{ width: '300px' }} {...formik.getFieldProps('password')} />
-              {type === 'password' ? <RemoveRedEyeIcon sx={eyeStyles} onClick={handleToggle} /> : <VisibilityOffIcon sx={eyeStyles} onClick={handleToggle} />}
+              <TextField
+                type={type}
+                label="Password"
+                color="info"
+                variant="standard"
+                sx={{ width: '300px' }}
+                {...formik.getFieldProps('password')}
+              />
+              {type === 'password' ? (
+                <RemoveRedEyeIcon sx={eyeStyles} onClick={handleToggle} />
+              ) : (
+                <VisibilityOffIcon sx={eyeStyles} onClick={handleToggle} />
+              )}
             </div>
-            {formik.touched.password && formik.errors.password ? <div style={{ color: 'red', fontSize: '12px' }}>{formik.errors.password}</div> : null}
-            <FormControlLabel label={'Remember me'} control={<Checkbox {...formik.getFieldProps('rememberMe')} />} checked={formik.values.rememberMe} />
+            {formik.touched.password && formik.errors.password && (
+              <div style={{ color: 'red', fontSize: '12px' }}>{formik.errors.password}</div>
+            )}
+            <FormControlLabel
+              label={'Remember me'}
+              control={
+                <Checkbox
+                  checked={formik.values.rememberMe}
+                  {...formik.getFieldProps('rememberMe')}
+                />
+              }
+            />
             <Link to="/newPassword" className={s.link + ' ' + s.mrg}>
               Forgot Password?
             </Link>
@@ -93,5 +121,3 @@ const Login = () => {
     </div>
   );
 };
-
-export default Login;

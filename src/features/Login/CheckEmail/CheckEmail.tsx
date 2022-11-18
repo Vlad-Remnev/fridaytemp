@@ -5,7 +5,7 @@ import checkEmail from '../../../assets/img/emailCheck.svg';
 import { buttonStyles } from '../../../common/themes/themeMaterialUi';
 import { Link } from 'react-router-dom';
 
-const CheckEmail = () => {
+export const CheckEmail = () => {
   return (
     <div className={s.container}>
       <Paper elevation={1} className={s.paper + ' ' + s.common}>
@@ -13,7 +13,9 @@ const CheckEmail = () => {
         <div className={s.logo}>
           <img src={checkEmail} alt="checkEmail" />
         </div>
-        <div className={s.helperText}>We’ve sent an Email with instructions to example@mail.com</div>
+        <div className={s.helperText}>
+          We’ve sent an Email with instructions to example@mail.com
+        </div>
         <Button variant="contained" sx={buttonStyles}>
           <Link to="/login"> Back to login</Link>
         </Button>
@@ -21,5 +23,3 @@ const CheckEmail = () => {
     </div>
   );
 };
-
-export default CheckEmail;

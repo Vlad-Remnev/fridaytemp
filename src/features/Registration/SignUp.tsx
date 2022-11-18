@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import s from './SignUp.module.css';
 import { Link, Navigate } from 'react-router-dom';
 import { useFormik } from 'formik';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppRootStateType, AppThunkType } from '../../app/store';
+import { useDispatch } from 'react-redux';
+import { AppThunkType, useAppSelector } from '../../app/store';
 import { registerTC } from '../../app/authReducer';
 
 // MUI imports
@@ -23,9 +23,9 @@ type FormikErrorType = {
   confirmPassword?: string;
 };
 
-const SignUp = () => {
+export const SignUp = () => {
   const dispatch = useDispatch<AppThunkType>();
-  const isRegistered = useSelector<AppRootStateType, boolean>((state) => state.auth.isRegistered);
+  const isRegistered = useAppSelector((state) => state.auth.isRegistered);
   const [type, setType] = useState('password');
   const handleToggle = () => {
     if (type === 'password') {
@@ -63,7 +63,6 @@ const SignUp = () => {
     },
     onSubmit: (values: LoginRegisterDataType) => {
       dispatch(registerTC(values));
-      formik.resetForm();
     },
   });
 
@@ -82,46 +81,50 @@ const SignUp = () => {
                 label="Email"
                 color="info"
                 variant="standard"
-                helperText=" "
                 sx={{ width: '300px' }}
-                FormHelperTextProps={{
-                  className: s.helperText + ' ' + s.mrg2,
-                }}
                 {...formik.getFieldProps('email')}
               />
-              {formik.touched.email && formik.errors.email && <div style={{ color: 'red' }}>{formik.errors.email}</div>}
+              {formik.touched.email && formik.errors.email && (
+                <div style={{ color: 'red', fontSize: '12px' }}>{formik.errors.email}</div>
+              )}
               <div className={s.password}>
                 <TextField
                   label="Password"
                   type={type}
                   color="info"
                   variant="standard"
-                  helperText=" "
                   sx={{ width: '300px' }}
-                  FormHelperTextProps={{
-                    className: s.helperText + ' ' + s.mrg2,
-                  }}
                   {...formik.getFieldProps('password')}
                 />
-                {type === 'password' ? <RemoveRedEyeIcon sx={eyeStyles} onClick={handleToggle} /> : <VisibilityOffIcon sx={eyeStyles} onClick={handleToggle} />}
+                {type === 'password' ? (
+                  <RemoveRedEyeIcon sx={eyeStyles} onClick={handleToggle} />
+                ) : (
+                  <VisibilityOffIcon sx={eyeStyles} onClick={handleToggle} />
+                )}
               </div>
-              {formik.touched.password && <div style={{ color: 'red' }}>{formik.errors.password}</div>}
+              {formik.touched.password && formik.errors.password && (
+                <div style={{ color: 'red', fontSize: '12px' }}>{formik.errors.password}</div>
+              )}
               <div className={s.password}>
                 <TextField
                   label="Confirm password"
                   type={type}
                   color="info"
                   variant="standard"
-                  helperText=" "
                   sx={{ width: '300px' }}
-                  FormHelperTextProps={{
-                    className: s.helperText + ' ' + s.mrg2,
-                  }}
                   {...formik.getFieldProps('confirmPassword')}
                 />
-                {type === 'password' ? <RemoveRedEyeIcon sx={eyeStyles} onClick={handleToggle} /> : <VisibilityOffIcon sx={eyeStyles} onClick={handleToggle} />}
+                {type === 'password' ? (
+                  <RemoveRedEyeIcon sx={eyeStyles} onClick={handleToggle} />
+                ) : (
+                  <VisibilityOffIcon sx={eyeStyles} onClick={handleToggle} />
+                )}
               </div>
-              {formik.touched.confirmPassword && <div style={{ color: 'red' }}>{formik.errors.confirmPassword}</div>}
+              {formik.touched.confirmPassword && formik.errors.password && (
+                <div style={{ color: 'red', fontSize: '12px' }}>
+                  {formik.errors.confirmPassword}
+                </div>
+              )}
               <Button type={'submit'} variant="contained" sx={buttonStyles}>
                 Sign Up
               </Button>
@@ -136,5 +139,3 @@ const SignUp = () => {
     </div>
   );
 };
-
-export default SignUp;

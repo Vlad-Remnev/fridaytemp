@@ -7,7 +7,7 @@ import { AppThunkType } from '../../../app/store';
 import { forgotTC } from '../../../app/authReducer';
 import { buttonStyles } from '../../../common/themes/themeMaterialUi';
 
-const NewPassword = () => {
+export const NewPassword = () => {
   const [email, setEmail] = useState('');
   const dispatch = useDispatch<AppThunkType>();
   let navigate = useNavigate();
@@ -17,7 +17,13 @@ const NewPassword = () => {
                                 Follow the link, to create new password</a>
                                 </div>`;
   const forgotPassword = () => {
-    dispatch(forgotTC({ email: email.toLowerCase(), from: 'test-front-admin <ai73a@yandex.by>', message: letterForForgot }));
+    dispatch(
+      forgotTC({
+        email: email.toLowerCase(),
+        from: 'test-front-admin <ai73a@yandex.by>',
+        message: letterForForgot,
+      }),
+    );
     navigate('/checkEmail');
   };
 
@@ -50,5 +56,3 @@ const NewPassword = () => {
     </div>
   );
 };
-
-export default NewPassword;

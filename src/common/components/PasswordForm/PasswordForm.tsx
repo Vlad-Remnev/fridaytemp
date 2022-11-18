@@ -9,7 +9,7 @@ type PasswordFormType = {
   setPassword: (password: string) => void;
 };
 
-const PasswordForm: FC<PasswordFormType> = ({ setPassword }) => {
+export const PasswordForm: FC<PasswordFormType> = ({ setPassword }) => {
   const [type, setType] = useState('password');
   const handleToggle = () => {
     if (type === 'password') {
@@ -34,9 +34,11 @@ const PasswordForm: FC<PasswordFormType> = ({ setPassword }) => {
           className: s.helperText + ' ' + s.mrg2,
         }}
       />
-      {type === 'password' ? <RemoveRedEyeIcon sx={eyeStyles} onClick={handleToggle} /> : <VisibilityOffIcon sx={eyeStyles} onClick={handleToggle} />}
+      {type === 'password' ? (
+        <RemoveRedEyeIcon sx={eyeStyles} onClick={handleToggle} />
+      ) : (
+        <VisibilityOffIcon sx={eyeStyles} onClick={handleToggle} />
+      )}
     </>
   );
 };
-
-export default PasswordForm;
