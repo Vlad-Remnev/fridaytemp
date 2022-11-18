@@ -13,7 +13,7 @@ const NewPassword = () => {
   let navigate = useNavigate();
   const letterForForgot = `<div style="background-color: lime; padding: 15px">
                                 password recovery link: 
-                                <a href='http://localhost:3000/#/passwordRecovery/$token$'>
+                                <a href='https://vlad-remnev.github.io/fridaytemp/#/passwordRecovery/$token$'>
                                 Follow the link, to create new password</a>
                                 </div>`;
   const forgotPassword = () => {
