@@ -1,8 +1,13 @@
 import { Dispatch } from 'redux';
 import axios, { AxiosError } from 'axios';
-import { setAppErrorAC } from '../../app/appReducer';
+import {
+  setAppErrorAC,
+  SetAppErrorType,
+  setAppStatusAC,
+  SetAppStatusType,
+} from '../../app/appReducer';
 
-type ActionErrorType = ReturnType<typeof setAppErrorAC>;
+type ActionErrorType = SetAppErrorType | SetAppStatusType;
 
 export const handleServerAppError = (
   err: Error | AxiosError,
@@ -14,4 +19,5 @@ export const handleServerAppError = (
   } else {
     dispatch(setAppErrorAC(`Native error ${err.message}`));
   }
+  dispatch(setAppStatusAC('failed'));
 };

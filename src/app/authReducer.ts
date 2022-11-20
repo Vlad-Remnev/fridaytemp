@@ -1,6 +1,12 @@
 import { authAPI, ForgotDataType, LoginRegisterDataType } from './appApi';
 import { AxiosError } from 'axios';
-import { SetAppErrorType, setInitialisedAC, SetInitialisedType } from './appReducer';
+import {
+  SetAppErrorType,
+  setAppStatusAC,
+  SetAppStatusType,
+  setInitialisedAC,
+  SetInitialisedType,
+} from './appReducer';
 import { addUserDataAC } from '../features/Profile/profileReducer';
 import { handleServerAppError } from '../common/utils/error-utils';
 import { Dispatch } from 'redux';
@@ -32,21 +38,26 @@ export const setIsRegisteredInAC = (value: boolean) =>
   } as const);
 
 export const setIsLoggedInAC = (value: boolean) =>
-  ({ type: 'auth/SET_IS_LOGGED_IN', payload: { value } } as const);
+  ({
+    type: 'auth/SET_IS_LOGGED_IN',
+    payload: { value },
+  } as const);
 
 // Thunks
 export const registerTC =
   (data: LoginRegisterDataType) => async (dispatch: Dispatch<ActionAuthType>) => {
+    dispatch(setAppStatusAC('loading'));
     try {
       await authAPI.register(data);
       dispatch(setIsRegisteredInAC(true));
+      dispatch(setAppStatusAC('succeeded'));
     } catch (e) {
       handleServerAppError(e as Error | AxiosError, dispatch);
     }
   };
-
 export const loginTC =
   (data: LoginRegisterDataType) => async (dispatch: Dispatch<ActionAuthType>) => {
+    dispatch(setAppStatusAC('loading'));
     try {
       let response = await authAPI.login(data);
       dispatch(setIsLoggedInAC(true));
@@ -60,27 +71,30 @@ export const loginTC =
           avatar: response.data.avatar,
         }),
       );
+      dispatch(setAppStatusAC('succeeded'));
     } catch (e) {
       handleServerAppError(e as Error | AxiosError, dispatch);
     } finally {
       dispatch(setInitialisedAC(true));
     }
   };
-
 export const logoutTC = () => async (dispatch: Dispatch<ActionAuthType>) => {
+  dispatch(setAppStatusAC('loading'));
   try {
     await authAPI.logout();
     dispatch(setIsLoggedInAC(false));
+    dispatch(setAppStatusAC('succeeded'));
   } catch (e) {
     handleServerAppError(e as Error | AxiosError, dispatch);
   } finally {
     dispatch(setInitialisedAC(true));
   }
 };
-
 export const forgotTC = (data: ForgotDataType) => async (dispatch: Dispatch<ActionAuthType>) => {
+  dispatch(setAppStatusAC('loading'));
   try {
     await authAPI.forgot(data);
+    dispatch(setAppStatusAC('succeeded'));
   } catch (e) {
     handleServerAppError(e as Error | AxiosError, dispatch);
   }
@@ -103,4 +117,5 @@ export type ActionAuthType =
   | SetIsLoggedInACType
   | SetUserDataACType
   | SetAppErrorType
-  | SetInitialisedType;
+  | SetInitialisedType
+  | SetAppStatusType;
