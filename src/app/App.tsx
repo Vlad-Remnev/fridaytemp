@@ -5,16 +5,15 @@ import { useDispatch } from 'react-redux';
 import { AppThunkType, useAppSelector } from './store';
 import { isInitializedAppTC } from './appReducer';
 import { CircularProgress, LinearProgress } from '@mui/material';
-import { SignUp } from '../features/Registration/SignUp';
-import { Login } from '../features/Login/SignIn/SignIn';
 import { NewPassword } from '../features/Login/NewPassword/NewPassword';
 import { Header } from '../common/components/Header/Header';
-import { CheckEmail } from '../features/Login/CheckEmail/CheckEmail';
 import { Error404 } from '../common/pages/404/404';
-import { SignUp } from '../features/Registration/SignUp';
 import { PasswordRecovery } from '../features/Login/PasswordRecovery/PasswordRecovery';
 import { Profile } from '../features/Profile/Profile';
+import { SignUp } from '../features/Registration/SignUp';
+import { TableTemplate } from '../features/Cards/Table/TableTemplate';
 import { CheckEmail } from '../features/Login/CheckEmail/CheckEmail';
+import { Login } from '../features/Login/SignIn/SignIn';
 
 export enum ROUTS {
   DEFAULT = '/',
@@ -23,10 +22,9 @@ export enum ROUTS {
   PASSWORD_RECOVERY = '/passwordRecovery/:token',
   REGISTRATION = '/registration',
   CHECK_EMAIL = '/checkEmail',
+  TABLE_TEMPLATE = '/table',
   NOT_FOUND = '*',
 }
-import { Login } from '../features/Login/SignIn/SignIn';
-import {TableTemplate} from "../features/Cards/Table/TableTemplate";
 
 export function App() {
   const dispatch = useDispatch<AppThunkType>();
@@ -58,7 +56,7 @@ export function App() {
           <Route path={ROUTS.PASSWORD_RECOVERY} element={<PasswordRecovery />} />
           <Route path={ROUTS.REGISTRATION} element={<SignUp />} />
           <Route path={ROUTS.CHECK_EMAIL} element={<CheckEmail />} />
-          <Route path="/table" element={<TableTemplate />} />
+          <Route path={ROUTS.TABLE_TEMPLATE} element={<TableTemplate />} />
           <Route path={ROUTS.NOT_FOUND} element={<Error404 />} />
         </Routes>
       </div>

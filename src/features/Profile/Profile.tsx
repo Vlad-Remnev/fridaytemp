@@ -70,7 +70,6 @@ export const Profile = () => {
           <EditableSpan
             title={name}
             onChange={(title: string) => dispatch(updateUserTC({ name: title }))}
-            disabled={status === 'loading'}
           />
         </div>
         <div className={s.mrg}>{email}</div>
