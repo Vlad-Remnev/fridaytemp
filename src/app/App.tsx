@@ -13,6 +13,7 @@ import { SignUp } from '../features/Registration/SignUp';
 import { PasswordRecovery } from '../features/Login/PasswordRecovery/PasswordRecovery';
 import { Profile } from '../features/Profile/Profile';
 import { Login } from '../features/Login/SignIn/SignIn';
+import {TableTemplate} from "../features/Cards/Table/TableTemplate";
 
 export function App() {
   const dispatch = useDispatch<AppThunkType>();
@@ -39,6 +40,7 @@ export function App() {
           <Route path="/passwordRecovery/:token" element={<PasswordRecovery />} />
           <Route path="/registration" element={<SignUp />} />
           <Route path="/checkEmail" element={<CheckEmail />} />
+          <Route path="/table" element={<TableTemplate />} />
           <Route path="*" element={<Error404 />} />
         </Routes>
       </div>

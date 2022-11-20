@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AppThunkType } from '../../../app/store';
 import { forgotTC } from '../../../app/authReducer';
-import { buttonStyles } from '../../../common/themes/themeMaterialUi';
+import {buttonStyles} from "../../../common/themes/themeMaterialUi";
 
 export const NewPassword = () => {
   const [email, setEmail] = useState('');
