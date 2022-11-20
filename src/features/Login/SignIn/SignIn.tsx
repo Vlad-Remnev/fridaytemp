@@ -20,8 +20,11 @@ import { buttonStyles, eyeStyles } from '../../../common/themes/themeMaterialUi'
 
 export const Login = () => {
   const [type, setType] = useState('password');
+
   const dispatch = useDispatch<AppThunkType>();
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  const status = useAppSelector((state) => state.app.status);
+
   const handleToggle = () => {
     if (type === 'password') {
       setType('text');
@@ -93,7 +96,12 @@ export const Login = () => {
             <Link to="/newPassword" className={s.link + ' ' + s.mrg}>
               Forgot Password?
             </Link>
-            <Button type="submit" variant="contained" sx={buttonStyles}>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={buttonStyles}
+              disabled={status === 'loading'}
+            >
               Sign In
             </Button>
           </FormGroup>

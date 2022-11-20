@@ -8,6 +8,7 @@ interface IEditableSpan {
   title: string;
   checked?: boolean;
   onChange?: (newTitle: string) => void;
+  disabled?: boolean;
 }
 
 const SearchButton = () => (
@@ -16,7 +17,7 @@ const SearchButton = () => (
   </Button>
 );
 
-export const EditableSpan: FC<IEditableSpan> = ({ title, onChange, checked }) => {
+export const EditableSpan: FC<IEditableSpan> = ({ title, onChange, checked, disabled }) => {
   const [editMode, setEditMode] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
 
@@ -47,6 +48,7 @@ export const EditableSpan: FC<IEditableSpan> = ({ title, onChange, checked }) =>
         color="info"
         variant="standard"
         InputProps={{ endAdornment: <SearchButton /> }}
+        disabled={disabled}
       />
     </>
   ) : (

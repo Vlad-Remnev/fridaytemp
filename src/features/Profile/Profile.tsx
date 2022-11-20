@@ -26,6 +26,7 @@ export const Profile = () => {
   const dispatch = useDispatch<AppThunkType>();
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const { avatar, name, email } = useAppSelector((state) => state.profile.userData);
+  const status = useAppSelector((state) => state.app.status);
 
   // нужно добавить проверку на размер аватара
   const minFileSize = 400000;
@@ -69,10 +70,15 @@ export const Profile = () => {
           <EditableSpan
             title={name}
             onChange={(title: string) => dispatch(updateUserTC({ name: title }))}
+            disabled={status === 'loading'}
           />
         </div>
         <div className={s.mrg}>{email}</div>
-        <button className={s.btn + ' ' + s.mrg2} onClick={() => dispatch(logoutTC())}>
+        <button
+          className={s.btn + ' ' + s.mrg2}
+          onClick={() => dispatch(logoutTC())}
+          disabled={status === 'loading'}
+        >
           <LogoutIcon /> <span className={s.logOut}>Log out</span>
         </button>
       </Paper>

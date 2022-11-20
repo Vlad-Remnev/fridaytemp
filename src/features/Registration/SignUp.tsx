@@ -19,9 +19,13 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import * as Yup from 'yup';
 
 export const SignUp = () => {
+  const [type, setType] = useState('password');
+  const [typeConfirm, setTypeConfirm] = useState('password');
+
   const dispatch = useDispatch<AppThunkType>();
   const isRegistered = useAppSelector((state) => state.auth.isRegistered);
-  const [type, setType] = useState('password');
+  const status = useAppSelector((state) => state.app.status);
+
   const handleToggle = () => {
     if (type === 'password') {
       setType('text');
@@ -29,6 +33,14 @@ export const SignUp = () => {
       setType('password');
     }
   };
+  const handleToggle2 = () => {
+    if (typeConfirm === 'password') {
+      setTypeConfirm('text');
+    } else {
+      setTypeConfirm('password');
+    }
+  };
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -89,16 +101,16 @@ export const SignUp = () => {
               <div className={s.password}>
                 <TextField
                   label="Confirm password"
-                  type={type}
+                  type={typeConfirm}
                   color="info"
                   variant="standard"
                   sx={{ width: '300px' }}
                   {...formik.getFieldProps('confirmPassword')}
                 />
-                {type === 'password' ? (
-                  <RemoveRedEyeIcon sx={eyeStyles} onClick={handleToggle} />
+                {typeConfirm === 'password' ? (
+                  <RemoveRedEyeIcon sx={eyeStyles} onClick={handleToggle2} />
                 ) : (
-                  <VisibilityOffIcon sx={eyeStyles} onClick={handleToggle} />
+                  <VisibilityOffIcon sx={eyeStyles} onClick={handleToggle2} />
                 )}
               </div>
               {formik.touched.confirmPassword && formik.errors.confirmPassword && (
@@ -106,7 +118,12 @@ export const SignUp = () => {
                   {formik.errors.confirmPassword}
                 </div>
               )}
-              <Button type={'submit'} variant="contained" sx={buttonStyles}>
+              <Button
+                type={'submit'}
+                variant="contained"
+                sx={buttonStyles}
+                disabled={status === 'loading'}
+              >
                 Sign Up
               </Button>
             </FormGroup>
