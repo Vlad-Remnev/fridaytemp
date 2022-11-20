@@ -5,6 +5,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { loginTC } from '../../../app/authReducer';
 import { useDispatch } from 'react-redux';
 import { AppThunkType, useAppSelector } from '../../../app/store';
+import * as Yup from 'yup';
 
 // MUI imports
 import TextField from '@mui/material/TextField';
@@ -16,12 +17,6 @@ import Paper from '@mui/material/Paper';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { buttonStyles, eyeStyles } from '../../../common/themes/themeMaterialUi';
-
-type FormikErrorType = {
-  email?: string;
-  password?: string;
-  rememberMe?: boolean;
-};
 
 export const Login = () => {
   const [type, setType] = useState('password');
@@ -41,20 +36,10 @@ export const Login = () => {
       password: '',
       rememberMe: false,
     },
-    validate: (values) => {
-      const errors: FormikErrorType = {};
-      if (!values.email) {
-        errors.email = 'Required';
-      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        errors.email = 'Invalid email address';
-      }
-      if (!values.password) {
-        errors.password = 'Required';
-      } else if (values.password.length < 6) {
-        errors.password = 'Should be more symbols';
-      }
-      return errors;
-    },
+    validationSchema: Yup.object({
+      email: Yup.string().email('Invalid email address').required('Required'),
+      password: Yup.string().required('Required'),
+    }),
     onSubmit: (values) => {
       dispatch(loginTC(values));
     },

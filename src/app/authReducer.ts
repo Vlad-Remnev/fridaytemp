@@ -78,13 +78,15 @@ export const logoutTC = () => async (dispatch: Dispatch<ActionAuthType>) => {
   }
 };
 
-export const forgotTC = (data: ForgotDataType) => async (dispatch: Dispatch<ActionAuthType>) => {
-  try {
-    await authAPI.forgot(data);
-  } catch (e) {
-    handleServerAppError(e as Error | AxiosError, dispatch);
-  }
-};
+export const forgotTC =
+  (data: ForgotDataType, navigate: any) => async (dispatch: Dispatch<ActionAuthType>) => {
+    try {
+      await authAPI.forgot(data);
+      navigate('/checkEmail');
+    } catch (e) {
+      handleServerAppError(e as Error | AxiosError, dispatch);
+    }
+  };
 
 // Types
 type InitialStateType = typeof initialState;

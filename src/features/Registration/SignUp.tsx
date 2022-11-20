@@ -16,12 +16,7 @@ import { buttonStyles, eyeStyles } from '../../common/themes/themeMaterialUi';
 import { LoginRegisterDataType } from '../../app/appApi';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-
-type FormikErrorType = {
-  email?: string;
-  password?: string;
-  confirmPassword?: string;
-};
+import * as Yup from 'yup';
 
 export const SignUp = () => {
   const dispatch = useDispatch<AppThunkType>();
@@ -40,27 +35,13 @@ export const SignUp = () => {
       password: '',
       confirmPassword: '',
     },
-    validate: (values: LoginRegisterDataType) => {
-      const errors: FormikErrorType = {};
-
-      if (!values.email) {
-        errors.email = 'Required';
-      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        errors.email = 'Invalid email address';
-      }
-
-      if (!values.password) {
-        errors.password = 'Required';
-      } else if (values.password.length <= 7) {
-        errors.password = 'Password must be more than 7 characters';
-      }
-
-      if (values.confirmPassword !== values.password) {
-        errors.confirmPassword = 'Password not matched';
-      }
-
-      return errors;
-    },
+    validationSchema: Yup.object({
+      email: Yup.string().email('Invalid email address').required('Required'),
+      password: Yup.string().min(7, 'Must be at least 7 characters').required('Required'),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref('password'), null], 'Passwords must match')
+        .required(),
+    }),
     onSubmit: (values: LoginRegisterDataType) => {
       dispatch(registerTC(values));
     },
@@ -120,7 +101,7 @@ export const SignUp = () => {
                   <VisibilityOffIcon sx={eyeStyles} onClick={handleToggle} />
                 )}
               </div>
-              {formik.touched.confirmPassword && formik.errors.password && (
+              {formik.touched.confirmPassword && formik.errors.confirmPassword && (
                 <div style={{ color: 'red', fontSize: '12px' }}>
                   {formik.errors.confirmPassword}
                 </div>
