@@ -1,42 +1,79 @@
 import React, { useState } from 'react';
 import s from './PasswordRecovery.module.css';
-import { Button, FormControl, Paper } from '@mui/material';
+import { Button, Paper } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { setNewPasswordTC } from '../../Profile/profileReducer';
 import { useDispatch } from 'react-redux';
 import { AppThunkType } from '../../../app/store';
-import { buttonStyles } from '../../../common/themes/themeMaterialUi';
-import { setAppErrorAC } from '../../../app/appReducer';
-import { PasswordForm } from '../../../common/components/PasswordForm/PasswordForm';
+import { buttonStyles, eyeStyles } from '../../../common/themes/themeMaterialUi';
+import FormGroup from '@mui/material/FormGroup';
+import TextField from '@mui/material/TextField';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 export const PasswordRecovery = () => {
-  const [password, setPassword] = useState('');
+  const [type, setType] = useState('password');
   const dispatch = useDispatch<AppThunkType>();
   const { token } = useParams();
   let navigate = useNavigate();
-
-  const tokenChange = () => {
-    if (password.length > 7 && token) {
-      dispatch(setNewPasswordTC({ password, resetPasswordToken: token }));
-      navigate('/login');
+  const handleToggle = () => {
+    if (type === 'password') {
+      setType('text');
     } else {
-      dispatch(setAppErrorAC('Password is too short'));
+      setType('password');
     }
   };
+
+  const formik = useFormik({
+    initialValues: {
+      password: '',
+    },
+    validationSchema: Yup.object({
+      password: Yup.string().min(7, 'Must be at least 7 characters').required('Required'),
+    }),
+    onSubmit: (values) => {
+      if (token) {
+        dispatch(
+          setNewPasswordTC({ password: values.password, resetPasswordToken: token }, navigate),
+        );
+      }
+    },
+  });
   return (
     <div>
       <div className={s.container}>
         <Paper elevation={1} className={s.paper + ' ' + s.common}>
           <h2 className={s.title}>Create new password</h2>
-          <FormControl sx={{ m: 1, width: '100%' }} variant="standard">
-            <PasswordForm setPassword={setPassword} />
-          </FormControl>
-          <div className={s.helperText}>
-            Create new password and we will send you further instructions to email
-          </div>
-          <Button variant="contained" sx={buttonStyles} onClick={tokenChange}>
-            Create new password
-          </Button>
+          <form onSubmit={formik.handleSubmit}>
+            <FormGroup>
+              <div className={s.password}>
+                <TextField
+                  type={type}
+                  label="Password"
+                  color="info"
+                  variant="standard"
+                  sx={{ width: '300px' }}
+                  {...formik.getFieldProps('password')}
+                />
+                {type === 'password' ? (
+                  <RemoveRedEyeIcon sx={eyeStyles} onClick={handleToggle} />
+                ) : (
+                  <VisibilityOffIcon sx={eyeStyles} onClick={handleToggle} />
+                )}
+              </div>
+              {formik.touched.password && formik.errors.password && (
+                <div style={{ color: 'red', fontSize: '12px' }}>{formik.errors.password}</div>
+              )}
+              <div className={s.helperText}>
+                Create new password and we will send you further instructions to email
+              </div>
+              <Button type="submit" variant="contained" sx={buttonStyles}>
+                Create new password
+              </Button>
+            </FormGroup>
+          </form>
         </Paper>
       </div>
     </div>

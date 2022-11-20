@@ -63,9 +63,10 @@ export const updateUserTC =
   };
 
 export const setNewPasswordTC =
-  (data: NewPasswordData) => async (dispatch: Dispatch<ActionProfileType>) => {
+  (data: NewPasswordData, navigate: any) => async (dispatch: Dispatch<ActionProfileType>) => {
     try {
       await authAPI.setNewPassword(data);
+      navigate('/login');
     } catch (e) {
       handleServerAppError(e as Error | AxiosError, dispatch);
     }
