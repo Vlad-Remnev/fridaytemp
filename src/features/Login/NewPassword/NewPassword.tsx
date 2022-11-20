@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Paper, TextField } from '@mui/material';
 import s from './NewPassword.module.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -11,7 +11,6 @@ import * as Yup from 'yup';
 import FormGroup from '@mui/material/FormGroup';
 
 export const NewPassword = () => {
-  const [email, setEmail] = useState('');
   const dispatch = useDispatch<AppThunkType>();
   let navigate = useNavigate();
   const letterForForgot = `<div style="background-color: lime; padding: 15px">
