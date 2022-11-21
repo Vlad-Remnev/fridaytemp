@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import s from './Cards.module.css';
 import { InputAdornment, Modal, Rating, TablePagination, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -15,6 +15,9 @@ import { TablePaginationActions } from '../TablePagination/TablePagination';
 import TableContainer from '@mui/material/TableContainer';
 import { modalStyle } from '../../../common/themes/themeMaterialUi';
 import Box from '@mui/material/Box';
+import { setCardsTС } from './cardsReducer';
+import { useDispatch } from 'react-redux';
+import { AppThunkType, useAppSelector } from '../../../app/store';
 
 type DataType = {
   id: number;
@@ -26,6 +29,11 @@ type DataType = {
 };
 
 const Cards = () => {
+  const dispatch = useDispatch<AppThunkType>();
+  // const cards = useAppSelector((state) => state.cards['635761e499daed333072f373'].cards);
+  useEffect(() => {
+    dispatch(setCardsTС('635761e499daed333072f373'));
+  }, []);
   const initialState = [
     {
       id: 1,
@@ -34,78 +42,6 @@ const Cards = () => {
       lastUpdated: '18.03.2021',
       grade: 5,
       userId: 'friend',
-    },
-    {
-      id: 2,
-      question: 'How about now?',
-      answer: 'How about later?',
-      lastUpdated: '18.03.2021',
-      grade: 4.5,
-      userId: 'main',
-    },
-    {
-      id: 3,
-      question: 'How "This" works in JavaScript?',
-      answer: 'How "This" works in JavaScript?',
-      lastUpdated: '20.03.2021',
-      grade: 3.8,
-      userId: 'friend',
-    },
-    {
-      id: 4,
-      question: 'How "This" works in React?',
-      answer: 'How "This" works in JavaScript?',
-      lastUpdated: '23.03.2021',
-      grade: 2,
-      userId: 'main',
-    },
-    {
-      id: 5,
-      question: 'How "This" works in JavaScript?',
-      answer: 'How "This" works in JavaScript?',
-      lastUpdated: '28.03.2021',
-      grade: 1,
-      userId: 'friend',
-    },
-    {
-      id: 6,
-      question: 'How "This" works in JavaScript?',
-      answer: 'How "This" works in JavaScript?',
-      lastUpdated: '28.03.2021',
-      grade: 3.4,
-      userId: 'main',
-    },
-    {
-      id: 7,
-      question: 'How "This" works in React?',
-      answer: 'How "This" works in JavaScript?',
-      lastUpdated: '30.03.2021',
-      grade: 2.5,
-      userId: 'friend',
-    },
-    {
-      id: 8,
-      question: 'How "This" works in JavaScript?',
-      answer: 'How "This" works in JavaScript?',
-      lastUpdated: '30.03.2021',
-      grade: 1.8,
-      userId: 'main',
-    },
-    {
-      id: 9,
-      question: 'How "This" works in JavaScript?',
-      answer: 'How "This" works in JavaScript?',
-      lastUpdated: '31.03.2021',
-      grade: 1.9,
-      userId: 'friend',
-    },
-    {
-      id: 10,
-      question: 'How "This" works in React?',
-      answer: 'How "This" works in JavaScript?',
-      lastUpdated: '31.03.2021',
-      grade: 2.1,
-      userId: 'main',
     },
   ];
 

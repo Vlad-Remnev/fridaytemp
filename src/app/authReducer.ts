@@ -93,9 +93,9 @@ export const logoutTC = () => async (dispatch: Dispatch<ActionAuthType>) => {
 export const forgotTC =
   (data: ForgotDataType, navigate: any) => async (dispatch: Dispatch<ActionAuthType>) => {
     dispatch(setAppStatusAC('loading'));
-  try {
+    try {
       await authAPI.forgot(data);
-    dispatch(setAppStatusAC('succeeded'));
+      dispatch(setAppStatusAC('succeeded'));
       navigate('/checkEmail');
     } catch (e) {
       handleServerAppError(e as Error | AxiosError, dispatch);
