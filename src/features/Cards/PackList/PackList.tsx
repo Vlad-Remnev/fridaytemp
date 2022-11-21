@@ -1,5 +1,5 @@
 import React, {ChangeEvent, MouseEvent, useCallback, useState} from 'react';
-import s from './TableTemplate.module.css'
+import s from './PackList.module.css'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -24,7 +24,7 @@ type DataType = {
     userId: string
 }
 
-export const TableTemplate = React.memo(() => {
+export const PackList = React.memo(() => {
 
     const initialState = [
         {name: 'Pack Name', cards: 4, lastUpdated: '18.03.2021', createdBy: 'Stas', userId: 'friend'},
@@ -47,7 +47,6 @@ export const TableTemplate = React.memo(() => {
     const [value, setValue] = useState<number[]>([cards[0], cards[cards.length - 1]]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-
 
 
     const handleChange = (event: Event, newValue: number | number[]) => {
@@ -138,7 +137,11 @@ export const TableTemplate = React.memo(() => {
     }
 
     return (
-        <div>
+        <div className={s.wrapper}>
+            <div className={s.wrapper__header}>
+                <h2 className={s.wrapper__title}>Packs list</h2>
+                <button className={s.wrapper__btn}>Add new pack</button>
+            </div>
             <div className={s.header}>
                 <div className={s.search}>
                     <div className={s.title}>Search</div>
@@ -217,41 +220,42 @@ export const TableTemplate = React.memo(() => {
                                 : rows
                         ).map((row, index) => (
                             <TableRow
-                            //исправить ключ, он гавно
-                            key={index}
-                            sx={{'&:last-child td, &:last-child th': {border: 0}}}>
-                            <TableCell component="th" scope="row" align='center'>
-                                {row.name}
-                            </TableCell>
-                            <TableCell align='center'>{row.cards}</TableCell>
-                            <TableCell align='center'>{row.lastUpdated}</TableCell>
-                            <TableCell align='center'>{row.createdBy}</TableCell>
-                            {row.userId === 'main'
-                                ? <TableCell align='center'>
-                                    <SchoolIcon sx={{marginRight: '20px'}}/>
-                                    <BorderColorIcon sx={{marginRight: '20px'}}/>
-                                    <DeleteIcon/>
+                                //исправить ключ, он гавно
+                                key={index}
+                                sx={{'&:last-child td, &:last-child th': {border: 0}}}>
+                                <TableCell component="th" scope="row" align='center'>
+                                    {row.name}
                                 </TableCell>
-                                : <TableCell align='center'>
-                                    <SchoolIcon/>
-                                </TableCell>
-                            }
-                                </TableRow>
-                            ))}
+                                <TableCell align='center'>{row.cards}</TableCell>
+                                <TableCell align='center'>{row.lastUpdated}</TableCell>
+                                <TableCell align='center'>{row.createdBy}</TableCell>
+                                {row.userId === 'main'
+                                    ? <TableCell align='center'>
+                                        <SchoolIcon sx={{marginRight: '20px'}}/>
+                                        <BorderColorIcon sx={{marginRight: '20px'}}/>
+                                        <DeleteIcon/>
+                                    </TableCell>
+                                    : <TableCell align='center'>
+                                        <SchoolIcon/>
+                                    </TableCell>
+                                }
+                            </TableRow>
+                        ))}
                         {emptyRows > 0 && (
-                            <TableRow style={{ height: 53 * emptyRows }}>
-                                <TableCell colSpan={6} />
+                            <TableRow style={{height: 53 * emptyRows}}>
+                                <TableCell colSpan={6}/>
                             </TableRow>
                         )}
                     </TableBody>
                     <TableFooter sx={{borderTop: '1px solid lightgrey'}}>
                         <TableRow>
                             <TablePagination
-                                rowsPerPageOptions={[5, 10, { label: 'All', value: -1 }]}
+                                rowsPerPageOptions={[5, 10, {label: 'All', value: -1}]}
                                 align='center'
-                                colSpan={3}
+                                colSpan={5}
                                 count={rows.length}
                                 rowsPerPage={rowsPerPage}
+                                labelRowsPerPage={"Packs per page"}
                                 page={page}
                                 SelectProps={{
                                     inputProps: {
