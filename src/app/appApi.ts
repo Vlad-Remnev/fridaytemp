@@ -12,6 +12,11 @@ export const instance = axios.create({
 });
 
 // api
+export const packListAPI = {
+  getPack() {
+    return instance.get('/cards/pack');
+  },
+};
 export const authAPI = {
   register(data: LoginRegisterDataType) {
     return instance.post<LoginRegisterDataType, AxiosResponse<ResponseType>>(
