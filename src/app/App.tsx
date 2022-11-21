@@ -13,8 +13,8 @@ import { Profile } from '../features/Profile/Profile';
 import { SignUp } from '../features/Registration/SignUp';
 import { CheckEmail } from '../features/Login/CheckEmail/CheckEmail';
 import { Login } from '../features/Login/SignIn/SignIn';
-import {PackList} from "../features/Cards/PackList/PackList";
-import Pack from "../features/Cards/Pack/Pack";
+import Cards from '../features/PackList/Cards/Cards';
+import { PackList } from '../features/PackList/PackList';
 
 export enum ROUTS {
   DEFAULT = '/',
@@ -23,11 +23,10 @@ export enum ROUTS {
   PASSWORD_RECOVERY = '/passwordRecovery/:token',
   REGISTRATION = '/registration',
   CHECK_EMAIL = '/checkEmail',
-  TABLE_TEMPLATE = '/table',
-  PACK = '/pack',
+  PACK_LIST = '/packList',
+  CARDS = '/cards',
   NOT_FOUND = '*',
 }
-
 
 export function App() {
   const dispatch = useDispatch<AppThunkType>();
@@ -59,9 +58,9 @@ export function App() {
           <Route path={ROUTS.PASSWORD_RECOVERY} element={<PasswordRecovery />} />
           <Route path={ROUTS.REGISTRATION} element={<SignUp />} />
           <Route path={ROUTS.CHECK_EMAIL} element={<CheckEmail />} />
-          <Route path={ROUTS.TABLE_TEMPLATE} element={<PackList />} />
+          <Route path={ROUTS.PACK_LIST} element={<PackList />} />
           <Route path={ROUTS.NOT_FOUND} element={<Error404 />} />
-          <Route path={ROUTS.PACK} element={<Pack />} />
+          <Route path={ROUTS.CARDS} element={<Cards />} />
         </Routes>
       </div>
     </div>
@@ -79,4 +78,3 @@ export function App() {
 // 9. export прописываем перед каждой компонентой, по дефолту экспорта избегать
 // 10. Используем при доставании параметров из стейта useAppSelector ( я его достал в store, глянете)
 // 11. Если в компоненте требуется какая-то переменная из стейта, то достаём только ее, а не весь объект в котором она лежит (пример в Profile)
-// 12.
