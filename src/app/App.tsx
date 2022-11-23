@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { ErrorSnackbar } from "../common/components/ErrorSnackbar/ErrorSnackbar";
 import { useDispatch } from "react-redux";
-import { AppThunkType, useAppSelector } from "./store";
+import { AppDispatchType, useAppSelector } from "./store";
 import { isInitializedAppTC } from "./appReducer";
 import { CircularProgress, LinearProgress } from "@mui/material";
 import { NewPassword } from "../features/Login/NewPassword/NewPassword";
@@ -29,7 +29,7 @@ export enum ROUTS {
 }
 
 export function App() {
-  const dispatch = useDispatch<AppThunkType>();
+  const dispatch = useDispatch<AppDispatchType>();
   const isInitialized = useAppSelector((state) => state.app.isInitialized);
   const status = useAppSelector((state) => state.app.status);
 

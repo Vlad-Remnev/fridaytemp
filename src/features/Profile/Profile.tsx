@@ -2,7 +2,7 @@ import React, { ChangeEvent } from 'react';
 import s from './Profile.module.css';
 import { Navigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { AppThunkType, useAppSelector } from '../../app/store';
+import { AppDispatchType, useAppSelector } from '../../app/store';
 import { logoutTC } from '../../app/authReducer';
 import { updateUserTC } from './profileReducer';
 import { setAppErrorAC } from '../../app/appReducer';
@@ -23,7 +23,7 @@ const convertFileToBase64 = (file: File, callback: (value: string) => void): voi
 };
 
 export const Profile = () => {
-  const dispatch = useDispatch<AppThunkType>();
+  const dispatch = useDispatch<AppDispatchType>();
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const { avatar, name, email } = useAppSelector((state) => state.profile.userData);
   const status = useAppSelector((state) => state.app.status);

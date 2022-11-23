@@ -16,6 +16,18 @@ export const packListAPI = {
   getPack(params: getPacksModelType) {
     return instance.get(`/cards/pack`, { params });
   },
+
+  createPack(cardsPack: cardsPackType) {
+    return instance.post<{newCardsPack: PackType}>(`/cards/pack`, { cardsPack });
+  },
+
+  deletePack(packId: string) {
+    return instance.delete(`/cards/pack/?id=${packId}`)
+  },
+
+  updatePack(data: UpdateCardsPackType) {
+    return instance.put<{updatedCardsPack: PackType}>(`/cards/pack`, {cardsPack: data})
+  }
 };
 export const authAPI = {
   register(data: LoginRegisterDataType) {
@@ -68,6 +80,11 @@ export type PackType = {
   more_id: string;
   __v: number;
 };
+
+export type UpdateCardsPackType = {
+  _id: string;
+} & Partial<Omit<PackType, '_id'>>
+
 export type ResponsePacksType = {
   cardPacks: PackType[];
   page: number;
@@ -101,6 +118,20 @@ export type InitStateType = {
 };
 
 export type SortPacksType = "0updated" | "1updated";
+
+export type cardsPackType = {
+  cardsPack: {
+    name?: string;
+    deckCover?: string;
+    private?: boolean;
+  }
+};
+/*export type updateDataType = {
+  cardsPack: {
+    _id: string
+    name?: string
+  }
+}*/
 
 export type UserDataType = {
   _id: string;

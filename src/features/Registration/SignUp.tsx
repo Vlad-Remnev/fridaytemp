@@ -3,7 +3,7 @@ import s from './SignUp.module.css';
 import { Link, Navigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
-import { AppThunkType, useAppSelector } from '../../app/store';
+import { AppDispatchType, useAppSelector } from '../../app/store';
 import { registerTC } from '../../app/authReducer';
 
 // MUI imports
@@ -22,7 +22,7 @@ export const SignUp = () => {
   const [type, setType] = useState('password');
   const [typeConfirm, setTypeConfirm] = useState('password');
 
-  const dispatch = useDispatch<AppThunkType>();
+  const dispatch = useDispatch<AppDispatchType>();
   const isRegistered = useAppSelector((state) => state.auth.isRegistered);
   const status = useAppSelector((state) => state.app.status);
 

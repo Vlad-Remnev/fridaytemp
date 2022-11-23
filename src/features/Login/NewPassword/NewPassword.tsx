@@ -3,7 +3,7 @@ import { Button, Paper, TextField } from '@mui/material';
 import s from './NewPassword.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { AppThunkType } from '../../../app/store';
+import { AppDispatchType } from '../../../app/store';
 import { forgotTC } from '../../../app/authReducer';
 import { buttonStyles } from '../../../common/themes/themeMaterialUi';
 import { useFormik } from 'formik';
@@ -11,7 +11,7 @@ import * as Yup from 'yup';
 import FormGroup from '@mui/material/FormGroup';
 
 export const NewPassword = () => {
-  const dispatch = useDispatch<AppThunkType>();
+  const dispatch = useDispatch<AppDispatchType>();
   let navigate = useNavigate();
   const letterForForgot = `<div style="background-color: lime; padding: 15px">
                                 password recovery link: 

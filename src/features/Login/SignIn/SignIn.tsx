@@ -4,7 +4,7 @@ import s from './SigIn.module.css';
 import { Link, Navigate } from 'react-router-dom';
 import { loginTC } from '../../../app/authReducer';
 import { useDispatch } from 'react-redux';
-import { AppThunkType, useAppSelector } from '../../../app/store';
+import { AppDispatchType, useAppSelector } from '../../../app/store';
 import * as Yup from 'yup';
 
 // MUI imports
@@ -21,7 +21,7 @@ import { buttonStyles, eyeStyles } from '../../../common/themes/themeMaterialUi'
 export const Login = () => {
   const [type, setType] = useState('password');
 
-  const dispatch = useDispatch<AppThunkType>();
+  const dispatch = useDispatch<AppDispatchType>();
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const status = useAppSelector((state) => state.app.status);
 

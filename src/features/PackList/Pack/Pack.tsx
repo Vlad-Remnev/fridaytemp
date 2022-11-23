@@ -4,8 +4,11 @@ import TableCell from "@mui/material/TableCell";
 import SchoolIcon from "@mui/icons-material/School";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { UpdateCardsPackType } from '../../../app/appApi';
+
 
 type PackPropsType = {
+  packId: string
   userId: string;
   createdUserName: string;
   packName: string;
@@ -13,9 +16,13 @@ type PackPropsType = {
   lastUpdated: string;
   mainUserId: string;
   emptyRows: number;
+  removePack: (packId: string) => void
+  updatePack: (updateData:UpdateCardsPackType) => void
+
 };
 
 export const Pack: FC<PackPropsType> = ({
+  packId,
   userId,
   createdUserName,
   packName,
@@ -23,7 +30,17 @@ export const Pack: FC<PackPropsType> = ({
   lastUpdated,
   mainUserId,
   emptyRows,
+  removePack,
+  updatePack
+
 }) => {
+  const removePackHandler = () => {
+    removePack(packId)
+  }
+  const updatePackHandler = () => {
+    updatePack({_id: packId, name: 'New Update Name'})
+  }
+
   return (
     <>
       <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
@@ -36,8 +53,8 @@ export const Pack: FC<PackPropsType> = ({
         {userId === mainUserId ? (
           <TableCell align="center">
             <SchoolIcon sx={{ marginRight: "20px" }} />
-            <BorderColorIcon sx={{ marginRight: "20px" }} />
-            <DeleteIcon />
+            <BorderColorIcon onClick={updatePackHandler} sx={{ marginRight: "20px" }} />
+            <DeleteIcon onClick={removePackHandler} />
           </TableCell>
         ) : (
           <TableCell align="center">

@@ -4,7 +4,7 @@ import { Button, Paper } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { setNewPasswordTC } from '../../Profile/profileReducer';
 import { useDispatch } from 'react-redux';
-import { AppThunkType } from '../../../app/store';
+import { AppDispatchType } from '../../../app/store';
 import { buttonStyles, eyeStyles } from '../../../common/themes/themeMaterialUi';
 import FormGroup from '@mui/material/FormGroup';
 import TextField from '@mui/material/TextField';
@@ -15,7 +15,7 @@ import * as Yup from 'yup';
 
 export const PasswordRecovery = () => {
   const [type, setType] = useState('password');
-  const dispatch = useDispatch<AppThunkType>();
+  const dispatch = useDispatch<AppDispatchType>();
   const { token } = useParams();
   let navigate = useNavigate();
   const handleToggle = () => {

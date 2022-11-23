@@ -17,16 +17,17 @@ import { InputAdornment, Slider, TextField } from "@mui/material";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import debounce from "lodash.debounce";
 import PaginateComponent from "../../common/components/PaginateComponent/PaginateComponent";
-import { AppThunkType, useAppSelector } from "../../app/store";
+import { AppDispatchType, useAppSelector } from "../../app/store";
 import { Pack } from "./Pack/Pack";
 import { useDispatch } from "react-redux";
-import { fetchPacksTC } from "./packsListReducer";
+import { addPackTC, fetchPacksTC, removePackTC, updatePackTC } from './packsListReducer';
+import { cardsPackType, UpdateCardsPackType} from '../../app/appApi';
 
 export const PacksList = React.memo(() => {
   const packs = useAppSelector((state) => state.packsList);
   const user_Id = useAppSelector((state) => state.profile.userData._id);
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
-  const dispatch = useDispatch<AppThunkType>();
+  const dispatch = useDispatch<AppDispatchType>();
 
   const [searchValue, setSearchValue] = useState("");
   const [btnColor, setBtnColor] = useState(true);
@@ -49,6 +50,23 @@ export const PacksList = React.memo(() => {
   };
   console.log(page);
   console.log(rowsPerPage);
+
+  //CRUD CARD PACK
+
+  const addNewPack = (cardPack: cardsPackType) => {
+    dispatch(addPackTC(cardPack))
+  }
+  const removePack = (packId: string) => {
+    dispatch(removePackTC(packId))
+  }
+  const updatePack = (updateData:UpdateCardsPackType) => {
+    dispatch(updatePackTC(updateData))
+  }
+
+  const addNewPackHandler = () => {
+    addNewPack({cardsPack: {name: 'New Pack'}})
+  }
+
 
   //USE EFFECT
 
@@ -156,7 +174,7 @@ export const PacksList = React.memo(() => {
     <div className={s.wrapper}>
       <div className={s.wrapper__header}>
         <h2 className={s.wrapper__title}>Packs list</h2>
-        <button className={s.wrapper__btn}>Add new pack</button>
+        <button className={s.wrapper__btn} onClick={addNewPackHandler}>Add new pack</button>
       </div>
       <div className={s.header}>
         <div className={s.search}>
@@ -261,16 +279,22 @@ export const PacksList = React.memo(() => {
           <TableBody>
             {packs.cardPacks.map((p) => {
               return (
-                <Pack
-                  key={p._id}
-                  userId={p.user_id}
-                  createdUserName={p.user_name}
-                  packName={p.name}
-                  cardsCount={p.cardsCount}
-                  lastUpdated={p.updated}
-                  mainUserId={user_Id}
-                  emptyRows={emptyRows}
-                />
+
+                  <Pack
+                    key={p._id}
+                    packId={p._id}
+                    userId={p.user_id}
+                    createdUserName={p.user_name}
+                    packName={p.name}
+                    cardsCount={p.cardsCount}
+                    lastUpdated={p.updated}
+                    mainUserId={user_Id}
+                    emptyRows={emptyRows}
+                    removePack={removePack}
+                    updatePack={updatePack}
+                  />
+
+
               );
             })}
           </TableBody>
