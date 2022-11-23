@@ -4,13 +4,15 @@ import { ActionAuthType, authReducer } from './authReducer';
 import thunkMiddleware, { ThunkDispatch } from 'redux-thunk';
 import { ActionProfileType, profileReducer } from '../features/Profile/profileReducer';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
+import { ActionPacksListType, packsListReducer } from '../features/PackList/packsListReducer';
 
 const rootReducer = combineReducers({
   auth: authReducer,
   app: appReducer,
   profile: profileReducer,
+  packsList: packsListReducer,
 });
-export type ActionsType = ActionAuthType | ActionAppType | ActionProfileType;
+export type ActionsType = ActionAuthType | ActionAppType | ActionProfileType | ActionPacksListType;
 export type AppThunkType = ThunkDispatch<AppRootStateType, unknown, ActionsType>;
 export type AppRootStateType = ReturnType<typeof rootReducer>;
 export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector; // спросить ещё у кого
