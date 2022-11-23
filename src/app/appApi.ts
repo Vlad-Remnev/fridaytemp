@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { ModelUpdateType } from "./authReducer";
 
 export const instance = axios.create({
-  // baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/' ,
+  // baseURL: process.env.REACT_APP_BACK_URL || "http://localhost:7542/2.0/",
   // baseURL:
   //   process.env.NODE_ENV === 'development'
   //     ? 'http://localhost:7542/2.0/'
@@ -14,9 +14,16 @@ export const instance = axios.create({
 // api
 export const packListAPI = {
   getPack(params: getPacksModelType) {
-    return instance.get(`/cards/pack`, { params });
+    return instance.get(`cards/pack`, { params });
   },
 };
+
+export const cardsApi = {
+  getCards(params: getCardsParamType) {
+    return instance.get(`cards/card`, { params });
+  },
+};
+
 export const authAPI = {
   register(data: LoginRegisterDataType) {
     return instance.post<LoginRegisterDataType, AxiosResponse<ResponseType>>(
@@ -87,6 +94,17 @@ export type getPacksModelType = {
   pageCount?: number;
   user_id?: string;
   block?: boolean;
+};
+
+export type getCardsParamType = {
+  cardAnswer?: string;
+  cardQuestion?: string;
+  cardsPack_id: string;
+  min?: number;
+  max?: number;
+  sortCards?: "0grade" | "1grade";
+  page?: number;
+  pageCount?: number;
 };
 
 export type InitStateType = {

@@ -24,7 +24,7 @@ export enum ROUTS {
   REGISTRATION = "/registration",
   CHECK_EMAIL = "/checkEmail",
   PACK_LIST = "/packList",
-  CARDS = "/cards/:_id",
+  CARDS = "/cards",
   NOT_FOUND = "*",
 }
 

@@ -1,31 +1,34 @@
-import { authAPI, NewPasswordData, UserDataType } from '../../app/appApi';
-import { AppRootStateType } from '../../app/store';
-import { AxiosError } from 'axios';
-import { SetAppErrorType, setAppStatusAC, SetAppStatusType } from '../../app/appReducer';
-import { ModelUpdateType } from '../../app/authReducer';
-import { handleServerAppError } from '../../common/utils/error-utils';
-import { Dispatch } from 'redux';
+import { authAPI, NewPasswordData, UserDataType } from "../../app/appApi";
+import { AppRootStateType } from "../../app/store";
+import { AxiosError } from "axios";
+import {
+  SetAppErrorType,
+  setAppStatusAC,
+  SetAppStatusType,
+} from "../../app/appReducer";
+import { ModelUpdateType } from "../../app/authReducer";
+import { handleServerAppError } from "../../common/utils/error-utils";
+import { Dispatch } from "redux";
 
 const initialState = {
   userData: {
-    _id: '',
-    email: '',
-    name: '',
-    avatar: '',
+    _id: "",
+    email: "",
+    name: "",
+    avatar: "",
     publicCardPacksCount: 0,
-    token: '',
+    token: "",
   } as UserDataType,
 };
 
 export const profileReducer = (
   state: InitialStateType = initialState,
-  action: ActionProfileType,
+  action: ActionProfileType
 ): InitialStateType => {
   switch (action.type) {
-    case 'profile/ADD_USER_DATA':
-      console.log({ ...state, userData: { ...action.payload.userData } });
+    case "profile/ADD_USER_DATA":
       return { ...state, userData: { ...action.payload.userData } };
-    case 'profile/UPDATE_USER_DATA':
+    case "profile/UPDATE_USER_DATA":
       return {
         ...state,
         userData: {
@@ -42,35 +45,39 @@ export const profileReducer = (
 
 //action
 export const addUserDataAC = (userData: UserDataType) =>
-  ({ type: 'profile/ADD_USER_DATA', payload: { userData } } as const);
+  ({ type: "profile/ADD_USER_DATA", payload: { userData } } as const);
 
 export const updateUserDataAC = (newData: UserDataType) =>
-  ({ type: 'profile/UPDATE_USER_DATA', payload: { newData } } as const);
+  ({ type: "profile/UPDATE_USER_DATA", payload: { newData } } as const);
 
 // thunk
 
 export const updateUserTC =
   (data: ModelUpdateType) =>
-  async (dispatch: Dispatch<ActionProfileType>, getState: () => AppRootStateType) => {
+  async (
+    dispatch: Dispatch<ActionProfileType>,
+    getState: () => AppRootStateType
+  ) => {
     const updatedData = getState().profile.userData;
     const apiModel = { ...updatedData, ...data };
-    dispatch(setAppStatusAC('loading'));
+    dispatch(setAppStatusAC("loading"));
     try {
       const response = await authAPI.updateData(apiModel);
       dispatch(updateUserDataAC(response.data.updatedUser));
-      dispatch(setAppStatusAC('succeeded'));
+      dispatch(setAppStatusAC("succeeded"));
     } catch (e) {
       handleServerAppError(e as Error | AxiosError, dispatch);
     }
   };
 
 export const setNewPasswordTC =
-  (data: NewPasswordData, navigate: any) => async (dispatch: Dispatch<ActionProfileType>) => {
-    dispatch(setAppStatusAC('loading'));
-  try {
+  (data: NewPasswordData, navigate: any) =>
+  async (dispatch: Dispatch<ActionProfileType>) => {
+    dispatch(setAppStatusAC("loading"));
+    try {
       await authAPI.setNewPassword(data);
-    dispatch(setAppStatusAC('succeeded'));
-      navigate('/login');
+      dispatch(setAppStatusAC("succeeded"));
+      navigate("/login");
     } catch (e) {
       handleServerAppError(e as Error | AxiosError, dispatch);
     }
