@@ -5,6 +5,7 @@ import SchoolIcon from "@mui/icons-material/School";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { UpdateCardsPackType } from '../../../app/appApi';
+import {editDate} from "../../../common/utils/edit-date";
 
 
 type PackPropsType = {
@@ -48,7 +49,7 @@ export const Pack: FC<PackPropsType> = ({
           {packName}
         </TableCell>
         <TableCell align="center">{cardsCount}</TableCell>
-        <TableCell align="center">{lastUpdated}</TableCell>
+        <TableCell align="center">{editDate(lastUpdated)}</TableCell>
         <TableCell align="center">{createdUserName}</TableCell>
         {userId === mainUserId ? (
           <TableCell align="center">

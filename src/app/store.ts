@@ -5,14 +5,16 @@ import thunkMiddleware, { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { ActionProfileType, profileReducer } from '../features/Profile/profileReducer';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import { ActionPacksListType, packsListReducer } from '../features/PackList/packsListReducer';
+import {ActionCardsType, cardsReducer} from "../features/PackList/Cards/cardsPeducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
   app: appReducer,
   profile: profileReducer,
   packsList: packsListReducer,
+  cards: cardsReducer
 });
-export type ActionsType = ActionAuthType | ActionAppType | ActionProfileType | ActionPacksListType;
+export type ActionsType = ActionAuthType | ActionAppType | ActionProfileType | ActionPacksListType | ActionCardsType;
 
 export type AppDispatchType = ThunkDispatch<AppRootStateType, unknown, ActionsType>;
 export type AppThunkType<ReturnType = void> = ThunkAction<ReturnType,AppRootStateType,unknown,

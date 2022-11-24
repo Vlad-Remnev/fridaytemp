@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { ModelUpdateType } from "./authReducer";
+import {fetchDomainCardsModelType} from "../features/PackList/Cards/cardsPeducer";
 
 export const instance = axios.create({
   // baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/' ,
@@ -29,6 +30,25 @@ export const packListAPI = {
     return instance.put<{updatedCardsPack: PackType}>(`/cards/pack`, {cardsPack: data})
   }
 };
+
+export const cardsAPI = {
+  getCards(params: fetchDomainCardsModelType) {
+    return instance.get(`/cards/card`, { params });
+  },
+
+  createPack(cardsPack: cardsPackType) {
+    return instance.post<{newCardsPack: PackType}>(`/cards/pack`, { cardsPack });
+  },
+
+  deletePack(packId: string) {
+    return instance.delete(`/cards/pack/?id=${packId}`)
+  },
+
+  updatePack(data: UpdateCardsPackType) {
+    return instance.put<{updatedCardsPack: PackType}>(`/cards/pack`, {cardsPack: data})
+  }
+};
+
 export const authAPI = {
   register(data: LoginRegisterDataType) {
     return instance.post<LoginRegisterDataType, AxiosResponse<ResponseType>>(
@@ -80,7 +100,26 @@ export type PackType = {
   more_id: string;
   __v: number;
 };
-
+export type CardType = {
+  _id: string,
+  cardsPack_id: string
+  user_id: string
+  answer: string
+  question: string
+  grade: number
+  shots: number
+  questionImg: string
+  answerImg: string
+  answerVideo: string
+  questionVideo: string
+  comments: string
+  type: string
+  rating: number
+  more_id: string
+  created: string
+  updated: string
+  __v: number
+}
 export type UpdateCardsPackType = {
   _id: string;
 } & Partial<Omit<PackType, '_id'>>
