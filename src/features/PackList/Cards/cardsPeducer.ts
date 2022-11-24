@@ -39,10 +39,9 @@ export const cardsReducer = (
     case 'cards/REMOVE_CARD':
       return {...state, cards: state.cards.filter(el => el._id !== action.payload.cardId)}
     case 'cards/UPDATE_CARD':
-      debugger
       return {...state, cards: state.cards.map(el =>
           el._id === action.payload.updateData._id
-            ? {...el, ...action.payload.updateData}
+            ? {...el, question: action.payload.updateData.question, answer: action.payload.updateData.answer}
             : el )}
     default:
       return state;
@@ -119,7 +118,6 @@ export const updateCardTC = (updateData:UpdateCardPutType):AppThunkType => async
   dispatch(setAppStatusAC('loading'));
   try {
     const res = await cardsAPI.updateCard(updateData)
-    debugger
     dispatch(updateCardAC(res.data.updatedCard))
     dispatch(setAppStatusAC('succeeded'))
   } catch (e) {

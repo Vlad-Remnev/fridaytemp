@@ -6,6 +6,7 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { UpdateCardsPackType } from '../../../app/appApi';
 import {editDate} from "../../../common/utils/edit-date";
+import {useNavigate} from "react-router-dom";
 
 
 type PackPropsType = {
@@ -35,17 +36,21 @@ export const Pack: FC<PackPropsType> = ({
   updatePack
 
 }) => {
+  const navigate = useNavigate()
   const removePackHandler = () => {
     removePack(packId)
   }
   const updatePackHandler = () => {
     updatePack({_id: packId, name: 'New Update Name'})
   }
-
+  console.log('packName', packName)
+const navigateHandler = () => {
+  navigate(`/cards/${packId}/${userId}/${packName}`)
+}
   return (
     <>
       <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-        <TableCell component="th" scope="row" align="center">
+        <TableCell component="th" scope="row" align="center" onClick={navigateHandler}>
           {packName}
         </TableCell>
         <TableCell align="center">{cardsCount}</TableCell>

@@ -24,10 +24,11 @@ export enum ROUTS {
   REGISTRATION = "/registration",
   CHECK_EMAIL = "/checkEmail",
   PACK_LIST = "/packList",
-  CARDS = "/cards",
+  CARDSWITHOUTPARAMS = "/cards",
+  CARDS = "/cards/:packId/:userId/:packName",
   NOT_FOUND = "*",
 }
-
+// `/cards/?cardsPack_id=${packId}&user_id=${userId}&name=${packName}`
 export function App() {
   const dispatch = useDispatch<AppDispatchType>();
   const isInitialized = useAppSelector((state) => state.app.isInitialized);
@@ -70,7 +71,9 @@ export function App() {
           <Route path={ROUTS.CHECK_EMAIL} element={<CheckEmail />} />
           <Route path={ROUTS.PACK_LIST} element={<PacksList />} />
           <Route path={ROUTS.NOT_FOUND} element={<Error404 />} />
-          <Route path={ROUTS.CARDS} element={<Cards />} />
+          <Route path={ROUTS.CARDSWITHOUTPARAMS} element={<Cards />} >
+            <Route path={`:packId/:userId/:packName`} element={<Cards />} />
+          </Route>
         </Routes>
       </div>
     </div>
