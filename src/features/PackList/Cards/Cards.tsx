@@ -9,22 +9,23 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-import DeleteIcon from "@mui/icons-material/Delete";
 import TableFooter from "@mui/material/TableFooter";
 import TableContainer from "@mui/material/TableContainer";
-import {modalStyle} from "../../../common/themes/themeMaterialUi";
-import Box from "@mui/material/Box";
 import PaginateComponent from "../../../common/components/PaginateComponent/PaginateComponent";
 import {AppDispatchType, useAppSelector} from "../../../app/store";
 import {useDispatch} from "react-redux";
-import {fetchCardsTC} from "./cardsPeducer";
+import {addCardTC, fetchCardsTC, removeCardTC, updateCardTC} from "./cardsPeducer";
 import {editDate} from "../../../common/utils/edit-date";
+import DeleteIcon from '@mui/icons-material/Delete';
+import {modalStyle} from "../../../common/themes/themeMaterialUi";
+import Box from "@mui/material/Box";
 
 
 const Cards = () => {
-  const cardsPack_id = "608025300fcbf9096c0b6deb";
+  const cardsPack_id = "637f2df6d21c8a0004dbc071";
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const dispatch = useDispatch<AppDispatchType>();
+  const user_Id = useAppSelector((state) => state.profile.userData._id)
   const { cards, page, pageCount, cardsTotalCount, packUserId } =
     useAppSelector((state) => state.cards);
 
@@ -35,14 +36,19 @@ const Cards = () => {
     dispatch(fetchCardsTC({ cardsPack_id }));
   }, []);
 
-  // const [rows, setRows] = useState<CardType[]>(cards);
   const [searchValue, setSearchValue] = useState("");
   const [pageNum, setPage] = useState(page);
-  // const rowsPerPage = 5;
+
   //modal window settings
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => {
+    setOpen(true)
+  };
+  const handleClose = (cardId: string) => {
+    console.log(cardId)
+    setOpen(false)
+    dispatch(updateCardTC({_id: cardId, answer: 'What?', question: 'Ok!'}))
+  };
 
   const searchHandler = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -55,6 +61,15 @@ const Cards = () => {
     dispatch(fetchCardsTC({ cardsPack_id, page }));
     setPage(page);
   };
+
+  const addNewCardHandler = () => {
+    dispatch(addCardTC({card: {cardsPack_id,
+      question: 'What is up?', answer: 'I am fine'}}))
+  }
+
+  const removeCardHandler = (cardId: string) => {
+    dispatch(removeCardTC(cardId, {cardsPack_id}))
+  }
 
   const emptyRows =
     page > 1 ? Math.max(0, page * pageCount - cardsTotalCount) : 0;
@@ -73,7 +88,7 @@ const Cards = () => {
     <div className={s.wrapper}>
       <div className={s.wrapper__header}>
         <h2 className={s.wrapper__title}>Name by user ID (Friend's or My)</h2>
-        <button className={s.wrapper__btn}>Add new card</button>
+        <button className={s.wrapper__btn} onClick={addNewCardHandler}>Add new card</button>
       </div>
       <div className={s.search}>
         <div className={s.title}>Search</div>
@@ -129,7 +144,7 @@ const Cards = () => {
                     readOnly
                   />
                 </TableCell>
-                {card.user_id === "main" && (
+                {card.user_id === user_Id && (
                   <TableCell align="center">
                     <BorderColorIcon
                       sx={{ marginRight: "20px" }}
@@ -137,7 +152,7 @@ const Cards = () => {
                     />
                     <Modal
                       open={open}
-                      onClose={handleClose}
+                      onClose={() => handleClose(card._id)}
                       aria-labelledby="modal-modal-title"
                       aria-describedby="modal-modal-description"
                     >
@@ -148,7 +163,7 @@ const Cards = () => {
                         <TextField value={""} />
                       </Box>
                     </Modal>
-                    <DeleteIcon />
+                    <button onClick={() => removeCardHandler(card._id)}><DeleteIcon /></button>
                   </TableCell>
                 )}
               </TableRow>
@@ -164,7 +179,6 @@ const Cards = () => {
               <PaginateComponent
                 page={pageNum}
                 setPage={pageChangeHandler}
-                // count={10}
                 count={Math.ceil(cardsTotalCount / pageCount)}
               />
             </TableRow>

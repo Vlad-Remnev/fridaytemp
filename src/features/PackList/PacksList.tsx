@@ -279,7 +279,6 @@ export const PacksList = React.memo(() => {
           <TableBody>
             {packs.cardPacks.map((p) => {
               return (
-
                   <Pack
                     key={p._id}
                     packId={p._id}
@@ -293,8 +292,6 @@ export const PacksList = React.memo(() => {
                     removePack={removePack}
                     updatePack={updatePack}
                   />
-
-
               );
             })}
           </TableBody>

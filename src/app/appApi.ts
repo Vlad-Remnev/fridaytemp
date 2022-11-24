@@ -33,19 +33,19 @@ export const packListAPI = {
 
 export const cardsAPI = {
   getCards(params: fetchDomainCardsModelType) {
-    return instance.get(`/cards/card`, { params });
+    return instance.get(`cards/card`, { params });
   },
 
-  createPack(cardsPack: cardsPackType) {
-    return instance.post<{newCardsPack: PackType}>(`/cards/pack`, { cardsPack });
+  createCard(card: NewCardAddType) {
+    return instance.post(`cards/card`,  card );
   },
 
-  deletePack(packId: string) {
-    return instance.delete(`/cards/pack/?id=${packId}`)
+  deleteCard(cardId: string) {
+    return instance.delete(`cards/card/?id=${cardId}`)
   },
 
-  updatePack(data: UpdateCardsPackType) {
-    return instance.put<{updatedCardsPack: PackType}>(`/cards/pack`, {cardsPack: data})
+  updateCard(data: UpdateCardPutType) {
+    return instance.put(`/cards/card`, {card: data})
   }
 };
 
@@ -124,6 +124,10 @@ export type UpdateCardsPackType = {
   _id: string;
 } & Partial<Omit<PackType, '_id'>>
 
+export type UpdateCardPutType = {
+  _id: string
+} & Partial<Omit<CardType, '_id'>>
+
 export type ResponsePacksType = {
   cardPacks: PackType[];
   page: number;
@@ -165,6 +169,20 @@ export type cardsPackType = {
     private?: boolean;
   }
 };
+
+export type NewCardAddType = {
+  card: {
+    cardsPack_id: string
+    question?: string
+    answer?: string
+    grade?: number
+    shots?: number
+    answerImg?: string
+    questionImg?: string
+    questionVideo?: string
+    answerVideo?: string
+  }
+}
 /*export type updateDataType = {
   cardsPack: {
     _id: string

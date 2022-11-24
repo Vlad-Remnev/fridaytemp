@@ -1,8 +1,10 @@
 import {AxiosError} from 'axios';
-import {cardsAPI, CardType} from "../../../app/appApi";
+import {cardsAPI, CardType, NewCardAddType, UpdateCardPutType} from "../../../app/appApi";
 import {setAppStatusAC, SetAppStatusType} from "../../../app/appReducer";
 import {handleServerAppError} from "../../../common/utils/error-utils";
 import {Dispatch} from "redux";
+import {AppThunkType} from "../../../app/store";
+import {addPackAC} from "../packsListReducer";
 
 const initialState = {
   cards: [] as CardType[],
@@ -30,17 +32,18 @@ export const cardsReducer = (
       return {
         ...state,
         ...action.payload.cards,
-        cards: action.payload.cards.cards.map((el) => ({ ...el })),
+        cards: action.payload.cards.cards.map((el) => ({...el})),
       };
-    // case 'packList/ADD_PACK':
-    //   return { ...state, cardPacks: [action.payload.pack, ...state.cardPacks] };
-    // case 'packList/REMOVE_PACK':
-    //   return {...state, cardPacks: state.cardPacks.filter(p => p._id !== action.payload.packId)}
-    // case 'packList/UPDATE_PACK':
-    //   return {...state, cardPacks: state.cardPacks.map(p =>
-    //       p._id === action.payload.updateData._id
-    //         ? {...p, name: action.payload.updateData.name}
-    //         : p )}
+    case 'cards/ADD_CARD':
+      return {...state, cards: [action.payload.card, ...state.cards]};
+    case 'cards/REMOVE_CARD':
+      return {...state, cards: state.cards.filter(el => el._id !== action.payload.cardId)}
+    case 'cards/UPDATE_CARD':
+      debugger
+      return {...state, cards: state.cards.map(el =>
+          el._id === action.payload.updateData._id
+            ? {...el, ...action.payload.updateData}
+            : el )}
     default:
       return state;
   }
@@ -50,28 +53,30 @@ export const cardsReducer = (
 export const setCardsAC = (cards: CardsStateType) => {
   return {
     type: 'cards/SET_CARDS',
-    payload: { cards },
+    payload: {cards},
   } as const;
 };
 
-// export const addPackAC = (pack: PackType) => {
-//   return {
-//     type: 'packList/ADD_PACK',
-//     payload: { pack },
-//   } as const;
-// };
-// export const removePackAC = (packId: string) => {
-//   return {
-//     type: 'packList/REMOVE_PACK',
-//     payload: { packId },
-//   } as const;
-// };
-// export const updatePackAC = (updateData: PackType) => {
-//   return {
-//     type: 'packList/UPDATE_PACK',
-//     payload: { updateData },
-//   } as const;
-// };
+export const addCardAC = (card: CardType) => {
+  return {
+    type: 'cards/ADD_CARD',
+    payload: {card},
+  } as const;
+};
+
+export const removeCardAC = (cardId: string) => {
+  return {
+    type: 'cards/REMOVE_CARD',
+    payload: { cardId },
+  } as const;
+};
+
+export const updateCardAC = (updateData: CardType) => {
+  return {
+    type: 'cards/UPDATE_CARD',
+    payload: { updateData },
+  } as const;
+};
 
 // Thunks
 export const fetchCardsTC = (domainModel: fetchDomainCardsModelType) => async (
@@ -85,51 +90,55 @@ export const fetchCardsTC = (domainModel: fetchDomainCardsModelType) => async (
     handleServerAppError(e as Error | AxiosError, dispatch)
   }
 };
-// export const addPackTC = (cardsPack: cardsPackType):AppThunkType => async (dispatch) => {
-//   dispatch(setAppStatusAC('loading'));
-//   try {
-//     const res = await packListAPI.createPack(cardsPack)
-//     dispatch(addPackAC(res.data.newCardsPack))
-//     dispatch(fetchPacksTC())
-//     dispatch(setAppStatusAC('succeeded'))
-//   } catch (e) {
-//     handleServerAppError(e as Error | AxiosError, dispatch)
-//   }
-// };
-// export const removePackTC = (packId: string):AppThunkType => async(dispatch) => {
-//   dispatch(setAppStatusAC('loading'));
-//   try {
-//     await packListAPI.deletePack(packId)
-//     dispatch(removePackAC(packId))
-//     dispatch(fetchPacksTC())
-//     dispatch(setAppStatusAC('succeeded'))
-//   } catch (e) {
-//     handleServerAppError(e as Error | AxiosError, dispatch)
-//   }
-// }
-// export const updatePackTC = (updateData:UpdateCardsPackType):AppThunkType => async (dispatch) => {
-//   dispatch(setAppStatusAC('loading'));
-//   try {
-//     const res = await packListAPI.updatePack(updateData)
-//     dispatch(updatePackAC(res.data.updatedCardsPack))
-//     dispatch(setAppStatusAC('succeeded'))
-//   } catch (e) {
-//     handleServerAppError(e as Error | AxiosError, dispatch)
-//   }
-// }
+
+export const addCardTC = (card: NewCardAddType): AppThunkType => async (dispatch) => {
+  dispatch(setAppStatusAC('loading'));
+  try {
+    const res = await cardsAPI.createCard(card)
+    dispatch(addPackAC(res.data))
+    dispatch(fetchCardsTC({cardsPack_id: card.card.cardsPack_id}))
+    dispatch(setAppStatusAC('succeeded'))
+  } catch (e) {
+    handleServerAppError(e as Error | AxiosError, dispatch)
+  }
+};
+
+export const removeCardTC = (cardId: string, domainModel: fetchDomainCardsModelType):AppThunkType => async(dispatch) => {
+  dispatch(setAppStatusAC('loading'));
+  try {
+    await cardsAPI.deleteCard(cardId)
+    dispatch(removeCardAC(cardId))
+    dispatch(fetchCardsTC(domainModel))
+    dispatch(setAppStatusAC('succeeded'))
+  } catch (e) {
+    handleServerAppError(e as Error | AxiosError, dispatch)
+  }
+}
+
+export const updateCardTC = (updateData:UpdateCardPutType):AppThunkType => async (dispatch) => {
+  dispatch(setAppStatusAC('loading'));
+  try {
+    const res = await cardsAPI.updateCard(updateData)
+    debugger
+    dispatch(updateCardAC(res.data.updatedCard))
+    dispatch(setAppStatusAC('succeeded'))
+  } catch (e) {
+    handleServerAppError(e as Error | AxiosError, dispatch)
+  }
+}
 
 // Types
 type SetCardsType = ReturnType<typeof setCardsAC>;
-// type AddPackType = ReturnType<typeof addPackAC>;
-// type RemovePackType = ReturnType<typeof removePackAC>
-// type UpdatePackType = ReturnType<typeof updatePackAC>
+type AddCardType = ReturnType<typeof addCardAC>;
+type RemoveCardType = ReturnType<typeof removeCardAC>
+type UpdateCardType = ReturnType<typeof updateCardAC>
 type CardsStateType = typeof initialState;
 
 export type ActionCardsType = SetCardsType
-  // | AddPackType
+  | AddCardType
   | SetAppStatusType
-// | RemovePackType
-// | UpdatePackType;
+  | RemoveCardType
+  | UpdateCardType;
 
 export type fetchDomainCardsModelType = {
   cardAnswer?: string
