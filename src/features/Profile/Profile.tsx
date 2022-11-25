@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import s from './Profile.module.css';
-import { Navigate } from 'react-router-dom';
+import {Navigate, useNavigate} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AppDispatchType, useAppSelector } from '../../app/store';
 import { logoutTC } from '../../app/authReducer';
@@ -12,6 +12,7 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import Paper from '@mui/material/Paper';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { EditableSpan } from '../../common/components/EditableSpan/EditableSpan';
+import {ROUTS} from "../../app/App";
 
 const convertFileToBase64 = (file: File, callback: (value: string) => void): void => {
   const reader = new FileReader();
@@ -27,6 +28,7 @@ export const Profile = () => {
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const { avatar, name, email } = useAppSelector((state) => state.profile.userData);
   const status = useAppSelector((state) => state.app.status);
+  const navigate = useNavigate()
 
   // нужно добавить проверку на размер аватара
   const minFileSize = 400000;
@@ -49,6 +51,7 @@ export const Profile = () => {
   }
   return (
     <div className={s.container}>
+      <div onClick={() => {navigate(ROUTS.PACK_LIST)}}>Back to Pack list</div>
       <Paper elevation={1} className={s.paper + ' ' + s.common}>
         <h2 className={s.title}>Personal Information</h2>
         <div className={s.avatar}>
