@@ -26,10 +26,16 @@ const Cards = () => {
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const dispatch = useDispatch<AppDispatchType>();
   const user_Id = useAppSelector((state) => state.profile.userData._id)
+  const name = useAppSelector(state => state.cards.packName)
+  console.log(name)
   const {cards, page, pageCount, cardsTotalCount} =
     useAppSelector((state) => state.cards);
   const {packId, packName, userId} = useParams()
+  console.log(packName)
   const compareIdForDraw = userId === user_Id
+  const [pageNum, setPage] = useState(page);
+  const [searchValue, setSearchValue] = useState('')
+  const [searchBy, setSearchBy] = useState(true);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -38,10 +44,7 @@ const Cards = () => {
     packId && dispatch(fetchCardsTC({cardsPack_id: packId}));
   }, []);
 
-  const [pageNum, setPage] = useState(page);
-const [searchValue, setSearchValue] = useState('')
   //modal window settings
-  const [searchBy, setSearchBy] = useState(true);
   const [open, setOpen] = useState(false);
   // const handleOpen = () => {
   //   setOpen(true)
@@ -50,11 +53,13 @@ const [searchValue, setSearchValue] = useState('')
     setOpen(false)
     dispatch(updateCardTC({_id: cardId, answer: 'What?', question: 'Ok!'}))
   };
+
   const handleToggle = () => {
     setSearchBy(!searchBy)
     setSearchValue('')
     searchDebounce('');
   };
+
   const searchHandler = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -62,11 +67,13 @@ const [searchValue, setSearchValue] = useState('')
     setSearchValue(e.currentTarget.value.toLowerCase())
   };
 
+  //pagination
   const pageChangeHandler = (page: number) => {
     packId && dispatch(fetchCardsTC({cardsPack_id: packId, page}));
     setPage(page);
   };
 
+  //CRUD
   const addNewCardHandler = () => {
     packId && dispatch(addCardTC({
       card: {
@@ -82,9 +89,8 @@ const [searchValue, setSearchValue] = useState('')
 
   const emptyRows =
     page > 1 ? Math.max(0, page * pageCount - cardsTotalCount) : 0;
-  console.log(cards)
 
-  let findCards = cards
+
   const searchDebounce = useCallback(
     debounce((str: string) => {
       if (searchBy) {
@@ -127,7 +133,7 @@ const [searchValue, setSearchValue] = useState('')
           )}
         </div>
       </div>
-      <TableContainer className={s.container}>
+      { name === packName ? (cards.length ?  <TableContainer className={s.container}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow className={s.mainRow}>
@@ -146,7 +152,7 @@ const [searchValue, setSearchValue] = useState('')
             </TableRow>
           </TableHead>
           <TableBody>
-            {findCards.map((card) => {
+            {cards.map((card) => {
               return (
                 <TableRow
                   key={card._id}
@@ -213,7 +219,7 @@ const [searchValue, setSearchValue] = useState('')
             </TableRow>
           </TableFooter>
         </Table>
-      </TableContainer>
+      </TableContainer> : <h2>Nothing was found</h2>) : <div></div>}
     </div>
   );
 };
