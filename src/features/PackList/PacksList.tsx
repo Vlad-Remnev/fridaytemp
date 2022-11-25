@@ -142,9 +142,11 @@ export const PacksList = React.memo(() => {
 
   const filterByUser = () => {
     setBtnColor(false);
+    dispatch(fetchPacksTC({ page, min: value[0], max: value[1], packName: searchValue, user_id: user_Id }))
   };
 
   const filterByAll = () => {
+    dispatch(fetchPacksTC({ page, min: value[0], max: value[1], packName: searchValue}))
     setBtnColor(true);
   };
 

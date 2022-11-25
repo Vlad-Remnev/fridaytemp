@@ -53,7 +53,7 @@ export const Profile = () => {
     <div className={s.container}>
       <div onClick={() => {navigate(ROUTS.PACK_LIST)}}>Back to Pack list</div>
       <Paper elevation={1} className={s.paper + ' ' + s.common}>
-        <h2 className={s.title}>Personal Information</h2>
+        <h2 className={s.title}>_Personal Information</h2>
         <div className={s.avatar}>
           <img src={avatar ? avatar : avatar} alt="Profile photo" />
           <div className={s.addPhoto + ' ' + s.common}>
