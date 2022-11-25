@@ -32,24 +32,18 @@ export const PacksList = React.memo(() => {
   const [searchValue, setSearchValue] = useState("");
   const [btnColor, setBtnColor] = useState(true);
 
-  //заглушка, будет приходить с сервера
-  const cards: number[] = packs.cardPacks
-    .map((el) => el.cardsCount)
-    .sort((a, b) => a - b);
-
   const [value, setValue] = useState<number[]>([
-    cards[0],
-    cards[cards.length - 1],
+    packs.minCardsCount,
+    packs.maxCardsCount,
   ]);
+
   const [page, setPage] = useState(packs.page);
   const rowsPerPage = packs.pageCount;
 
   const pageChangeHandler = (page: number) => {
-    dispatch(fetchPacksTC({ page }));
+    dispatch(fetchPacksTC({ page, min: value[0], max: value[1], packName: searchValue }));
     setPage(page);
   };
-  console.log(page);
-  console.log(rowsPerPage);
 
   //CRUD CARD PACK
 
@@ -75,7 +69,7 @@ export const PacksList = React.memo(() => {
       return;
     }
     dispatch(fetchPacksTC());
-  }, []);
+  }, [isLoggedIn, dispatch]);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     setValue(newValue as number[]);
@@ -84,8 +78,8 @@ export const PacksList = React.memo(() => {
 
   const emptyRows =
     page > 1 ? Math.max(0, page * rowsPerPage - packs.cardPacksTotalCount) : 0;
+
   //main work of filterBar
-  console.log(emptyRows);
   const setRangeOne = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -116,34 +110,25 @@ export const PacksList = React.memo(() => {
     }
   };
 
-  const resetHandler = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    //setRows(initialState);
-    setValue([cards[0], cards[cards.length - 1]]);
+  const resetHandler = () => {
+    setValue([packs.minCardsCount, packs.maxCardsCount]);
     setBtnColor(false);
     setSearchValue("");
+    dispatch(fetchPacksTC({}))
   };
 
   //debounces
   const searchDebounce = useCallback(
     debounce((str: string) => {
-      const newArr = packs.cardPacks.filter((el) =>
-        el.name.toLowerCase().includes(str)
-      );
-      //setRows(newArr);
+      dispatch(fetchPacksTC({packName: str}))
     }, 750),
     []
   );
 
   const cardsFilterDebounce = useCallback(
     debounce((num: number[]) => {
-      const newArr = packs.cardPacks.filter((el) =>
-        cards
-          .filter((el) => el >= num[0] && el <= num[1])
-          .includes(el.cardsCount)
-      );
-      //setRows(newArr);
-    }, 500),
+      dispatch(fetchPacksTC({ page, min: num[0], max: num[1], packName: searchValue }))
+    }, 750),
     []
   );
 
@@ -151,18 +136,15 @@ export const PacksList = React.memo(() => {
   const searchHandler = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setSearchValue(e.currentTarget.value.toLowerCase().trim());
-    searchDebounce(e.currentTarget.value);
+    setSearchValue(e.currentTarget.value.toLowerCase());
+    searchDebounce(e.currentTarget.value.toLowerCase());
   };
 
   const filterByUser = () => {
-    const newArr = packs.cardPacks.filter((el) => el.user_id === "main");
-    //setRows(newArr);
     setBtnColor(false);
   };
 
   const filterByAll = () => {
-    //setRows(initialState);
     setBtnColor(true);
   };
 
@@ -221,8 +203,8 @@ export const PacksList = React.memo(() => {
               onChange={setRangeOne}
               InputProps={{
                 inputProps: {
-                  max: cards[cards.length - 1],
-                  min: cards[0],
+                  max: packs.maxCardsCount,
+                  min: packs.minCardsCount,
                 },
               }}
             />
@@ -242,8 +224,8 @@ export const PacksList = React.memo(() => {
               onChange={setRangeTwo}
               InputProps={{
                 inputProps: {
-                  max: cards[cards.length - 1],
-                  min: cards[0],
+                  max: packs.maxCardsCount,
+                  min: packs.minCardsCount,
                 },
               }}
             />
