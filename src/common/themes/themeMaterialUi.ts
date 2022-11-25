@@ -29,6 +29,11 @@ export const eyeStyles = {
   right: '10px',
 };
 
+export const findStyles = {
+  position: 'absolute',
+  top: '12px',
+  right: '20px',
+};
 //Modal window
 export const modalStyle = {
   position: 'absolute' as 'absolute',

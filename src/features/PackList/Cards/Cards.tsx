@@ -18,7 +18,9 @@ import {useDispatch} from "react-redux";
 import {addCardTC, fetchCardsTC, removeCardTC, updateCardTC} from "./cardsPeducer";
 import {editDate} from "../../../common/utils/edit-date";
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import NotListedLocationIcon from '@mui/icons-material/NotListedLocation';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
+import {findStyles} from "../../../common/themes/themeMaterialUi";
 
 const Cards = () => {
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
@@ -36,24 +38,28 @@ const Cards = () => {
     packId && dispatch(fetchCardsTC({cardsPack_id: packId}));
   }, []);
 
-  const [searchValue, setSearchValue] = useState("");
   const [pageNum, setPage] = useState(page);
-
+const [searchValue, setSearchValue] = useState('')
   //modal window settings
+  const [searchBy, setSearchBy] = useState(true);
   const [open, setOpen] = useState(false);
-  const handleOpen = () => {
-    setOpen(true)
-  };
+  // const handleOpen = () => {
+  //   setOpen(true)
+  // };
   const handleClose = (cardId: string) => {
     setOpen(false)
     dispatch(updateCardTC({_id: cardId, answer: 'What?', question: 'Ok!'}))
   };
-
+  const handleToggle = () => {
+    setSearchBy(!searchBy)
+    setSearchValue('')
+    searchDebounce('');
+  };
   const searchHandler = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setSearchValue(e.currentTarget.value.toLowerCase().trim());
-    searchDebounce(e.currentTarget.value);
+    searchDebounce(e.currentTarget.value.toLowerCase());
+    setSearchValue(e.currentTarget.value.toLowerCase())
   };
 
   const pageChangeHandler = (page: number) => {
@@ -78,15 +84,16 @@ const Cards = () => {
     page > 1 ? Math.max(0, page * pageCount - cardsTotalCount) : 0;
   console.log(cards)
 
-
+  let findCards = cards
   const searchDebounce = useCallback(
     debounce((str: string) => {
-      const newArr = cards.filter((el) =>
-        el.question.toLowerCase().includes(str)
-      );
-      packId && dispatch(fetchCardsTC({cardsPack_id: packId, page}));
+      if (searchBy) {
+        packId && dispatch(fetchCardsTC({cardsPack_id: packId, cardQuestion: str}));
+      } else {
+        packId && dispatch(fetchCardsTC({cardsPack_id: packId, cardAnswer: str}));
+      }
     }, 750),
-    []
+    [searchBy]
   );
 
   return (
@@ -97,21 +104,28 @@ const Cards = () => {
                 onClick={addNewCardHandler}>{compareIdForDraw ? 'Add new card' : 'Learn to pack'}</button>
       </div>
       <div className={s.search}>
-        <div className={s.title}>Search</div>
-        <TextField
-          variant="outlined"
-          sx={{width: "100%"}}
-          placeholder="Type some text"
-          value={searchValue}
-          onChange={searchHandler}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon/>
-              </InputAdornment>
-            ),
-          }}
-        />
+        <div className={s.title}> {searchBy ? 'Searching for the question' : 'Searching for the answer'}</div>
+        <div className={s.password}>
+          <TextField
+            variant="outlined"
+            sx={{width: "100%"}}
+            placeholder="Type some text"
+            onChange={searchHandler}
+            value={searchValue}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon/>
+                </InputAdornment>
+              ),
+            }}
+          />
+          {searchBy ? (
+            <SupportAgentIcon fontSize="large" sx={findStyles} onClick={handleToggle} />
+          ) : (
+            <NotListedLocationIcon fontSize="large" sx={findStyles} onClick={handleToggle} />
+          )}
+        </div>
       </div>
       <TableContainer className={s.container}>
         <Table aria-label="simple table">
@@ -132,7 +146,7 @@ const Cards = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {cards.map((card) => {
+            {findCards.map((card) => {
               return (
                 <TableRow
                   key={card._id}
