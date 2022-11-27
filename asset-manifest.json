@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/fridaytemp/static/css/main.510ae114.css",
-    "main.js": "/fridaytemp/static/js/main.e6179038.js",
-    "static/media/Montserrat-SemiBold.ttf": "/fridaytemp/static/media/Montserrat-SemiBold.d5e0cc788cba9ced1fb9.ttf",
-    "static/media/Montserrat-Medium.ttf": "/fridaytemp/static/media/Montserrat-Medium.c86e3b9010ff63c99166.ttf",
-    "static/media/Montserrat-Regular.ttf": "/fridaytemp/static/media/Montserrat-Regular.ceb11275ab638627a643.ttf",
-    "static/media/emailCheck.svg": "/fridaytemp/static/media/emailCheck.cdfba66fde5a43fa07de20848a33be02.svg",
-    "static/media/logo.svg": "/fridaytemp/static/media/logo.66aa37dd1366aaf98fa95be1206c3b1e.svg",
-    "index.html": "/fridaytemp/index.html",
-    "main.510ae114.css.map": "/fridaytemp/static/css/main.510ae114.css.map",
-    "main.e6179038.js.map": "/fridaytemp/static/js/main.e6179038.js.map"
+    "main.css": "/keepcalm/static/css/main.f6183f8d.css",
+    "main.js": "/keepcalm/static/js/main.b9fb0b87.js",
+    "static/media/Montserrat-SemiBold.ttf": "/keepcalm/static/media/Montserrat-SemiBold.d5e0cc788cba9ced1fb9.ttf",
+    "static/media/Montserrat-Medium.ttf": "/keepcalm/static/media/Montserrat-Medium.c86e3b9010ff63c99166.ttf",
+    "static/media/Montserrat-Regular.ttf": "/keepcalm/static/media/Montserrat-Regular.ceb11275ab638627a643.ttf",
+    "static/media/emailCheck.svg": "/keepcalm/static/media/emailCheck.cdfba66fde5a43fa07de20848a33be02.svg",
+    "static/media/logo.svg": "/keepcalm/static/media/logo.66aa37dd1366aaf98fa95be1206c3b1e.svg",
+    "index.html": "/keepcalm/index.html",
+    "main.f6183f8d.css.map": "/keepcalm/static/css/main.f6183f8d.css.map",
+    "main.b9fb0b87.js.map": "/keepcalm/static/js/main.b9fb0b87.js.map"
   },
   "entrypoints": [
-    "static/css/main.510ae114.css",
-    "static/js/main.e6179038.js"
+    "static/css/main.f6183f8d.css",
+    "static/js/main.b9fb0b87.js"
   ]
 }
