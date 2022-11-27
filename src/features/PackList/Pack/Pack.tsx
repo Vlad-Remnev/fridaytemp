@@ -43,14 +43,13 @@ export const Pack: FC<PackPropsType> = ({
   const updatePackHandler = () => {
     updatePack({_id: packId, name: 'New Update Name'})
   }
-  console.log('packName', packName)
 const navigateHandler = () => {
   navigate(`/cards/${packId}/${userId}/${packName}`)
 }
   return (
     <>
       <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-        <TableCell component="th" scope="row" align="center" onClick={navigateHandler}>
+        <TableCell component="th" scope="row" align="center" onClick={navigateHandler} sx={{cursor: 'pointer'}}>
           {packName}
         </TableCell>
         <TableCell align="center">{cardsCount}</TableCell>

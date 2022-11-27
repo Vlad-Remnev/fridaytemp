@@ -21,6 +21,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import NotListedLocationIcon from '@mui/icons-material/NotListedLocation';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import {findStyles} from "../../../common/themes/themeMaterialUi";
+import {BackToLink} from "../../../common/components/BackToLink/BackToLink";
 
 const Cards = () => {
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
@@ -36,6 +37,7 @@ const Cards = () => {
   const [pageNum, setPage] = useState(page);
   const [searchValue, setSearchValue] = useState('')
   const [searchBy, setSearchBy] = useState(true);
+
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -104,6 +106,7 @@ const Cards = () => {
 
   return (
     <div className={s.wrapper}>
+      <BackToLink />
       <div className={s.wrapper__header}>
         <h2 className={s.wrapper__title}>{packName}</h2>
         <button className={s.wrapper__btn}
@@ -177,7 +180,7 @@ const Cards = () => {
                         sx={{marginRight: "20px"}}
                         onClick={() => handleClose(card._id)}
                       />
-                      {/*<Modal*/}
+                      {/*<Modals*/}
                       {/*  open={open}*/}
                       {/*  onClose={() => {*/}
                       {/*    console.log(card._id)*/}
@@ -192,7 +195,7 @@ const Cards = () => {
                       {/*    <h4>Change the answer?</h4>*/}
                       {/*    <TextField value={""} />*/}
                       {/*  </Box>*/}
-                      {/*</Modal>*/}
+                      {/*</Modals>*/}
                       {/*<button onClick={() => {*/}
                       {/*  removeCardHandler(card._id)*/}
                       {/*}}></button>*/}
