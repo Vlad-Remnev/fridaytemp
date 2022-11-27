@@ -1,16 +1,13 @@
 import React, {ChangeEvent, useCallback, useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import s from "./Cards.module.css";
-import {InputAdornment, Rating, TextField} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
+import {Rating} from "@mui/material";
 import debounce from "lodash.debounce";
 import Table from "@mui/material/Table";
-import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-import TableFooter from "@mui/material/TableFooter";
 import TableContainer from "@mui/material/TableContainer";
 import PaginateComponent from "../../../common/components/PaginateComponent/PaginateComponent";
 import {AppDispatchType, useAppSelector} from "../../../app/store";
@@ -18,10 +15,12 @@ import {useDispatch} from "react-redux";
 import {addCardTC, fetchCardsTC, removeCardTC, updateCardTC} from "./cardsPeducer";
 import {editDate} from "../../../common/utils/edit-date";
 import DeleteIcon from '@mui/icons-material/Delete';
-import NotListedLocationIcon from '@mui/icons-material/NotListedLocation';
-import SupportAgentIcon from '@mui/icons-material/SupportAgent';
-import {findStyles} from "../../../common/themes/themeMaterialUi";
 import {BackToLink} from "../../../common/components/BackToLink/BackToLink";
+import TableHeadComponent from "./TableHeadComponent/TableHeadComponent";
+import SearchComponent from "./SearchComponent/SearchComponent";
+
+
+export type Order = 'asc' | 'desc';
 
 const Cards = () => {
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
@@ -34,48 +33,38 @@ const Cards = () => {
   const {packId, packName, userId} = useParams()
   console.log(packName)
   const compareIdForDraw = userId === user_Id
+  const [order, setOrder] = React.useState<Order>('asc');
+  const orderBy = 'name'
   const [pageNum, setPage] = useState(page);
   const [searchValue, setSearchValue] = useState('')
   const [searchBy, setSearchBy] = useState(true);
-
+  const [rowsPerPage, setRowsPerPage] = useState(pageCount);
 
   useEffect(() => {
     if (!isLoggedIn) {
       return;
     }
-    packId && dispatch(fetchCardsTC({cardsPack_id: packId}));
+    packId && dispatch(fetchCardsTC({cardsPack_id: packId, pageCount: 5}));
   }, []);
 
   //modal window settings
   const [open, setOpen] = useState(false);
-  // const handleOpen = () => {
-  //   setOpen(true)
-  // };
   const handleClose = (cardId: string) => {
     setOpen(false)
     dispatch(updateCardTC({_id: cardId, answer: 'What?', question: 'Ok!'}))
   };
 
-  const handleToggle = () => {
-    setSearchBy(!searchBy)
-    setSearchValue('')
-    searchDebounce('');
-  };
-
-  const searchHandler = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    searchDebounce(e.currentTarget.value.toLowerCase());
-    setSearchValue(e.currentTarget.value.toLowerCase())
-  };
-
-  //pagination
+  //==========================PAGINATION=====================
   const pageChangeHandler = (page: number) => {
     packId && dispatch(fetchCardsTC({cardsPack_id: packId, page}));
     setPage(page);
   };
 
-  //CRUD
+  const itemsPerPageHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+    setRowsPerPage(+e.target.value)
+    packId && dispatch(fetchCardsTC({cardsPack_id: packId, page: pageNum, pageCount: +e.target.value}))
+  }
+  //==============================CRUD=======================
   const addNewCardHandler = () => {
     packId && dispatch(addCardTC({
       card: {
@@ -92,6 +81,19 @@ const Cards = () => {
   const emptyRows =
     page > 1 ? Math.max(0, page * pageCount - cardsTotalCount) : 0;
 
+ //==================DEBOUNCE AND SEARCH======================
+  const handleToggle = () => {
+    setSearchBy(!searchBy)
+    setSearchValue('')
+    searchDebounce('');
+  };
+
+  const searchHandler = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    searchDebounce(e.currentTarget.value.toLowerCase());
+    setSearchValue(e.currentTarget.value.toLowerCase())
+  };
 
   const searchDebounce = useCallback(
     debounce((str: string) => {
@@ -104,9 +106,22 @@ const Cards = () => {
     [searchBy]
   );
 
+  //===========================SORT=======================
+  const handleRequestSort = (
+    id: string,
+  ) => {
+    const isAsc = orderBy === id && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    if (isAsc) {
+      packId && dispatch(fetchCardsTC({cardsPack_id: packId, sortCards: "1grade"}))
+    } else {
+      packId && dispatch(fetchCardsTC({cardsPack_id: packId, sortCards: "0grade"}))
+    }
+  };
+
   return (
     <div className={s.wrapper}>
-      <BackToLink />
+      <BackToLink/>
       <div className={s.wrapper__header}>
         <h2 className={s.wrapper__title}>{packName}</h2>
         <button className={s.wrapper__btn}
@@ -114,46 +129,21 @@ const Cards = () => {
       </div>
       <div className={s.search}>
         <div className={s.title}> {searchBy ? 'Searching for the question' : 'Searching for the answer'}</div>
-        <div className={s.password}>
-          <TextField
-            variant="outlined"
-            sx={{width: "100%"}}
-            placeholder="Type some text"
-            onChange={searchHandler}
-            value={searchValue}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon/>
-                </InputAdornment>
-              ),
-            }}
-          />
-          {searchBy ? (
-            <SupportAgentIcon fontSize="large" sx={findStyles} onClick={handleToggle} />
-          ) : (
-            <NotListedLocationIcon fontSize="large" sx={findStyles} onClick={handleToggle} />
-          )}
-        </div>
+        <SearchComponent
+          searchBy={searchBy}
+          value={searchValue}
+          onChange={searchHandler}
+          onClick={handleToggle}
+        />
       </div>
-      { name === packName ? (cards.length ?  <TableContainer className={s.container}>
+      {name === packName ? (cards.length ? <TableContainer className={s.container}>
         <Table aria-label="simple table">
-          <TableHead>
-            <TableRow className={s.mainRow}>
-              <TableCell className={s.cell} align="center">
-                Question
-              </TableCell>
-              <TableCell className={s.cell} align="center">
-                Answer
-              </TableCell>
-              <TableCell className={s.cell} align="center">
-                Last Updated
-              </TableCell>
-              <TableCell className={s.cell} align="center">
-                Grade
-              </TableCell>
-            </TableRow>
-          </TableHead>
+          <TableHeadComponent
+            order={order}
+            orderBy={orderBy}
+            compareIdForDraw={compareIdForDraw}
+            onRequestSort={handleRequestSort}
+          />
           <TableBody>
             {cards.map((card) => {
               return (
@@ -180,25 +170,6 @@ const Cards = () => {
                         sx={{marginRight: "20px"}}
                         onClick={() => handleClose(card._id)}
                       />
-                      {/*<Modals*/}
-                      {/*  open={open}*/}
-                      {/*  onClose={() => {*/}
-                      {/*    console.log(card._id)*/}
-                      {/*    handleClose(card._id)}*/}
-                      {/*}*/}
-                      {/*  aria-labelledby="modal-modal-title"*/}
-                      {/*  aria-describedby="modal-modal-description"*/}
-                      {/*>*/}
-                      {/*  <Box sx={modalStyle}>*/}
-                      {/*    <h4>Change the question?</h4>*/}
-                      {/*    <TextField value={""} />*/}
-                      {/*    <h4>Change the answer?</h4>*/}
-                      {/*    <TextField value={""} />*/}
-                      {/*  </Box>*/}
-                      {/*</Modals>*/}
-                      {/*<button onClick={() => {*/}
-                      {/*  removeCardHandler(card._id)*/}
-                      {/*}}></button>*/}
                       <DeleteIcon onClick={() =>
                         removeCardHandler(card._id)}/>
                     </TableCell>
@@ -212,17 +183,21 @@ const Cards = () => {
               </TableRow>
             )}
           </TableBody>
-          <TableFooter sx={{borderTop: "1px solid lightgrey"}}>
-            <TableRow>
-              <PaginateComponent
-                page={pageNum}
-                setPage={pageChangeHandler}
-                count={Math.ceil(cardsTotalCount / pageCount)}
-              />
-            </TableRow>
-          </TableFooter>
         </Table>
       </TableContainer> : <h2>Nothing was found</h2>) : <div></div>}
+      <div className={s.pagination}>
+        <div className={s.itemsCount}>Items per page</div>
+        <select className={s.itemsAmount} onChange={itemsPerPageHandler}>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+        </select>
+        <PaginateComponent
+          page={page}
+          setPage={pageChangeHandler}
+          count={Math.ceil(cardsTotalCount / rowsPerPage)}
+        />
+      </div>
     </div>
   );
 };

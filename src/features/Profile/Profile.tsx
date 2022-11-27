@@ -30,7 +30,6 @@ export const Profile = () => {
   const status = useAppSelector((state) => state.app.status);
 
 
-  // нужно добавить проверку на размер аватара
   const minFileSize = 400000;
 
   const uploadHandlerAvatar = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -53,7 +52,7 @@ export const Profile = () => {
     <div className={s.container}>
       <BackToLink />
       <Paper elevation={1} className={s.paper + ' ' + s.common}>
-        <h2 className={s.title}>_Personal Information</h2>
+        <h2 className={s.title}>Personal Information</h2>
         <div className={s.avatar}>
           <img src={avatar ? avatar : avatar} alt="Profile photo" />
           <div className={s.addPhoto + ' ' + s.common}>

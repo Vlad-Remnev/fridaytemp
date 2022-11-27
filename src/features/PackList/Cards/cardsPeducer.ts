@@ -15,7 +15,7 @@ const initialState = {
   packCreated: "2021-04-21T13:14:24.464Z",
   packUpdated: "2021-07-10T15:35:42.016Z",
   page: 1,
-  pageCount: 4,
+  pageCount: 5,
   cardsTotalCount: 30,
   minGrade: 0,
   maxGrade: 6,
