@@ -46,7 +46,11 @@ export const cardsAPI = {
 
   updateCard(data: UpdateCardPutType) {
     return instance.put(`/cards/card`, {card: data})
-  }
+  },
+
+  setRatingCard(data: SetRatingCardPutType) {
+    return instance.put(`/cards/grade`, data)
+  },
 };
 
 export const authAPI = {
@@ -108,17 +112,30 @@ export type CardType = {
   question: string
   grade: number
   shots: number
-  questionImg: string
-  answerImg: string
-  answerVideo: string
-  questionVideo: string
-  comments: string
-  type: string
-  rating: number
-  more_id: string
+  questionImg?: string
+  answerImg?: string
+  answerVideo?: string
+  questionVideo?: string
+  comments?: string
+  type?: string
+  rating?: number
+  more_id?: string
+  created?: string
+  updated?: string
+  __v?: number
+}
+export type SetRatingResponseType = {
+  card_id: string
+  cardsPack_id: string
   created: string
+  grade: number
+  more_id: string
+  shots: number
   updated: string
+  user_id: string
   __v: number
+  _id: string
+
 }
 export type UpdateCardsPackType = {
   _id: string;
@@ -127,6 +144,11 @@ export type UpdateCardsPackType = {
 export type UpdateCardPutType = {
   _id: string
 } & Partial<Omit<CardType, '_id'>>
+
+export type SetRatingCardPutType = {
+  card_id: string
+  grade: number | null
+}
 
 export type ResponsePacksType = {
   cardPacks: PackType[];

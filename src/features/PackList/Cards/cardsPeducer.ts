@@ -1,5 +1,12 @@
 import {AxiosError} from 'axios';
-import {cardsAPI, CardType, NewCardAddType, UpdateCardPutType} from "../../../app/appApi";
+import {
+  cardsAPI,
+  CardType,
+  NewCardAddType,
+  SetRatingCardPutType,
+  SetRatingResponseType,
+  UpdateCardPutType
+} from "../../../app/appApi";
 import {setAppStatusAC, SetAppStatusType} from "../../../app/appReducer";
 import {handleServerAppError} from "../../../common/utils/error-utils";
 import {Dispatch} from "redux";
@@ -7,7 +14,17 @@ import {AppThunkType} from "../../../app/store";
 import {addPackAC} from "../packsListReducer";
 
 const initialState = {
-  cards: [] as CardType[],
+  cards: [
+    {answer: "no answer",
+    question: "no question",
+    cardsPack_id: "5eb6a2f72f849402d46c6ac4",
+    grade: 4.987525071790364,
+    shots: 1,
+    user_id: "142151531535151",
+    created: "2020-05-13T11:05:44.867Z",
+    updated: "2020-05-13T11:05:44.867Z",
+    _id: "5ebbd48876810f1ad0e7ece3adwadawd"}
+] as CardType[],
   packUserId: "607e82d176b4881da8c02a16",
   packName: "React",
   packPrivate: false,
@@ -43,6 +60,11 @@ export const cardsReducer = (
           el._id === action.payload.updateData._id
             ? {...el, question: action.payload.updateData.question, answer: action.payload.updateData.answer}
             : el )}
+    case 'cards/SET_RATING_CARD':
+      return {...state, cards: state.cards.map(el =>
+          el._id === action.payload.updatedGrade.card_id
+            ? {...el, grade: action.payload.updatedGrade.grade}
+            : el )}
     default:
       return state;
   }
@@ -77,6 +99,12 @@ export const updateCardAC = (updateData: CardType) => {
   } as const;
 };
 
+export const setRatingCardAC = (updatedGrade: SetRatingResponseType) => {
+  return {
+    type: 'cards/SET_RATING_CARD',
+    payload: { updatedGrade },
+  } as const;
+};
 // Thunks
 export const fetchCardsTC = (domainModel: fetchDomainCardsModelType) => async (
   dispatch: Dispatch<ActionCardsType>) => {
@@ -125,18 +153,31 @@ export const updateCardTC = (updateData:UpdateCardPutType):AppThunkType => async
   }
 }
 
+export const setCardTC = (updateData:SetRatingCardPutType):AppThunkType => async (dispatch) => {
+  dispatch(setAppStatusAC('loading'));
+  try {
+    const res = await cardsAPI.setRatingCard(updateData)
+    dispatch(setRatingCardAC(res.data.updatedGrade))
+    dispatch(setAppStatusAC('succeeded'))
+  } catch (e) {
+    handleServerAppError(e as Error | AxiosError, dispatch)
+  }
+}
+
 // Types
 type SetCardsType = ReturnType<typeof setCardsAC>;
 type AddCardType = ReturnType<typeof addCardAC>;
 type RemoveCardType = ReturnType<typeof removeCardAC>
 type UpdateCardType = ReturnType<typeof updateCardAC>
+type SetRatingCardType = ReturnType<typeof setRatingCardAC>
 type CardsStateType = typeof initialState;
 
 export type ActionCardsType = SetCardsType
   | AddCardType
   | SetAppStatusType
   | RemoveCardType
-  | UpdateCardType;
+  | UpdateCardType
+  | SetRatingCardType;
 
 export type fetchDomainCardsModelType = {
   cardAnswer?: string

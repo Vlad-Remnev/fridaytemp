@@ -12,7 +12,7 @@ type SearchComponentType = {
   value: string
   onClick: () => void
 }
-const SearchComponent = ({searchBy, value, onChange, onClick}: SearchComponentType) => {
+export const SearchComponent = ({searchBy, value, onChange, onClick}: SearchComponentType) => {
   return (
     <div className={s.password}>
       <TextField
@@ -37,5 +37,3 @@ const SearchComponent = ({searchBy, value, onChange, onClick}: SearchComponentTy
     </div>
   );
 };
-
-export default SearchComponent;

@@ -14,7 +14,7 @@ type TableHeadComponentType = {
   compareIdForDraw: boolean
 }
 
-const TableHeadComponent = ({onRequestSort, compareIdForDraw, orderBy, order}: TableHeadComponentType) => {
+export const TableHeadComponent = ({onRequestSort, compareIdForDraw, orderBy, order}: TableHeadComponentType) => {
   return (
     <TableHead>
       <TableRow className={s.mainRow}>
@@ -41,5 +41,3 @@ const TableHeadComponent = ({onRequestSort, compareIdForDraw, orderBy, order}: T
     </TableHead>
   );
 };
-
-export default TableHeadComponent;

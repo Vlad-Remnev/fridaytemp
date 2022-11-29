@@ -33,4 +33,5 @@ export const findStyles = {
   position: 'absolute',
   top: '12px',
   right: '20px',
+  cursor: 'pointer'
 };
