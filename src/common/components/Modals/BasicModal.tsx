@@ -1,6 +1,5 @@
 import React, {FC, ReactNode, useState} from "react";
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 
 const style = {
@@ -12,21 +11,21 @@ const style = {
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
-    p: 4,
 };
 
 type BasicModalType = {
-    children : ReactNode
+    children : (handleClose:()=>void)=>JSX.Element
+    children2: ReactNode
 }
 
-export const BasicModal:FC<BasicModalType> = ({children}) => {
+export const BasicModal:FC<BasicModalType> = ({children, children2}) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     return (
         <div>
-            <Button onClick={handleOpen}>Add new pack</Button>
+            <div onClick={handleOpen}>{children2}</div>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -34,7 +33,7 @@ export const BasicModal:FC<BasicModalType> = ({children}) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    {children}
+                    {children(handleClose)}
                 </Box>
             </Modal>
         </div>
