@@ -28,7 +28,6 @@ export enum ROUTS {
   CARDS = "/cards/:packId/:userId/:packName",
   NOT_FOUND = "*",
 }
-// `/cards/?cardsPack_id=${packId}&user_id=${userId}&name=${packName}`
 export function App() {
   const dispatch = useDispatch<AppDispatchType>();
   const isInitialized = useAppSelector((state) => state.app.isInitialized);

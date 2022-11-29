@@ -52,7 +52,7 @@ const Cards = () => {
 
   //==========================PAGINATION=====================
   const pageChangeHandler = (page: number) => {
-    packId && dispatch(fetchCardsTC({cardsPack_id: packId, page}));
+    packId && dispatch(fetchCardsTC({cardsPack_id: packId, page, pageCount: rowsPerPage}));
     setPage(page);
   };
 
@@ -72,7 +72,7 @@ const Cards = () => {
   }
 
   const removeCardHandler = (cardId: string) => {
-    packId && dispatch(removeCardTC(cardId, {cardsPack_id: packId}))
+    packId && dispatch(removeCardTC(cardId, {cardsPack_id: packId, pageCount: rowsPerPage}))
   }
 
   const emptyRows =
@@ -95,9 +95,9 @@ const Cards = () => {
   const searchDebounce = useCallback(
     debounce((str: string) => {
       if (searchBy) {
-        packId && dispatch(fetchCardsTC({cardsPack_id: packId, cardQuestion: str}));
+        packId && dispatch(fetchCardsTC({cardsPack_id: packId, cardQuestion: str, pageCount: rowsPerPage}));
       } else {
-        packId && dispatch(fetchCardsTC({cardsPack_id: packId, cardAnswer: str}));
+        packId && dispatch(fetchCardsTC({cardsPack_id: packId, cardAnswer: str, pageCount: rowsPerPage}));
       }
       setDraw(draw + 1)
     }, 750),
@@ -115,9 +115,9 @@ const Cards = () => {
     const isAsc = orderBy === id && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     if (isAsc) {
-      packId && dispatch(fetchCardsTC({cardsPack_id: packId, sortCards: "1grade"}))
+      packId && dispatch(fetchCardsTC({cardsPack_id: packId, sortCards: "1grade", pageCount: rowsPerPage}))
     } else {
-      packId && dispatch(fetchCardsTC({cardsPack_id: packId, sortCards: "0grade"}))
+      packId && dispatch(fetchCardsTC({cardsPack_id: packId, sortCards: "0grade", pageCount: rowsPerPage}))
     }
   };
   const buttonName = compareIdForDraw ? 'Add new card' : 'Learn to pack'
