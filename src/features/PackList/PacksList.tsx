@@ -19,8 +19,8 @@ import PaginateComponent from "../../common/components/PaginateComponent/Paginat
 import {AppDispatchType, useAppSelector} from "../../app/store";
 import {Pack} from "./Pack/Pack";
 import {useDispatch} from "react-redux";
-import {addPackTC, fetchPacksTC, removePackTC, updatePackTC} from './packsListReducer';
-import {cardsPackType, UpdateCardsPackType} from '../../app/appApi';
+import {fetchPacksTC, removePackTC, updatePackTC} from './packsListReducer';
+import {UpdateCardsPackType} from '../../app/appApi';
 import {AddModal} from "../../common/components/Modals/AddModal/AddModal";
 
 export const PacksList = React.memo(() => {
@@ -42,18 +42,18 @@ export const PacksList = React.memo(() => {
 
     //CRUD CARD PACK
 
-    const addNewPack = (cardPack: cardsPackType) => {
-        dispatch(addPackTC(cardPack))
-    }
+    // const addNewPack = (cardPack: cardsPackType) => {
+    //     dispatch(addPackTC(cardPack))
+    // }
     const removePack = (packId: string) => {
         dispatch(removePackTC(packId))
     }
     const updatePack = (updateData: UpdateCardsPackType) => {
         dispatch(updatePackTC(updateData))
     }
-    const addNewPackHandler = () => {
-        addNewPack({cardsPack: {name: 'New Pack'}})
-    }
+    // const addNewPackHandler = () => {
+    //     addNewPack({cardsPack: {name: 'New Pack'}})
+    // }
 
 
     //USE EFFECT
@@ -152,8 +152,7 @@ export const PacksList = React.memo(() => {
         <div className={s.wrapper}>
             <div className={s.wrapper__header}>
                 <h2 className={s.wrapper__title}>Packs list</h2>
-                <button className={s.wrapper__btn} onClick={addNewPackHandler}>Add new pack</button>
-                {/*<AddModal />*/}
+                <AddModal />
             </div>
             <div className={s.header}>
                 <div className={s.search}>

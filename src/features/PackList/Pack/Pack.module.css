@@ -1,0 +1,7 @@
+.pack {
+    transition: 0.3s;
+}
+
+.pack:hover {
+    background: #e4e4e4;
+}

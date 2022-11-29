@@ -19,7 +19,7 @@ export const packListAPI = {
   },
 
   createPack(cardsPack: cardsPackType) {
-    return instance.post<{newCardsPack: PackType}>(`/cards/pack`, { cardsPack });
+    return instance.post<{newCardsPack: PackType}>(`/cards/pack`, {cardsPack} );
   },
 
   deletePack(packId: string) {
@@ -163,11 +163,9 @@ export type InitStateType = {
 export type SortPacksType = "0updated" | "1updated";
 
 export type cardsPackType = {
-  cardsPack: {
     name?: string;
     deckCover?: string;
     private?: boolean;
-  }
 };
 
 export type NewCardAddType = {

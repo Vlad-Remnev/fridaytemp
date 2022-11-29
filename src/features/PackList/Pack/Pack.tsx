@@ -1,12 +1,13 @@
 import React, { FC } from "react";
+import s from './Pack.module.css'
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import SchoolIcon from "@mui/icons-material/School";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { UpdateCardsPackType } from '../../../app/appApi';
 import {editDate} from "../../../common/utils/edit-date";
 import {useNavigate} from "react-router-dom";
+import {EditModal} from "../../../common/components/Modals/EditModal/EditModal";
+import DeleteModal from "../../../common/components/Modals/DeleteModal/DeleteModal";
 
 
 type PackPropsType = {
@@ -37,18 +38,13 @@ export const Pack: FC<PackPropsType> = ({
 
 }) => {
   const navigate = useNavigate()
-  const removePackHandler = () => {
-    removePack(packId)
-  }
-  const updatePackHandler = () => {
-    updatePack({_id: packId, name: 'New Update Name'})
-  }
-const navigateHandler = () => {
+  const navigateHandler = () => {
   navigate(`/cards/${packId}/${userId}/${packName}`)
-}
+  }
+
   return (
     <>
-      <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+      <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 }}} className={s.pack}>
         <TableCell component="th" scope="row" align="center" onClick={navigateHandler} sx={{cursor: 'pointer'}}>
           {packName}
         </TableCell>
@@ -56,10 +52,10 @@ const navigateHandler = () => {
         <TableCell align="center">{editDate(lastUpdated)}</TableCell>
         <TableCell align="center">{createdUserName}</TableCell>
         {userId === mainUserId ? (
-          <TableCell align="center">
+          <TableCell align="center" sx={{display: 'flex', justifyContent: 'center'}}>
             <SchoolIcon sx={{ marginRight: "20px" }} />
-            <BorderColorIcon onClick={updatePackHandler} sx={{ marginRight: "20px" }} />
-            <DeleteIcon onClick={removePackHandler} />
+            <EditModal id={packId}/>
+            <DeleteModal id={packId} name={packName}/>
           </TableCell>
         ) : (
           <TableCell align="center">

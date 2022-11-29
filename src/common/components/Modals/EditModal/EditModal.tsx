@@ -1,14 +1,19 @@
-import React, {ChangeEvent, useState} from 'react';
-import s from './AddModal.module.css'
+import React, {ChangeEvent, FC, useState} from 'react';
+import s from './EditModal.module.css'
 import {BasicModal} from "../BasicModal";
 import {useDispatch} from "react-redux";
 import {AppDispatchType} from "../../../../app/store";
-import {addPackTC} from "../../../../features/PackList/packsListReducer";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import {updatePackTC} from "../../../../features/PackList/packsListReducer";
 
-export const AddModal = () => {
+type EditModalType = {
+    id: string
+}
+
+export const EditModal:FC<EditModalType> = ({id}) => {
     const [name, setName] = useState('')
     const [privat, setPrivat] = useState(false)
     const dispatch = useDispatch<AppDispatchType>();
@@ -17,17 +22,17 @@ export const AddModal = () => {
         setName(e.currentTarget.value)
     }
 
-    const addPackHandler = (handleClose: () => void) => {
-        dispatch(addPackTC({name, private: privat}))
+    const updatePack = (handleClose: () => void) => {
+        dispatch(updatePackTC({_id: id, name, private: privat}))
         setName('')
         handleClose()
     }
 
     return (
-        <BasicModal children2={<button className={s.wrapper__btn}>Add new pack</button>}>
+        <BasicModal children2={<BorderColorIcon sx={{ marginRight: "20px" }} />}>
             {(handleClose) => <>
                 <div className={s.header}>
-                    <div>Add new pack</div>
+                    <div>Edit pack</div>
                     <div onClick={handleClose}>X</div>
                 </div>
                 <div>
@@ -42,7 +47,7 @@ export const AddModal = () => {
                     </div>
                     <div className={s.btnGroup}>
                         <button className={s.cancelBtn} onClick={handleClose}>Cancel</button>
-                        <button className={s.saveBtn} onClick={() => addPackHandler(handleClose)}>Save</button>
+                        <button className={s.saveBtn} onClick={() => updatePack(handleClose)}>Save</button>
                     </div>
                 </div>
             </>
