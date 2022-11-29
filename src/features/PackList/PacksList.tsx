@@ -152,8 +152,8 @@ export const PacksList = React.memo(() => {
         <div className={s.wrapper}>
             <div className={s.wrapper__header}>
                 <h2 className={s.wrapper__title}>Packs list</h2>
-                <button className={s.wrapper__btn} onClick={addNewPackHandler}>Add new pack</button>
-                {/*<AddModal />*/}
+                {/*<button className={s.wrapper__btn} onClick={addNewPackHandler}>Add new pack</button>*/}
+                <AddModal />
             </div>
             <div className={s.header}>
                 <div className={s.search}>
