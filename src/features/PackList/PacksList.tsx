@@ -19,7 +19,7 @@ import PaginateComponent from "../../common/components/PaginateComponent/Paginat
 import {AppDispatchType, useAppSelector} from "../../app/store";
 import {Pack} from "./Pack/Pack";
 import {useDispatch} from "react-redux";
-import {fetchPacksTC, removePackTC, updatePackTC} from './packsListReducer';
+import {fetchPacksTC, isUserPacksAC, removePackTC, updatePackTC} from './packsListReducer';
 import {UpdateCardsPackType} from '../../app/appApi';
 import {AddModal} from "../../common/components/Modals/AddModal/AddModal";
 
@@ -131,18 +131,20 @@ export const PacksList = React.memo(() => {
     };
 
     const filterByUser = () => {
-        setBtnColor(false);
-        dispatch(fetchPacksTC({page, min: value[0], max: value[1], packName: searchValue, user_id: user_Id}))
+        setBtnColor(true);
+        dispatch(isUserPacksAC(true))
+        dispatch(fetchPacksTC({page, min: value[0], max: value[1], packName: searchValue, user_id: user_Id, pageCount: rowsPerPage}))
     };
 
     const filterByAll = () => {
-        dispatch(fetchPacksTC({page, min: value[0], max: value[1], packName: searchValue}))
         setBtnColor(true);
+        dispatch(isUserPacksAC(false))
+        dispatch(fetchPacksTC({page, min: value[0], max: value[1], packName: searchValue, pageCount: rowsPerPage}))
     };
 
     const indexOfLastPage = page * rowsPerPage;
     const indexOfFirstPage = indexOfLastPage - rowsPerPage;
-    const currentPosts = packs.cardPacks.slice(indexOfFirstPage, indexOfLastPage);
+    // const currentPosts = packs.cardPacks.slice(indexOfFirstPage, indexOfLastPage);
     const itemsPerPageHandler = (e: ChangeEvent<HTMLSelectElement>) => {
         setRowsPerPage(+e.target.value)
         dispatch(fetchPacksTC({page, min: value[0], max: value[1], packName: searchValue, pageCount: +e.target.value}))
