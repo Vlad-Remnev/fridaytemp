@@ -28,7 +28,8 @@ export const packListAPI = {
 
   updatePack(data: UpdateCardsPackType) {
     return instance.put<{updatedCardsPack: PackType}>(`/cards/pack`, {cardsPack: data})
-  }
+  },
+
 };
 
 export const cardsAPI = {

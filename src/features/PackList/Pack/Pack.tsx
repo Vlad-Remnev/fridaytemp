@@ -8,6 +8,8 @@ import {editDate} from "../../../common/utils/edit-date";
 import {useNavigate} from "react-router-dom";
 import {EditModal} from "../../../common/components/Modals/EditModal/EditModal";
 import DeleteModal from "../../../common/components/Modals/DeleteModal/DeleteModal";
+import { useDispatch } from 'react-redux';
+import { AppDispatchType, useAppSelector } from '../../../app/store';
 
 
 type PackPropsType = {
@@ -42,6 +44,15 @@ export const Pack: FC<PackPropsType> = ({
   navigate(`/cards/${packId}/${userId}/${packName}`)
   }
 
+  const dispatch = useDispatch<AppDispatchType>();
+  const cards = useAppSelector(state => state.cards)
+
+  const learnPackHandler = () => {
+    dispatch(setCardsAC({...cards, cards: []}))
+
+    navigate(`/learn/${packId}/${userId}/${packName}`)
+  }
+
   return (
     <>
       <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 }}} className={s.pack}>
@@ -53,7 +64,7 @@ export const Pack: FC<PackPropsType> = ({
         <TableCell align="center">{createdUserName}</TableCell>
         {userId === mainUserId ? (
           <TableCell align="center" sx={{display: 'flex', justifyContent: 'center'}}>
-            <SchoolIcon sx={{ marginRight: "20px" }} />
+            <SchoolIcon onClick={learnPackHandler} sx={{ marginRight: "20px" }} />
             <EditModal id={packId}/>
             <DeleteModal id={packId} name={packName}/>
           </TableCell>

@@ -15,6 +15,7 @@ import { CheckEmail } from "../features/Login/CheckEmail/CheckEmail";
 import { Login } from "../features/Login/SignIn/SignIn";
 import Cards from "../features/PackList/Cards/Cards";
 import { PacksList } from "../features/PackList/PacksList";
+import { Learn } from '../features/Learn/Learn';
 
 export enum ROUTS {
   DEFAULT = "/",
@@ -24,9 +25,10 @@ export enum ROUTS {
   REGISTRATION = "/registration",
   CHECK_EMAIL = "/checkEmail",
   PACK_LIST = "/packList",
-  CARDSWITHOUTPARAMS = "/cards",
+  CARDS_WITHOUT_PARAMS = "/cards",
   CARDS = "/cards/:packId/:userId/:packName",
   NOT_FOUND = "*",
+  LEARN = "/learn",
 }
 export function App() {
   const dispatch = useDispatch<AppDispatchType>();
@@ -70,8 +72,13 @@ export function App() {
           <Route path={ROUTS.CHECK_EMAIL} element={<CheckEmail />} />
           <Route path={ROUTS.PACK_LIST} element={<PacksList />} />
           <Route path={ROUTS.NOT_FOUND} element={<Error404 />} />
-          <Route path={ROUTS.CARDSWITHOUTPARAMS} element={<Cards />} >
+          <Route path={ROUTS.CARDS_WITHOUT_PARAMS} element={<Cards />} >
             <Route path={`:packId/:userId/:packName`} element={<Cards />} />
+          </Route>
+
+
+          <Route path={ROUTS.LEARN} element={<Learn/>}>
+            <Route path={`:packId/:userId/:packName`} element={<Learn/>}/>
           </Route>
         </Routes>
       </div>
