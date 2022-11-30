@@ -1,13 +1,13 @@
 import React, {ChangeEvent, FC, useState} from 'react';
 import s from './EditModal.module.css'
-import {BasicModal} from "../BasicModal";
+import {BasicModal} from "../../BasicModal";
 import {useDispatch} from "react-redux";
-import {AppDispatchType} from "../../../../app/store";
+import {AppDispatchType} from "../../../../../app/store";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-import {updatePackTC} from "../../../../features/PackList/packsListReducer";
+import {updatePackTC} from "../../../../../features/PackList/packsListReducer";
 
 type EditModalType = {
     id: string

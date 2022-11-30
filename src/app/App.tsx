@@ -24,8 +24,7 @@ export enum ROUTS {
   REGISTRATION = "/registration",
   CHECK_EMAIL = "/checkEmail",
   PACK_LIST = "/packList",
-  CARDSWITHOUTPARAMS = "/cards",
-  CARDS = "/cards/:packId/:userId/:packName",
+  CARDS_WITHOUT_PARAMS = "/cards",
   NOT_FOUND = "*",
 }
 export function App() {
@@ -70,7 +69,7 @@ export function App() {
           <Route path={ROUTS.CHECK_EMAIL} element={<CheckEmail />} />
           <Route path={ROUTS.PACK_LIST} element={<PacksList />} />
           <Route path={ROUTS.NOT_FOUND} element={<Error404 />} />
-          <Route path={ROUTS.CARDSWITHOUTPARAMS} element={<Cards />} >
+          <Route path={ROUTS.CARDS_WITHOUT_PARAMS} element={<Cards />} >
             <Route path={`:packId/:userId/:packName`} element={<Cards />} />
           </Route>
         </Routes>

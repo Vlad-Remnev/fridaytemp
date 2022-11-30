@@ -20,6 +20,7 @@ const initialState = {
     maxCardsCount: 110,
     user_id: '',
     token: '',
+    entityStatus: "",
     isUserPacks: false
 };
 
@@ -32,6 +33,7 @@ export const packsListReducer = (
             return {
                 ...state,
                 ...action.payload.cardsPack,
+                page: action.payload.cardsPack.page,
                 cardPacks: action.payload.cardsPack.cardPacks.map((el) => ({...el})),
             };
         case 'packList/ADD_PACK':
@@ -48,6 +50,10 @@ export const packsListReducer = (
         case "packList/IS_USER_PACKS":
             return {
                 ...state, isUserPacks: action.payload.isUserPacks
+            }
+        case "packList/ENTITY_STATUS_CHANGE":
+            return {
+                ...state, entityStatus: action.payload.entityStatus
             }
         default:
             return state;
@@ -83,8 +89,14 @@ export const isUserPacksAC = (isUserPacks: boolean) => {
     return {
         type: 'packList/IS_USER_PACKS',
         payload: {isUserPacks}
-    } as const
-}
+    } as const;
+};
+export const entityStatusAC = (entityStatus: string) => {
+    return {
+        type: 'packList/ENTITY_STATUS_CHANGE',
+        payload: {entityStatus}
+    } as const;
+};
 
 
 // Thunks
@@ -99,45 +111,65 @@ export const fetchPacksTC = (domainModel: fetchDomainPacksModelType = {}): AppTh
         } else {
             res = await packListAPI.getPack(domainModel);
         }
+        if (res.data.cardPacks.length < 1) dispatch(entityStatusAC("Search field is incorrect, packs not found"))
+        else dispatch(entityStatusAC(""))
         dispatch(setPacksAC(res.data));
         dispatch(setAppStatusAC('succeeded'));
     } catch (e) {
         handleServerAppError(e as Error | AxiosError, dispatch)
     }
 };
-export const addPackTC = (cardsPack: cardsPackType): AppThunkType => async (dispatch, getState) => {
+export const addPackTC = (cardsPack: cardsPackType, page: number): AppThunkType => async (dispatch, getState) => {
     const userId = getState().profile.userData._id
     const isUserPacks = getState().packsList.isUserPacks
+    const pageCount = getState().packsList.pageCount
     dispatch(setAppStatusAC('loading'));
     try {
         const res = await packListAPI.createPack(cardsPack)
         dispatch(addPackAC(res.data.newCardsPack))
-        if(isUserPacks) {
-            dispatch(fetchPacksTC({user_id: userId}))
+        if (isUserPacks) {
+            dispatch(fetchPacksTC({user_id: userId, pageCount}))
         } else {
-            dispatch(fetchPacksTC())
+            dispatch(fetchPacksTC({pageCount}))
         }
         dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
         handleServerAppError(e as Error | AxiosError, dispatch)
     }
 };
-export const removePackTC = (packId: string): AppThunkType => async (dispatch) => {
+export const removePackTC = (packId: string): AppThunkType => async (dispatch, getState) => {
+    const userId = getState().profile.userData._id
+    const isUserPacks = getState().packsList.isUserPacks
+    const page = getState().packsList.page
+    const pageCount = getState().packsList.pageCount
     dispatch(setAppStatusAC('loading'));
     try {
         await packListAPI.deletePack(packId)
         dispatch(removePackAC(packId))
-        dispatch(fetchPacksTC())
+        if (isUserPacks) {
+            dispatch(fetchPacksTC({user_id: userId, page, pageCount}))
+        } else {
+            dispatch(fetchPacksTC({page, pageCount}))
+        }
         dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
         handleServerAppError(e as Error | AxiosError, dispatch)
     }
 }
-export const updatePackTC = (updateData: UpdateCardsPackType): AppThunkType => async (dispatch) => {
+export const updatePackTC = (updateData: UpdateCardsPackType): AppThunkType => async (dispatch, getState) => {
+    const userId = getState().profile.userData._id
+    const isUserPacks = getState().packsList.isUserPacks
+    const page = getState().packsList.page
+    const pageCount = getState().packsList.pageCount
     dispatch(setAppStatusAC('loading'));
     try {
         const res = await packListAPI.updatePack(updateData)
         dispatch(updatePackAC(res.data.updatedCardsPack))
+        if (isUserPacks) {
+            dispatch(fetchPacksTC({user_id: userId, page, pageCount}))
+        } else {
+            dispatch(fetchPacksTC({page, pageCount}))
+        }
         dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
         handleServerAppError(e as Error | AxiosError, dispatch)
@@ -150,6 +182,7 @@ type AddPackType = ReturnType<typeof addPackAC>;
 type RemovePackType = ReturnType<typeof removePackAC>
 type UpdatePackType = ReturnType<typeof updatePackAC>
 type IsUserPackType = ReturnType<typeof isUserPacksAC>
+type EntityStatusType = ReturnType<typeof entityStatusAC>
 type PackStateType = typeof initialState;
 
 export type ActionPacksListType = SetPacksType
@@ -158,6 +191,7 @@ export type ActionPacksListType = SetPacksType
     | RemovePackType
     | UpdatePackType
     | IsUserPackType
+    | EntityStatusType
 
 export type fetchDomainPacksModelType = {
     packName?: string;

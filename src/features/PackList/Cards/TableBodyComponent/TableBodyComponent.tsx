@@ -8,9 +8,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Rating from "@mui/material/Rating";
 import {CardType} from "../../../../app/appApi";
 import s from './TableBodyComponent.module.css'
+import EditCardModal from "../../../../common/components/Modals/CardsModals/EditCardModal/EditCardModal";
+import DeleteCardModal from "../../../../common/components/Modals/CardsModals/DeleteCardModal/DeleteCardModal";
 
 type TableBodyComponentType = {
   cards: CardType[]
+  packId?: string
   compareIdForDraw: boolean
   handleClose: (cardId: string) => void
   removeCardHandler: (cardId: string) => void
@@ -20,7 +23,7 @@ type TableBodyComponentType = {
   setValueRating: (newValue: number | null, cardId: string) => void
 }
 
-export const TableBodyComponent = ({compareIdForDraw, emptyRows, handleClose, removeCardHandler, cards, name, packName, setValueRating}: TableBodyComponentType) => {
+export const TableBodyComponent = ({compareIdForDraw, emptyRows, handleClose, removeCardHandler, cards, name, packName, setValueRating, packId}: TableBodyComponentType) => {
   return (
     <TableBody className={name === packName ? '' : s.displayNone}>
       {cards.map((card) => {
@@ -44,13 +47,15 @@ export const TableBodyComponent = ({compareIdForDraw, emptyRows, handleClose, re
               />
             </TableCell>
             {compareIdForDraw && (
-              <TableCell align="center">
-                <BorderColorIcon
-                  sx={{marginRight: "20px", cursor: 'pointer'}}
-                  onClick={() => handleClose(card._id)}
-                />
-                <DeleteIcon sx={{ cursor: 'pointer'}} onClick={() =>
-                  removeCardHandler(card._id)}/>
+              <TableCell align="center" sx={{display: 'flex', justifyContent: 'center'}}>
+                {/*<BorderColorIcon*/}
+                {/*  sx={{marginRight: "20px", cursor: 'pointer'}}*/}
+                {/*  onClick={() => handleClose(card._id)}*/}
+                {/*/>*/}
+                <EditCardModal cardId={card._id}/>
+                <DeleteCardModal id={card._id} name={card.question} packId={packId}/>
+                {/*<DeleteIcon sx={{ cursor: 'pointer'}} onClick={() =>*/}
+                {/*  removeCardHandler(card._id)}/>*/}
               </TableCell>
             )}
           </TableRow>

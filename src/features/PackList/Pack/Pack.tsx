@@ -6,8 +6,8 @@ import SchoolIcon from "@mui/icons-material/School";
 import { UpdateCardsPackType } from '../../../app/appApi';
 import {editDate} from "../../../common/utils/edit-date";
 import {useNavigate} from "react-router-dom";
-import {EditModal} from "../../../common/components/Modals/EditModal/EditModal";
-import DeleteModal from "../../../common/components/Modals/DeleteModal/DeleteModal";
+import {EditModal} from "../../../common/components/Modals/PacksModals/EditModal/EditModal";
+import DeleteModal from "../../../common/components/Modals/PacksModals/DeleteModal/DeleteModal";
 
 
 type PackPropsType = {

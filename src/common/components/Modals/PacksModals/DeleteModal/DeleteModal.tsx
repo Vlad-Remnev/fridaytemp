@@ -2,9 +2,9 @@ import React, {FC} from 'react';
 import s from "./DeleteModal.module.css";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useDispatch} from "react-redux";
-import {AppDispatchType} from "../../../../app/store";
-import {BasicModal} from "../BasicModal";
-import {removePackTC} from "../../../../features/PackList/packsListReducer";
+import {AppDispatchType} from "../../../../../app/store";
+import {BasicModal} from "../../BasicModal";
+import {removePackTC} from "../../../../../features/PackList/packsListReducer";
 
 type DeleteModuleType = {
     id: string
