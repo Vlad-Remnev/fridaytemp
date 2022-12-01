@@ -203,12 +203,6 @@ export type NewCardAddType = {
     answerVideo?: string
   }
 }
-/*export type updateDataType = {
-  cardsPack: {
-    _id: string
-    name?: string
-  }
-}*/
 
 export type UserDataType = {
   _id: string;

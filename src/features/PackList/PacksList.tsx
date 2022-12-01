@@ -24,6 +24,7 @@ export const PacksList = () => {
   const user_Id = useAppSelector((state) => state.profile.userData._id);
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const dispatch = useDispatch<AppDispatchType>();
+  const status = useAppSelector(state => state.app.status)
 
   const [searchValue, setSearchValue] = useState("");
   const [btnColor, setBtnColor] = useState(false);
@@ -179,14 +180,14 @@ export const PacksList = () => {
     <div className={s.wrapper}>
       <div className={s.wrapper__header}>
         <h2 className={s.wrapper__title}>Packs list</h2>
-        <AddModal page={page}/>
+        <AddModal page={page} status={status}/>
       </div>
       <div className={s.header}>
         <div className={s.search}>
           <div className={s.title}>Search</div>
           <SearchPackComponent value={searchValue} onChange={searchHandler}/>
         </div>
-        <MyOrAllPacks btnColor={btnColor} filterByAll={filterByAll} filterByUser={filterByUser}/>
+        <MyOrAllPacks btnColor={btnColor} filterByAll={filterByAll} filterByUser={filterByUser} status={status}/>
         <div className={s.cardsRender}>
           <div className={s.title}>Number of cards</div>
           <DoubleRange packs={packs} value={value} setRangeOne={setRangeOne} setRangeTwo={setRangeTwo} handleChange={handleChange}/>

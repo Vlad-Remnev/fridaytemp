@@ -77,8 +77,8 @@ const AddCardModal: FC<AddCardModalType> = ({packId, rowsPerPage}) => {
                        onChange={changeAnswerNameHandler}/>
           </div>
           <div className={s.btnGroup}>
-            <button className={s.cancelBtn} onClick={handleClose}>Cancel</button>
-            <button className={s.saveBtn} onClick={() => addNewCardHandler(handleClose)}>Save</button>
+            <SuperButton className={s.cancelBtn} onClick={handleClose}>Cancel</SuperButton>
+            <SuperButton className={s.saveBtn} onClick={() => addNewCardHandler(handleClose)}>Save</SuperButton>
           </div>
         </div>
       </>

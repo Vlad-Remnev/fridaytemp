@@ -5,6 +5,7 @@ import {useDispatch} from "react-redux";
 import {AppDispatchType} from "../../../../../app/store";
 import {BasicModal} from "../../BasicModal";
 import {removeCardTC} from "../../../../../features/PackList/Cards/cardsPeducer";
+import SuperButton from "../../../SuperButton/SuperButton";
 
 type DeleteModuleType = {
   id: string
@@ -33,9 +34,9 @@ const DeleteCardModal: FC<DeleteModuleType> = ({id, name, packId, rowsPerPage}) 
             <div>All cards will be deleted.</div>
           </div>
           <div className={s.btnGroup}>
-            <button className={s.cancelBtn} onClick={handleClose}>Cancel</button>
-            <button className={s.deleteBtn} onClick={removePack}>Delete
-            </button>
+            <SuperButton className={s.cancelBtn} onClick={handleClose}>Cancel</SuperButton>
+            <SuperButton className={s.deleteBtn} onClick={removePack}>Delete
+            </SuperButton>
           </div>
         </div>
       </>
