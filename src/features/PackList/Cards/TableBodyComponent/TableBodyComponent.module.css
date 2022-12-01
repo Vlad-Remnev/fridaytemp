@@ -1,3 +1,11 @@
-.displayNone {
+.visibilityHidden {
     visibility: hidden;
+}
+
+.tableRow {
+    transition: 0.3s;
+}
+
+.tableRow:hover {
+    background: #e4e4e4;
 }

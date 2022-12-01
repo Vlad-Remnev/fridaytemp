@@ -14,10 +14,6 @@ import {SearchComponent} from "./SearchComponent/SearchComponent";
 import {TableBodyComponent} from "./TableBodyComponent/TableBodyComponent";
 import SuperButton from "../../../common/components/SuperButton/SuperButton";
 import {EmptyPackList} from "./EmptyPackList/EmptyPackList";
-import AddCardModal from "../../../common/components/Modals/CardsModals/AddCardModal/AddCardModal";
-import TableBody from "@mui/material/TableBody";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
 
 
 export type Order = 'asc' | 'desc';
@@ -54,26 +50,25 @@ const Cards = () => {
         dispatch(updateCardTC({_id: cardId, answer: 'What?', question: 'Ok!'}))
     };
 
-    //==========================PAGINATION=====================
-    const pageChangeHandler = (page: number) => {
-        packId && dispatch(fetchCardsTC({cardsPack_id: packId, page, pageCount: rowsPerPage}));
-        setPage(page);
-    };
+  //==========================PAGINATION=====================
+  const pageChangeHandler = (page: number) => {
+    packId && dispatch(fetchCardsTC({cardsPack_id: packId, page, pageCount: rowsPerPage}));
+  };
 
     const itemsPerPageHandler = (e: ChangeEvent<HTMLSelectElement>) => {
 
-        setRowsPerPage(+e.target.value)
-        packId && dispatch(fetchCardsTC({cardsPack_id: packId, pageCount: +e.target.value}))
-    }
-    //==============================CRUD=======================
-    const addNewCardHandler = () => {
-        packId && dispatch(addCardTC({
-            card: {
-                cardsPack_id: packId,
-                question: 'What is up?', answer: 'I am fine'
-            }
-        }))
-    }
+    setRowsPerPage(+e.target.value)
+    packId && dispatch(fetchCardsTC({cardsPack_id: packId, pageCount: +e.target.value}))
+  }
+  //==============================CRUD=======================
+  const addNewCardHandler = () => {
+    packId && dispatch(addCardTC({
+      card: {
+        cardsPack_id: packId,
+        question: 'What is up?', answer: 'I am fine'
+      },
+    }, {cardsPack_id: packId, pageCount: rowsPerPage}))
+  }
 
     const removeCardHandler = (cardId: string) => {
         packId && dispatch(removeCardTC(cardId, {cardsPack_id: packId, pageCount: rowsPerPage}))
