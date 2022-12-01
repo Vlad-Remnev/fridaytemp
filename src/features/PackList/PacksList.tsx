@@ -2,37 +2,45 @@ import React, {ChangeEvent, useCallback, useEffect, useState,} from "react";
 import s from "./PacksList.module.css";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import SearchIcon from "@mui/icons-material/Search";
-import {InputAdornment, Slider, TextField} from "@mui/material";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import debounce from "lodash.debounce";
 import PaginateComponent from "../../common/components/PaginateComponent/PaginateComponent";
 import {AppDispatchType, useAppSelector} from "../../app/store";
 import {Pack} from "./Pack/Pack";
 import {useDispatch} from "react-redux";
-import {entityStatusAC, fetchPacksTC, isUserPacksAC, removePackTC, updatePackTC} from './packsListReducer';
+import {fetchPacksTC, isUserPacksAC, removePackTC, updatePackTC} from './packsListReducer';
 import {UpdateCardsPackType} from '../../app/appApi';
 import {AddModal} from "../../common/components/Modals/PacksModals/AddModal/AddModal";
+import {TablePackHeadComponent} from "./TablePackHeadComponent/TablePackHeadComponent";
+import {Order} from "./Cards/Cards";
+import SearchPackComponent from "./SearchPackComponent/SearchPackComponent";
+import MyOrAllPacks from "./MyOrAllPacks/MyOrAllPacks";
+import DoubleRange from "./DoubleRange/DoubleRange";
 
-export const PacksList = React.memo(() => {
-    const packs = useAppSelector((state) => state.packsList);
-    const page = useAppSelector((state) => state.packsList.page);
-    const user_Id = useAppSelector((state) => state.profile.userData._id);
-    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
-    const dispatch = useDispatch<AppDispatchType>();
+export const PacksList = () => {
+  const packs = useAppSelector((state) => state.packsList);
+  const page = useAppSelector((state) => state.packsList.page);
+  const user_Id = useAppSelector((state) => state.profile.userData._id);
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  const dispatch = useDispatch<AppDispatchType>();
 
-    const [searchValue, setSearchValue] = useState("");
-    const [btnColor, setBtnColor] = useState(false);
-    const [value, setValue] = useState<number[]>([packs.minCardsCount, packs.maxCardsCount,]);
-    const [rowsPerPage, setRowsPerPage] = useState(packs.pageCount);
+  const [searchValue, setSearchValue] = useState("");
+  const [btnColor, setBtnColor] = useState(false);
+  const [value, setValue] = useState<number[]>([packs.minCardsCount, packs.maxCardsCount,]);
+  const [rowsPerPage, setRowsPerPage] = useState(packs.pageCount);
+  const [order, setOrder] = React.useState<Order>('asc');
+  const orderBy = 'name'
 
-    const pageChangeHandler = (pageNum: number) => {
-        dispatch(fetchPacksTC({page: pageNum, min: value[0], max: value[1], packName: searchValue, pageCount: rowsPerPage}));
-    };
+  const pageChangeHandler = (pageNum: number) => {
+    dispatch(fetchPacksTC({
+      page: pageNum,
+      min: value[0],
+      max: value[1],
+      packName: searchValue,
+      pageCount: rowsPerPage
+    }));
+  };
 
   //CRUD CARD PACK
 
@@ -109,12 +117,12 @@ export const PacksList = React.memo(() => {
     []
   );
 
-    const cardsFilterDebounce = useCallback(
-        debounce((num: number[]) => {
-            dispatch(fetchPacksTC({page: page, min: num[0], max: num[1], packName: searchValue}))
-        }, 750),
-        []
-    );
+  const cardsFilterDebounce = useCallback(
+    debounce((num: number[]) => {
+      dispatch(fetchPacksTC({page: page, min: num[0], max: num[1], packName: searchValue}))
+    }, 750),
+    []
+  );
 
   //search, sort tools
   const searchHandler = (
@@ -124,163 +132,112 @@ export const PacksList = React.memo(() => {
     searchDebounce(e.currentTarget.value.toLowerCase());
   };
 
-    const filterByUser = () => {
-        setBtnColor(true);
-        dispatch(isUserPacksAC(true))
-        dispatch(fetchPacksTC({page: page, min: value[0], max: value[1], packName: searchValue, user_id: user_Id, pageCount: rowsPerPage}))
-    };
+  const filterByUser = () => {
+    setBtnColor(true);
+    dispatch(isUserPacksAC(true))
+    dispatch(fetchPacksTC({
+      page: page,
+      min: value[0],
+      max: value[1],
+      packName: searchValue,
+      user_id: user_Id,
+      pageCount: rowsPerPage
+    }))
+  };
 
-    const filterByAll = () => {
-        setBtnColor(false);
-        dispatch(isUserPacksAC(false))
-        dispatch(fetchPacksTC({page: page, min: value[0], max: value[1], packName: searchValue, pageCount: rowsPerPage}))
-    };
+  const filterByAll = () => {
+    setBtnColor(false);
+    dispatch(isUserPacksAC(false))
+    dispatch(fetchPacksTC({page: page, min: value[0], max: value[1], packName: searchValue, pageCount: rowsPerPage}))
+  };
 
-    const itemsPerPageHandler = (e: ChangeEvent<HTMLSelectElement>) => {
-        setRowsPerPage(+e.target.value)
-        dispatch(fetchPacksTC({page: page, min: value[0], max: value[1], packName: searchValue, pageCount: +e.target.value}))
+  const itemsPerPageHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+    setRowsPerPage(+e.target.value)
+    dispatch(fetchPacksTC({
+      page: page,
+      min: value[0],
+      max: value[1],
+      packName: searchValue,
+      pageCount: +e.target.value
+    }))
+  }
+
+  //===========================SORT BY UPDATE=======================
+  const handleRequestSort = (
+    id: string,
+  ) => {
+    const isAsc = orderBy === id && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    if (isAsc) {
+      dispatch(fetchPacksTC( {page: page, min: value[0], max: value[1], pageCount: rowsPerPage, sortPacks: "1updated" }))
+    } else {
+      dispatch(fetchPacksTC( {page: page, min: value[0], max: value[1], pageCount: rowsPerPage, sortPacks: "0updated" }))
     }
+  };
 
-    return (
-        <div className={s.wrapper}>
-            <div className={s.wrapper__header}>
-                <h2 className={s.wrapper__title}>Packs list</h2>
-                <AddModal />
-            </div>
-            <div className={s.header}>
-                <div className={s.search}>
-                    <div className={s.title}>Search</div>
-                    <TextField
-                        variant="outlined"
-                        sx={{width: "415px"}}
-                        placeholder="Type some text"
-                        value={searchValue}
-                        onChange={searchHandler}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <SearchIcon/>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                </div>
-                <div className={s.packRender}>
-                    <div className={s.title}>Show packs cards</div>
-                    <div className={s.btnGroup}>
-                        <button
-                            className={btnColor ? s.btnOn : s.btnOff}
-                            onClick={filterByUser}
-                        >
-                            My
-                        </button>
-                        <button
-                            className={btnColor ? s.btnOff : s.btnOn}
-                            onClick={filterByAll}
-                        >
-                            All
-                        </button>
-                    </div>
-                </div>
-                <div className={s.cardsRender}>
-                    <div className={s.title}>Number of cards</div>
-                    <div className={s.range}>
-                        <TextField
-                            sx={{maxWidth: "70px"}}
-                            type="number"
-                            value={value[0]}
-                            onChange={setRangeOne}
-                            InputProps={{
-                                inputProps: {
-                                    max: packs.maxCardsCount,
-                                    min: packs.minCardsCount,
-                                },
-                            }}
-                        />
-                        <div className={s.slider}>
-                            <Slider
-                                value={value}
-                                onChange={handleChange}
-                                valueLabelDisplay="auto"
-                                color="primary"
-                                disableSwap
-                            />
-                        </div>
-                        <TextField
-                            sx={{maxWidth: "70px"}}
-                            type="number"
-                            value={value[1]}
-                            onChange={setRangeTwo}
-                            InputProps={{
-                                inputProps: {
-                                    max: packs.maxCardsCount,
-                                    min: packs.minCardsCount,
-                                },
-                            }}
-                        />
-                    </div>
-                </div>
-                <div className={s.reset}>
-                    <button className={s.btn} onClick={resetHandler}>
-                        <FilterAltOffIcon/>
-                    </button>
-                </div>
-            </div>
-            <TableContainer className={s.container}>
-                <Table aria-label="simple table">
-                    <TableHead>
-                        <TableRow className={s.mainRow}>
-                            <TableCell className={s.cell} align="center">
-                                Name
-                            </TableCell>
-                            <TableCell className={s.cell} align="center">
-                                Cards
-                            </TableCell>
-                            <TableCell className={s.cell} align="center">
-                                Last Updated
-                            </TableCell>
-                            <TableCell className={s.cell} align="center">
-                                Created By
-                            </TableCell>
-                            <TableCell className={s.cell} align="center">
-                                Actions
-                            </TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {packs.cardPacks.map((p) => {
-                            return (
-                                <Pack
-                                    key={p._id}
-                                    packId={p._id}
-                                    userId={p.user_id}
-                                    createdUserName={p.user_name}
-                                    packName={p.name}
-                                    cardsCount={p.cardsCount}
-                                    lastUpdated={p.updated}
-                                    mainUserId={user_Id}
-                                    emptyRows={emptyRows}
-                                    removePack={removePack}
-                                    updatePack={updatePack}
-                                />
-                            );
-                        })}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <div className={s.pagination}>
-                <div className={s.itemsCount}>Items per page</div>
-                    <select className={s.itemsAmount} onChange={itemsPerPageHandler}>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                    </select>
-                <PaginateComponent
-                    page={page}
-                    setPage={pageChangeHandler}
-                    count={Math.ceil(packs.cardPacksTotalCount / rowsPerPage)}
-                />
-            </div>
+  return (
+    <div className={s.wrapper}>
+      <div className={s.wrapper__header}>
+        <h2 className={s.wrapper__title}>Packs list</h2>
+        <AddModal page={page}/>
+      </div>
+      <div className={s.header}>
+        <div className={s.search}>
+          <div className={s.title}>Search</div>
+          <SearchPackComponent value={searchValue} onChange={searchHandler}/>
         </div>
-    );
-});
+        <MyOrAllPacks btnColor={btnColor} filterByAll={filterByAll} filterByUser={filterByUser}/>
+        <div className={s.cardsRender}>
+          <div className={s.title}>Number of cards</div>
+          <DoubleRange packs={packs} value={value} setRangeOne={setRangeOne} setRangeTwo={setRangeTwo} handleChange={handleChange}/>
+        </div>
+        <div className={s.reset}>
+          <button className={s.btn} onClick={resetHandler}>
+            <FilterAltOffIcon/>
+          </button>
+        </div>
+      </div>
+      <TableContainer className={s.container}>
+        <Table aria-label="simple table">
+          <TablePackHeadComponent
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+          />
+          {packs.cardPacks.length !== 0 ? <TableBody>
+            {packs.cardPacks.map((p) => {
+              return (
+                <Pack
+                  key={p._id}
+                  packId={p._id}
+                  userId={p.user_id}
+                  createdUserName={p.user_name}
+                  packName={p.name}
+                  cardsCount={p.cardsCount}
+                  lastUpdated={p.updated}
+                  mainUserId={user_Id}
+                  emptyRows={emptyRows}
+                  removePack={removePack}
+                  updatePack={updatePack}
+                />
+              );
+            })}
+          </TableBody>: <h2 className={ searchValue ? s.text : s.visibilityHidden}>Search failed</h2>}
+        </Table>
+      </TableContainer>
+      <div className={s.pagination}>
+        <div className={s.itemsCount}>Items per page</div>
+        <select className={s.itemsAmount} onChange={itemsPerPageHandler}>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+        </select>
+        <PaginateComponent
+          page={page}
+          setPage={pageChangeHandler}
+          count={Math.ceil(packs.cardPacksTotalCount / rowsPerPage)}
+        />
+      </div>
+    </div>
+  );
+};

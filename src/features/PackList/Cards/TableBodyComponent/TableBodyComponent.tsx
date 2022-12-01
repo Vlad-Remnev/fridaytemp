@@ -3,8 +3,6 @@ import {editDate} from "../../../../common/utils/edit-date";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
-import DeleteIcon from '@mui/icons-material/Delete';
 import Rating from "@mui/material/Rating";
 import {CardType} from "../../../../app/appApi";
 import s from './TableBodyComponent.module.css'
@@ -15,15 +13,14 @@ type TableBodyComponentType = {
   cards: CardType[]
   packId?: string
   compareIdForDraw: boolean
-  handleClose: (cardId: string) => void
-  removeCardHandler: (cardId: string) => void
   emptyRows: number
   name: string
   packName: string | undefined
   setValueRating: (newValue: number | null, cardId: string) => void
+  rowsPerPage: number
 }
 
-export const TableBodyComponent = ({compareIdForDraw, emptyRows, handleClose, removeCardHandler, cards, name, packName, setValueRating, packId}: TableBodyComponentType) => {
+export const TableBodyComponent = ({compareIdForDraw, emptyRows, cards, name, packName, setValueRating, packId, rowsPerPage}: TableBodyComponentType) => {
   return (
     <TableBody className={name === packName ? '' : s.visibilityHidden}>
       {cards.map((card) => {
@@ -49,14 +46,8 @@ export const TableBodyComponent = ({compareIdForDraw, emptyRows, handleClose, re
             </TableCell>
             {compareIdForDraw && (
               <TableCell align="center" sx={{display: 'flex', justifyContent: 'center'}}>
-                {/*<BorderColorIcon*/}
-                {/*  sx={{marginRight: "20px", cursor: 'pointer'}}*/}
-                {/*  onClick={() => handleClose(card._id)}*/}
-                {/*/>*/}
                 <EditCardModal cardId={card._id}/>
-                <DeleteCardModal id={card._id} name={card.question} packId={packId}/>
-                {/*<DeleteIcon sx={{ cursor: 'pointer'}} onClick={() =>*/}
-                {/*  removeCardHandler(card._id)}/>*/}
+                <DeleteCardModal id={card._id} name={card.question} packId={packId} rowsPerPage={rowsPerPage}/>
               </TableCell>
             )}
           </TableRow>

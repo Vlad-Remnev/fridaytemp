@@ -1,0 +1,10 @@
+.range {
+    display: flex;
+    align-items: center;
+    width: 500px;
+}
+
+.slider {
+    width: 300px;
+    margin: 0 20px;
+}

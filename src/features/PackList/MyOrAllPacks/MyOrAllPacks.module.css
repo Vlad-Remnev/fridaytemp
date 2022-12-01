@@ -1,0 +1,34 @@
+.btnGroup {
+    border: 1px solid #D9D9D9;
+}
+
+.btnOff {
+    height: 56px;
+    width: 96px;
+    background: #366eff;
+    border: none;
+    padding: 10px 30px;
+    font-size: 16px;
+    color: #fcfcfc;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btnOn {
+    height: 56px;
+    width: 96px;
+    background: #fcfcfc;
+    border: none;
+    padding: 10px 30px;
+    font-size: 16px;
+    color: #000000;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 17px;
+    margin-bottom: 10px;
+}
