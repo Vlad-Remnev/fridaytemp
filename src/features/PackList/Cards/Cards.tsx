@@ -15,6 +15,9 @@ import {TableBodyComponent} from "./TableBodyComponent/TableBodyComponent";
 import SuperButton from "../../../common/components/SuperButton/SuperButton";
 import {EmptyPackList} from "./EmptyPackList/EmptyPackList";
 import AddCardModal from "../../../common/components/Modals/CardsModals/AddCardModal/AddCardModal";
+import TableBody from "@mui/material/TableBody";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
 
 
 export type Order = 'asc' | 'desc';
@@ -166,7 +169,7 @@ const Cards = () => {
                             removeCardHandler={removeCardHandler}
                             handleClose={handleClose}
                             setValueRating={setValueRatingHandler}
-                        /> : <p className={s.text}>Search failed</p>}
+                        /> : <h2 className={s.text}>Search failed</h2>}
                     </Table>
                 </TableContainer>
                 {cards.length !== 0 && <div className={s.pagination}>

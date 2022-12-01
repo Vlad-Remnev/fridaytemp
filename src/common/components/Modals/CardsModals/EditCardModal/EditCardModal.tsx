@@ -1,6 +1,5 @@
 import React, {ChangeEvent, FC, useState} from 'react';
 import {BasicModal} from "../../BasicModal";
-import SuperButton from "../../../SuperButton/SuperButton";
 import s from "./EditCardModal.module.css";
 import InputLabel from "@mui/material/InputLabel";
 import Select, {SelectChangeEvent} from "@mui/material/Select";
@@ -8,9 +7,8 @@ import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import {AppDispatchType, useAppSelector} from "../../../../../app/store";
 import {useDispatch} from "react-redux";
-import {addCardTC, updateCardTC} from "../../../../../features/PackList/Cards/cardsPeducer";
+import {updateCardTC} from "../../../../../features/PackList/Cards/cardsPeducer";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-import IconButton from "@mui/material/IconButton";
 
 type EditCardModalType = {
     cardId?: string
