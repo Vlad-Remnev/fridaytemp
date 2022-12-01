@@ -22,12 +22,13 @@ type TableBodyComponentType = {
 
 export const TableBodyComponent = ({compareIdForDraw, emptyRows, handleClose, removeCardHandler, cards, name, packName, setValueRating}: TableBodyComponentType) => {
   return (
-    <TableBody className={name === packName ? '' : s.displayNone}>
+    <TableBody className={name === packName ? '' : s.visibilityHidden}>
       {cards.map((card) => {
         return (
           <TableRow
             key={card._id}
             sx={{"&:last-child td, &:last-child th": {border: 0}}}
+            className={s.tableRow}
           >
             <TableCell component="th" scope="row" align="center">
               {card.question}

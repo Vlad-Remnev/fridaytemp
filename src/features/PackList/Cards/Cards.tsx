@@ -31,7 +31,6 @@ const Cards = () => {
   const [order, setOrder] = React.useState<Order>('asc');
   const orderBy = 'name'
   const [draw, setDraw] = useState(0)
-  const [pageNum, setPage] = useState(page);
   const [searchValue, setSearchValue] = useState('')
   const [searchBy, setSearchBy] = useState(true);
   const [rowsPerPage, setRowsPerPage] = useState(pageCount);
@@ -53,7 +52,6 @@ const Cards = () => {
   //==========================PAGINATION=====================
   const pageChangeHandler = (page: number) => {
     packId && dispatch(fetchCardsTC({cardsPack_id: packId, page, pageCount: rowsPerPage}));
-    setPage(page);
   };
 
   const itemsPerPageHandler = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -67,8 +65,8 @@ const Cards = () => {
       card: {
         cardsPack_id: packId,
         question: 'What is up?', answer: 'I am fine'
-      }
-    }))
+      },
+    }, {cardsPack_id: packId, pageCount: rowsPerPage}))
   }
 
   const removeCardHandler = (cardId: string) => {

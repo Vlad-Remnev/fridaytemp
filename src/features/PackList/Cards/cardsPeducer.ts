@@ -118,12 +118,12 @@ export const fetchCardsTC = (domainModel: fetchDomainCardsModelType) => async (
   }
 };
 
-export const addCardTC = (card: NewCardAddType): AppThunkType => async (dispatch) => {
+export const addCardTC = (card: NewCardAddType, domainModel: fetchDomainCardsModelType): AppThunkType => async (dispatch) => {
   dispatch(setAppStatusAC('loading'));
   try {
     const res = await cardsAPI.createCard(card)
     dispatch(addPackAC(res.data))
-    dispatch(fetchCardsTC({cardsPack_id: card.card.cardsPack_id}))
+    dispatch(fetchCardsTC(domainModel))
     dispatch(setAppStatusAC('succeeded'))
   } catch (e) {
     handleServerAppError(e as Error | AxiosError, dispatch)
