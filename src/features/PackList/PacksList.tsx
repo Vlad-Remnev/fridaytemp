@@ -118,7 +118,7 @@ export const PacksList = () => {
   //debounces
   const searchDebounce = useCallback(
     debounce((str: string) => {
-      dispatch(fetchPacksTC({packName: str}))
+      dispatch(fetchPacksTC({packName: str, pageCount: rowsPerPage}))
     }, 750),
     []
   );

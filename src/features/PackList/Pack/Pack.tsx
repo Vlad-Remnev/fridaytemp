@@ -8,6 +8,9 @@ import {editDate} from "../../../common/utils/edit-date";
 import {useNavigate} from "react-router-dom";
 import {EditModal} from "../../../common/components/Modals/PacksModals/EditModal/EditModal";
 import DeleteModal from "../../../common/components/Modals/PacksModals/DeleteModal/DeleteModal";
+import { AppDispatchType, useAppSelector } from '../../../app/store';
+import { setCardsAC } from '../Cards/cardsPeducer';
+import { useDispatch } from 'react-redux';
 
 
 type PackPropsType = {
