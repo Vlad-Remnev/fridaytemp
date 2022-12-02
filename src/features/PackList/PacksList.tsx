@@ -23,7 +23,7 @@ import {fetchPacksTC, removePackTC, updatePackTC} from './packsListReducer';
 import {UpdateCardsPackType} from '../../app/appApi';
 import {AddModal} from "../../common/components/Modals/AddModal/AddModal";
 
-export const PacksList = React.memo(() => {
+export const PacksList = () => {
     const packs = useAppSelector((state) => state.packsList);
     const user_Id = useAppSelector((state) => state.profile.userData._id);
     const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
@@ -290,4 +290,4 @@ export const PacksList = React.memo(() => {
             </div>
         </div>
     );
-});
+};
