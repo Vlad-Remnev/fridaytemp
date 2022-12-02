@@ -61,14 +61,8 @@
     cursor: pointer;
 }
 
-.mainRow {
-    background: linear-gradient(207deg, rgba(255, 255, 255, 1) 0%, rgba(228, 228, 228, 1) 0%);
 
-}
 
-.cell {
-    font-weight: bold;
-}
 
 .actions div {
     margin: 0 5px;

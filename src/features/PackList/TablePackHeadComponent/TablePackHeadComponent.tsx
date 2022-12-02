@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import TableRow from "@mui/material/TableRow";
-import s from "../PacksList.module.css";
+import s from "./TablePackHeadComponent.module.css";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import {EnhancedTableHead} from "../../../common/components/EnhancedTableHead/EnhancedTableHead";
