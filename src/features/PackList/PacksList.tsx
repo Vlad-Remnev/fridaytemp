@@ -1,4 +1,9 @@
-import React, {ChangeEvent, useCallback, useEffect, useState,} from "react";
+import React, {
+    ChangeEvent,
+    useCallback,
+    useEffect,
+    useState,
+} from "react";
 import s from "./PacksList.module.css";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";

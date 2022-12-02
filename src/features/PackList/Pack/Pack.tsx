@@ -32,14 +32,20 @@ export const Pack: FC<PackPropsType> = ({
   cardsCount,
   lastUpdated,
   mainUserId,
-  emptyRows,
-  removePack,
-  updatePack
+  emptyRows
 
 }) => {
   const navigate = useNavigate()
   const navigateHandler = () => {
   navigate(`/cards/${packId}/${userId}/${packName}`)
+  }
+
+  const dispatch = useDispatch<AppDispatchType>();
+  const cards = useAppSelector(state => state.cards)
+
+  const learnPackHandler = () => {
+    dispatch(setCardsAC({...cards, cards: []}))
+    navigate(`/learn/${packId}/${userId}/${packName}`)
   }
 
   return (
@@ -53,13 +59,13 @@ export const Pack: FC<PackPropsType> = ({
         <TableCell align="center">{createdUserName}</TableCell>
         {userId === mainUserId ? (
           <TableCell align="center" sx={{display: 'flex', justifyContent: 'center'}}>
-            <SchoolIcon sx={{ marginRight: "20px" }} />
+            <SchoolIcon onClick={learnPackHandler} sx={{ marginRight: "20px" }} />
             <EditModal id={packId}/>
             <DeleteModal id={packId} name={packName}/>
           </TableCell>
         ) : (
           <TableCell align="center">
-            <SchoolIcon />
+            <SchoolIcon onClick={learnPackHandler}/>
           </TableCell>
         )}
       </TableRow>

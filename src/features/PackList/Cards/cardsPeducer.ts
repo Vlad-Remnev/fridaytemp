@@ -61,9 +61,9 @@ export const cardsReducer = (
             ? {...el, question: action.payload.updateData.question, answer: action.payload.updateData.answer}
             : el )}
     case 'cards/SET_RATING_CARD':
-      return {...state, cards: state.cards.map(el =>
-          el._id === action.payload.updatedGrade.card_id
-            ? {...el, grade: action.payload.updatedGrade.grade}
+      return {...state,
+        cards: state.cards.map(el => el._id === action.payload.updatedGrade.card_id
+            ? {...el, grade: action.payload.updatedGrade.grade, shots: action.payload.updatedGrade.shots}
             : el )}
     default:
       return state;
@@ -99,10 +99,10 @@ export const updateCardAC = (updateData: CardType) => {
   } as const;
 };
 
-export const setRatingCardAC = (updatedGrade: SetRatingResponseType) => {
+export const setRatingCardAC = (updatedGrade:SetRatingResponseType) => {
   return {
     type: 'cards/SET_RATING_CARD',
-    payload: { updatedGrade },
+    payload: {updatedGrade},
   } as const;
 };
 // Thunks
@@ -169,7 +169,7 @@ type SetCardsType = ReturnType<typeof setCardsAC>;
 type AddCardType = ReturnType<typeof addCardAC>;
 type RemoveCardType = ReturnType<typeof removeCardAC>
 type UpdateCardType = ReturnType<typeof updateCardAC>
-type SetRatingCardType = ReturnType<typeof setRatingCardAC>
+export type SetRatingCardType = ReturnType<typeof setRatingCardAC>
 type CardsStateType = typeof initialState;
 
 export type ActionCardsType = SetCardsType
