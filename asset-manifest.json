@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/fridaytemp/static/css/main.62979d23.css",
-    "main.js": "/fridaytemp/static/js/main.aad3677e.js",
+    "main.css": "/fridaytemp/static/css/main.2ae3da2c.css",
+    "main.js": "/fridaytemp/static/js/main.8f93d6a3.js",
     "static/media/Montserrat-SemiBold.ttf": "/fridaytemp/static/media/Montserrat-SemiBold.d5e0cc788cba9ced1fb9.ttf",
     "static/media/Montserrat-Medium.ttf": "/fridaytemp/static/media/Montserrat-Medium.c86e3b9010ff63c99166.ttf",
     "static/media/Montserrat-Regular.ttf": "/fridaytemp/static/media/Montserrat-Regular.ceb11275ab638627a643.ttf",
     "static/media/emailCheck.svg": "/fridaytemp/static/media/emailCheck.cdfba66fde5a43fa07de20848a33be02.svg",
     "static/media/logo.svg": "/fridaytemp/static/media/logo.66aa37dd1366aaf98fa95be1206c3b1e.svg",
     "index.html": "/fridaytemp/index.html",
-    "main.62979d23.css.map": "/fridaytemp/static/css/main.62979d23.css.map",
-    "main.aad3677e.js.map": "/fridaytemp/static/js/main.aad3677e.js.map"
+    "main.2ae3da2c.css.map": "/fridaytemp/static/css/main.2ae3da2c.css.map",
+    "main.8f93d6a3.js.map": "/fridaytemp/static/js/main.8f93d6a3.js.map"
   },
   "entrypoints": [
-    "static/css/main.62979d23.css",
-    "static/js/main.aad3677e.js"
+    "static/css/main.2ae3da2c.css",
+    "static/js/main.8f93d6a3.js"
   ]
 }
