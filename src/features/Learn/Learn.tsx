@@ -1,106 +1,113 @@
-import React, { useState } from 'react';
-import s from './Learn.module.css'
-import { useAppSelector } from '../../app/store';
-import { FormLabel, Grid, RadioGroup, Skeleton } from '@mui/material';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import s from './Learn.module.css';
+import { AppDispatchType, useAppSelector } from '../../app/store';
+import { FormLabel, Grid, RadioGroup } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { setRandomCard } from '../../common/utils/setRandomCards';
+import { BackToLink } from '../../common/components/BackToLink/BackToLink';
+import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setRatingCardTC, setUserPackAC } from './LearnReducer';
+import { fetchCardsTC } from '../PackList/Cards/cardsPeducer';
 
 
-const rate = [
-  "Did not know",
-  "Forgot",
-  "A lot of thought",
-  "Confused",
-  "Knew the answer",
-]
+const rates = [
+  {id: 1, title: 'Did not know'},
+  {id: 2, title: 'Forgot'},
+  {id: 3, title: 'A lot of thought'},
+  {id: 4, title: 'Confused'},
+  {id: 5, title: 'Knew the answer'},
+];
 
 export const Learn = () => {
 
-  const packName = useAppSelector(state => state.learn.packName)
-  console.log(packName);
+  const {packId, packName } = useParams();
+  const name = useAppSelector(state => state.learn.packName)
+  const cards = useAppSelector(state => state.cards.cards);
+  const dispatch = useDispatch<AppDispatchType>()
+  const [randomQuestion, setRandomQuestion] = useState(setRandomCard(cards));
 
-  const [value, setValue] = useState("Knew the answer");
-  const [showAnswer, setShowAnswer] = useState(false)
+  const [valueRates, setValueRates] = useState('Knew the answer');
+  const [showAnswer, setShowAnswer] = useState(false);
 
-  const cards = useAppSelector(state => state.cards.cards)
   const showAnswerHandler = () => {
-    setShowAnswer(true)
+    setShowAnswer(true);
+  };
+
+  useEffect(() => {
+    if(packId && packName) {
+      dispatch(setUserPackAC(packId, packName))
+      dispatch(fetchCardsTC({cardsPack_id: packId}))
+    }
+  },[])
+
+  useEffect(() => {
+    setRandomQuestion(setRandomCard(cards))
+  }, [cards])
+
+  const setValueRatesHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setValueRates(e.currentTarget.value)
   }
-  const [randomQuestion, setRandomQuestion] = useState(setRandomCard(cards))
 
 
-  const nextQuestion = () => {
-    setShowAnswer(false)
-    const grade = rate.findIndex(r => value === r) + 1
-
-  }
+  const nextCardHandler = () => {
+    setShowAnswer(false);
+    const grade = rates.findIndex(r => valueRates === r.title) + 1;
+    dispatch(setRatingCardTC(randomQuestion?._id, grade))
+  };
 
 
   return (
     <div className={s.container}>
-        <h2>Learn "{packName}"</h2>
-
+      <BackToLink />
+      <h2 className={s.title}>Learn "{name}"</h2>
 
       <Grid container justifyContent={'center'}>
-        <Grid item justifyContent={"center"}>
-          <Paper elevation={3} style={{width: "350px", padding: "30px"}}>
-            <div><span
-              className={s.text}>Question :
-                              <span>{!cards.length
-                                ?
-                                <Skeleton variant="text" sx={{fontSize: '1.2rem', width: '250px'}}
-                                          component='span'/>
-                                :
-                                randomQuestion?.questionImg
-                                  ?
-                                  <img src={randomQuestion?.questionImg} style={{width: "50px"}} alt={"questionImg"}/>
-                                  :
-                                  randomQuestion?.question}
-                              </span>
-                            </span>
+        <Grid item justifyContent={'center'}>
+          <Paper elevation={3} style={{ width: '350px', padding: '30px' }}>
+            <div>
+              <span className={s.text}>Question :</span>
+              {randomQuestion?.question}
             </div>
-            <span
-              className={s.trained}>Количество попыток ответов на вопрос :
-                            <span> {cards.length ? randomQuestion?.shots :
-                              <Skeleton variant="text" sx={{fontSize: '1rem', width: '20px'}}
-                                        component='span'/>} </span>
-                        </span>
+            <div className={s.attempts}>
+              Количество попыток ответов на вопрос :
+              <span> { randomQuestion?.shots }</span>
+            </div>
+
             {showAnswer &&
               <div>
                 <div><span className={s.text}>Answer : </span> {randomQuestion?.answer}</div>
                 <FormControl>
                   <FormLabel>Rate yourself:</FormLabel>
                   <RadioGroup
-                    value={value}
-                    onChange={() => {}}
+                    value={valueRates}
+                    onChange={setValueRatesHandler}
                   >
-                    {rate.map((rate, index) =>
-                      <FormControlLabel
-                        key={index}
-                        value={rate}
-                        control={<Radio/>}
-                        label={rate}/>
+                    {rates.map( r => <FormControlLabel key={r.id}
+                                                       value={r.title}
+                                                       control={<Radio />}
+                                                       label={r.title} />
                     )}
                   </RadioGroup>
                 </FormControl>
               </div>}
+
             <div>
               {!showAnswer
                 ? <Button
-                  id={s.btn}
                   variant='contained'
-                  style={{width: "100%", borderRadius: "20px"}}
+                  style={{ width: '100%', borderRadius: '20px', marginTop: '10px' }}
                   onClick={showAnswerHandler}>
                   Show answer
                 </Button>
                 : <Button
-                  onClick={nextQuestion}
                   variant='contained'
-                  style={{width: "100%", borderRadius: "20px"}}>
+                  style={{ width: '100%', borderRadius: '20px' }}
+                  onClick={nextCardHandler}>
                   Next
                 </Button>
               }
@@ -108,10 +115,6 @@ export const Learn = () => {
           </Paper>
         </Grid>
       </Grid>
-
-
-
-
 
 
     </div>

@@ -10,6 +10,7 @@ import {EditModal} from "../../../common/components/Modals/EditModal/EditModal";
 import DeleteModal from "../../../common/components/Modals/DeleteModal/DeleteModal";
 import { useDispatch } from 'react-redux';
 import { AppDispatchType, useAppSelector } from '../../../app/store';
+import { setCardsAC } from '../Cards/cardsPeducer';
 
 
 type PackPropsType = {
@@ -34,9 +35,7 @@ export const Pack: FC<PackPropsType> = ({
   cardsCount,
   lastUpdated,
   mainUserId,
-  emptyRows,
-  removePack,
-  updatePack
+  emptyRows
 
 }) => {
   const navigate = useNavigate()
@@ -49,7 +48,6 @@ export const Pack: FC<PackPropsType> = ({
 
   const learnPackHandler = () => {
     dispatch(setCardsAC({...cards, cards: []}))
-
     navigate(`/learn/${packId}/${userId}/${packName}`)
   }
 
@@ -70,7 +68,7 @@ export const Pack: FC<PackPropsType> = ({
           </TableCell>
         ) : (
           <TableCell align="center">
-            <SchoolIcon />
+            <SchoolIcon onClick={learnPackHandler}/>
           </TableCell>
         )}
       </TableRow>
