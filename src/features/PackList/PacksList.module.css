@@ -61,31 +61,8 @@
     cursor: pointer;
 }
 
-
-
-
 .actions div {
     margin: 0 5px;
-}
-
-.pagination {
-    padding: 0 135px;
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
-}
-
-.itemsCount {
-    align-self: center;
-    margin-right: 10px;
-}
-
-.itemsAmount {
-    border: 1px solid lightgrey;
-}
-
-.itemsAmount:focus {
-    border: 1px solid lightgrey;
 }
 
 .text {

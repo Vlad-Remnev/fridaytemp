@@ -58,27 +58,6 @@
     margin: 40px 0
 }
 
-.pagination {
-    padding: 0 135px;
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
-}
-
-.itemsCount {
-    align-self: center;
-    margin-right: 10px;
-}
-
-.itemsAmount {
-    border: 1px solid lightgrey;
-    cursor: pointer;
-}
-
-.itemsAmount:focus {
-    border: 1px solid lightgrey;
-}
-
 .text {
     text-align: center;
     color: #aaaaaa;

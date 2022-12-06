@@ -22,9 +22,6 @@ type PackPropsType = {
   lastUpdated: string;
   mainUserId: string;
   emptyRows: number;
-  removePack: (packId: string) => void
-  updatePack: (updateData:UpdateCardsPackType) => void
-
 };
 
 export const Pack: FC<PackPropsType> = ({

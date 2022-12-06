@@ -4,14 +4,35 @@ import s from "./TablePackHeadComponent.module.css";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import {EnhancedTableHead} from "../../../common/components/EnhancedTableHead/EnhancedTableHead";
-import {Order} from "../Cards/Cards";
+import {Order} from "../PacksList";
+import {fetchPacksTC} from "../packsListReducer";
+import {useDispatch} from "react-redux";
+import {AppDispatchType} from "../../../app/store";
+
 
 type TablePackHeadComponentType = {
-  onRequestSort: (id: string) => void;
-  order: Order;
-  orderBy: string;
+  page: number
+  value: number[]
+  rowsPerPage: number
 }
-export const TablePackHeadComponent: FC<TablePackHeadComponentType> = ({order, orderBy, onRequestSort}) => {
+export const TablePackHeadComponent: FC<TablePackHeadComponentType> = ({ rowsPerPage, value, page}) => {
+
+  const [order, setOrder] = React.useState<Order>('asc');
+  const orderBy = 'name'
+
+  const dispatch = useDispatch<AppDispatchType>();
+
+  const handleRequestSort = (
+    id: string,
+  ) => {
+    const isAsc = orderBy === id && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    if (isAsc) {
+      dispatch(fetchPacksTC( {page: page, min: value[0], max: value[1], pageCount: rowsPerPage, sortPacks: "1updated" }))
+    } else {
+      dispatch(fetchPacksTC( {page: page, min: value[0], max: value[1], pageCount: rowsPerPage, sortPacks: "0updated" }))
+    }
+  };
   return (
     <TableHead>
       <TableRow className={s.mainRow}>
@@ -24,7 +45,7 @@ export const TablePackHeadComponent: FC<TablePackHeadComponentType> = ({order, o
         <EnhancedTableHead
           order={order}
           orderBy={orderBy}
-          onRequestSort={onRequestSort}
+          onRequestSort={handleRequestSort}
         />
         <TableCell className={s.cell} align="center">
           Created By

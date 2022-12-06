@@ -3,8 +3,8 @@ import TableCell from "@mui/material/TableCell";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Box from "@mui/material/Box";
 import {visuallyHidden} from "@mui/utils";
-import {Order} from "../../../features/PackList/Cards/Cards";
 import s from './EnhancedTableHead.module.css'
+import {Order} from "../../../features/PackList/PacksList";
 
 export type SortTableProps = {
   onRequestSort: (id: string) => void;

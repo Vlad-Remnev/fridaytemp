@@ -8,21 +8,30 @@ import {CardType} from "../../../../app/appApi";
 import s from './TableBodyComponent.module.css'
 import EditCardModal from "../../../../common/components/Modals/CardsModals/EditCardModal/EditCardModal";
 import DeleteCardModal from "../../../../common/components/Modals/CardsModals/DeleteCardModal/DeleteCardModal";
+import {setCardTC} from "../cardsPeducer";
+import {useDispatch} from "react-redux";
+import {AppDispatchType} from "../../../../app/store";
 
 type TableBodyComponentType = {
   cards: CardType[]
-  packId?: string
+  packId: string | undefined
   compareIdForDraw: boolean
   emptyRows: number
   name: string
   packName: string | undefined
-  setValueRating: (newValue: number | null, cardId: string) => void
   rowsPerPage: number
 }
 
-export const TableBodyComponent = ({compareIdForDraw, emptyRows, cards, name, packName, setValueRating, packId, rowsPerPage}: TableBodyComponentType) => {
+export const TableBodyComponent = ({compareIdForDraw, emptyRows, cards, name, packName, packId, rowsPerPage}: TableBodyComponentType) => {
+
+  const dispatch = useDispatch<AppDispatchType>();
+
+  const setValueRatingHandler = (newValue: number | null, cardId: string) => {
+    dispatch(setCardTC({card_id: cardId, grade: newValue}))
+  }
+
   return (
-    <TableBody className={name === packName ? '' : s.visibilityHidden}>
+    <TableBody className={name.trim() === packName?.trim() ? '' : s.visibilityHidden}>
       {cards.map((card) => {
         return (
           <TableRow
@@ -40,7 +49,7 @@ export const TableBodyComponent = ({compareIdForDraw, emptyRows, cards, name, pa
                 name="simple-controlled"
                 value={card.grade}
                 onChange={(event, newValue) => {
-                  setValueRating(newValue, card._id);
+                  setValueRatingHandler(newValue, card._id);
                 }}
               />
             </TableCell>

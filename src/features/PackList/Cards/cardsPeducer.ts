@@ -17,7 +17,7 @@ const initialState = {
   cards: [
     {answer: "no answer",
     question: "no question",
-    cardsPack_id: "5eb6a2f72f849402d46c6ac4",
+    cardsPack_id: "5eb6a2f72f849402d46c6ac4adadwadwadwa",
     grade: 4.987525071790364,
     shots: 1,
     user_id: "142151531535151",
@@ -25,8 +25,8 @@ const initialState = {
     updated: "2020-05-13T11:05:44.867Z",
     _id: "5ebbd48876810f1ad0e7ece3adwadawd"}
 ] as CardType[],
-  packUserId: "607e82d176b4881da8c02a16",
-  packName: "React",
+  packUserId: "607e82d176b4881da8c02a16dawdawdwadwa",
+  packName: "Reactdawdawdwad",
   packPrivate: false,
   packDeckCover: "",
   packCreated: "2021-04-21T13:14:24.464Z",
