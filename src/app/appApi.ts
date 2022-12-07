@@ -104,6 +104,7 @@ export type PackType = {
   updated: string;
   more_id: string;
   __v: number;
+  deckCover: string
 };
 export type CardType = {
   _id: string,

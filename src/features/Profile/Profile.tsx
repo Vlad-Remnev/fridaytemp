@@ -1,27 +1,22 @@
-import React, { ChangeEvent } from 'react';
+import React, {ChangeEvent} from 'react';
 import s from './Profile.module.css';
 import {Navigate} from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { AppDispatchType, useAppSelector } from '../../app/store';
-import { logoutTC } from '../../app/authReducer';
-import { updateUserTC } from './profileReducer';
-import { setAppErrorAC } from '../../app/appReducer';
-import { EditableSpan } from '../../common/components/EditableSpan/EditableSpan';
+import {useDispatch} from 'react-redux';
+import {AppDispatchType, useAppSelector} from '../../app/store';
+import {logoutTC} from '../../app/authReducer';
+import {updateUserTC} from './profileReducer';
+import {setAppErrorAC} from '../../app/appReducer';
+import {EditableSpan} from '../../common/components/EditableSpan/EditableSpan';
 import {BackToLink} from "../../common/components/BackToLink/BackToLink";
 
 // import MUI
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import Paper from '@mui/material/Paper';
 import LogoutIcon from '@mui/icons-material/Logout';
+import {convertFileToBase64} from "../../common/utils/convertFileToBase64";
+import SuperButton from "../../common/components/SuperButton/SuperButton";
 
-const convertFileToBase64 = (file: File, callback: (value: string) => void): void => {
-  const reader = new FileReader();
-  reader.onloadend = () => {
-    const file64 = reader.result as string;
-    callback(file64);
-  };
-  reader.readAsDataURL(file);
-};
+export const minFileSize = 100000;
 
 export const Profile = () => {
   const dispatch = useDispatch<AppDispatchType>();
@@ -30,7 +25,7 @@ export const Profile = () => {
   const status = useAppSelector((state) => state.app.status);
 
 
-  const minFileSize = 400000;
+
 
   const uploadHandlerAvatar = (e: ChangeEvent<HTMLInputElement>): void => {
     if (e.target.files && e.target.files.length) {
@@ -64,7 +59,7 @@ export const Profile = () => {
               onChange={uploadHandlerAvatar}
             />
             <label htmlFor="input_add_photo">
-              <AddAPhotoIcon />
+                <AddAPhotoIcon />
             </label>
           </div>
         </div>
@@ -75,13 +70,13 @@ export const Profile = () => {
           />
         </div>
         <div className={s.mrg}>{email}</div>
-        <button
+        <SuperButton
           className={s.btn + ' ' + s.mrg2}
           onClick={() => dispatch(logoutTC())}
           disabled={status === 'loading'}
         >
           <LogoutIcon /> <span className={s.logOut}>Log out</span>
-        </button>
+        </SuperButton>
       </Paper>
     </div>
   );

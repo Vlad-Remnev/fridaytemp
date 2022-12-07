@@ -55,7 +55,7 @@ export const TableBodyComponent = ({compareIdForDraw, emptyRows, cards, name, pa
             </TableCell>
             {compareIdForDraw && (
               <TableCell align="center" sx={{display: 'flex', justifyContent: 'center'}}>
-                <EditCardModal cardId={card._id}/>
+                <EditCardModal cardId={card._id} cardAnswer={card.answer} cardQuestion={card.question}/>
                 <DeleteCardModal id={card._id} name={card.question} packId={packId} rowsPerPage={rowsPerPage}/>
               </TableCell>
             )}

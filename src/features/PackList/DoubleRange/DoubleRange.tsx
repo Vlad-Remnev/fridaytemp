@@ -2,19 +2,21 @@ import React, {ChangeEvent, FC, useCallback} from 'react';
 import {Slider} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import s from './DoubleRange.module.css'
-import {fetchPacksTC, PackStateType} from "../packsListReducer";
+import {fetchPacksTC} from "../packsListReducer";
 import debounce from "lodash.debounce";
 import {useDispatch} from "react-redux";
 import {AppDispatchType} from "../../../app/store";
+
 type DoubleRangeType = {
-  packs: PackStateType
+  maxCardsCount: number
+  minCardsCount: number
   value: number[]
   setValue: (value: number[]) => void
   page: number
   searchValue: string
   rowsPerPage: number
 }
-const DoubleRange: FC<DoubleRangeType> = ({packs, value, setValue, searchValue, page, rowsPerPage}) => {
+const DoubleRange: FC<DoubleRangeType> = ({ value, setValue, searchValue, page, rowsPerPage, minCardsCount, maxCardsCount}) => {
 
   const dispatch = useDispatch<AppDispatchType>();
 
@@ -64,8 +66,8 @@ const DoubleRange: FC<DoubleRangeType> = ({packs, value, setValue, searchValue, 
         onChange={setRangeOne}
         InputProps={{
           inputProps: {
-            max: packs.maxCardsCount,
-            min: packs.minCardsCount,
+            max: maxCardsCount,
+            min: minCardsCount,
           },
         }}
       />
@@ -85,8 +87,8 @@ const DoubleRange: FC<DoubleRangeType> = ({packs, value, setValue, searchValue, 
         onChange={setRangeTwo}
         InputProps={{
           inputProps: {
-            max: packs.maxCardsCount,
-            min: packs.minCardsCount,
+            max: maxCardsCount,
+            min: minCardsCount,
           },
         }}
       />

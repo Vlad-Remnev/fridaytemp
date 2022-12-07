@@ -37,6 +37,9 @@ export const TablePackHeadComponent: FC<TablePackHeadComponentType> = ({ rowsPer
     <TableHead>
       <TableRow className={s.mainRow}>
         <TableCell className={s.cell} align="center">
+          Cover
+        </TableCell>
+        <TableCell className={s.cell} align="center">
           Name
         </TableCell>
         <TableCell className={s.cell} align="center">

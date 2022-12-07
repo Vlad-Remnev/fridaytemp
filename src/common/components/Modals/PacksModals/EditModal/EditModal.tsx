@@ -12,10 +12,11 @@ import SuperButton from "../../../SuperButton/SuperButton";
 
 type EditModalType = {
   id: string
+  packName: string
 }
 
-export const EditModal: FC<EditModalType> = ({id}) => {
-  const [name, setName] = useState('')
+export const EditModal: FC<EditModalType> = ({id, packName}) => {
+  const [name, setName] = useState(packName)
   const [privat, setPrivat] = useState(false)
   const dispatch = useDispatch<AppDispatchType>();
 

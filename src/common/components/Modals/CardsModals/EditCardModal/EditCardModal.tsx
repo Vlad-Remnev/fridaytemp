@@ -12,16 +12,18 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import SuperButton from "../../../SuperButton/SuperButton";
 
 type EditCardModalType = {
-  cardId?: string
+  cardId: string
+  cardAnswer: string
+  cardQuestion: string
 }
 
-const EditCardModal: FC<EditCardModalType> = ({cardId}) => {
+const EditCardModal: FC<EditCardModalType> = ({cardId, cardQuestion, cardAnswer}) => {
   const status = useAppSelector(state => state.app.status)
   console.log(status)
   const dispatch = useDispatch<AppDispatchType>();
   const [questionType, setQuestionType] = useState('text');
-  const [question, setQuestion] = useState('')
-  const [answer, setAnswer] = useState('')
+  const [question, setQuestion] = useState(cardQuestion)
+  const [answer, setAnswer] = useState(cardAnswer)
 
   const changeQuestionNameHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setQuestion(e.currentTarget.value)

@@ -19,17 +19,15 @@ import PacksPaginate from "./PacksPaginate/PacksPaginate";
 export type Order = 'asc' | 'desc';
 
 export const PacksList = () => {
-  const packs = useAppSelector((state) => state.packsList);
-  const page = useAppSelector((state) => state.packsList.page);
+  const {cardPacks, maxCardsCount, minCardsCount, cardPacksTotalCount, pageCount, page } = useAppSelector((state) => state.packsList);
   const user_Id = useAppSelector((state) => state.profile.userData._id);
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const dispatch = useDispatch<AppDispatchType>();
   const status = useAppSelector(state => state.app.status)
-  const cardPacksTotalCount = packs.cardPacksTotalCount
 
   const [searchValue, setSearchValue] = useState("");
-  const [value, setValue] = useState<number[]>([packs.minCardsCount, packs.maxCardsCount,]);
-  const [rowsPerPage, setRowsPerPage] = useState(packs.pageCount);
+  const [value, setValue] = useState<number[]>([minCardsCount, maxCardsCount,]);
+  const [rowsPerPage, setRowsPerPage] = useState(pageCount);
   const [btnColor, setBtnColor] = useState(false);
 
   useEffect(() => {
@@ -40,10 +38,10 @@ export const PacksList = () => {
   }, [isLoggedIn, dispatch]);
 
   const emptyRows =
-    page > 1 ? Math.max(0, page * rowsPerPage - packs.cardPacksTotalCount) : 0;
+    page > 1 ? Math.max(0, page * rowsPerPage - cardPacksTotalCount) : 0;
 
   const resetHandler = () => {
-    setValue([packs.minCardsCount, packs.maxCardsCount]);
+    setValue([minCardsCount, maxCardsCount]);
     setBtnColor(false);
     setSearchValue("");
     dispatch(fetchPacksTC({}))
@@ -63,7 +61,7 @@ export const PacksList = () => {
         <MyOrAllPacks status={status} searchValue={searchValue} value={value} page={page} rowsPerPage={rowsPerPage} user_Id={user_Id} btnColor={btnColor} setBtnColor={setBtnColor}/>
         <div className={s.cardsRender}>
           <div className={s.title}>Number of cards</div>
-          <DoubleRange packs={packs} value={value} setValue={setValue} searchValue={searchValue} page={page} rowsPerPage={rowsPerPage}/>
+          <DoubleRange maxCardsCount={maxCardsCount} minCardsCount={minCardsCount} value={value} setValue={setValue} searchValue={searchValue} page={page} rowsPerPage={rowsPerPage}/>
         </div>
         <div className={s.reset}>
           <SuperButton className={s.btn} onClick={resetHandler}>
@@ -78,8 +76,8 @@ export const PacksList = () => {
             value={value}
             page={page}
           />
-          {packs.cardPacks.length !== 0 ? <TableBody>
-            {packs.cardPacks.map((p) => {
+          {cardPacks.length !== 0 ? <TableBody>
+            {cardPacks.map((p) => {
               return (
                 <Pack
                   key={p._id}
@@ -91,13 +89,15 @@ export const PacksList = () => {
                   lastUpdated={p.updated}
                   mainUserId={user_Id}
                   emptyRows={emptyRows}
+                  deckCover={p.deckCover}
+
                 />
               );
             })}
           </TableBody>: <h2 className={ searchValue ? s.text : s.visibilityHidden}>Search failed</h2>}
         </Table>
       </TableContainer>
-      <PacksPaginate value={value} page={page} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} cardPacksTotalCount={cardPacksTotalCount} searchValue={searchValue}/>
+      {cardPacks.length !== 0 &&<PacksPaginate value={value} page={page} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} cardPacksTotalCount={cardPacksTotalCount} searchValue={searchValue}/>}
     </div>
   );
 };
