@@ -38,7 +38,7 @@ export const PacksList = () => {
   }, [isLoggedIn, dispatch]);
 
   const emptyRows =
-    page > 1 ? Math.max(0, page * rowsPerPage - cardPacksTotalCount) : 0;
+    page > 1 ? Math.max(0, page * pageCount - cardPacksTotalCount) : 0;
 
   const resetHandler = () => {
     setValue([minCardsCount, maxCardsCount]);

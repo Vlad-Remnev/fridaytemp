@@ -14,13 +14,14 @@ import SuperButton from "../../../common/components/SuperButton/SuperButton";
 import {EmptyPackList} from "./EmptyPackList/EmptyPackList";
 import AddCardModal from "../../../common/components/Modals/CardsModals/AddCardModal/AddCardModal";
 import CardsPaginate from "./CardsPaginate/CardsPaginate";
+import baseCover from "../../../assets/img/ava.png";
 
 
 const Cards = () => {
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const user_Id = useAppSelector((state) => state.profile.userData._id)
   const name = useAppSelector(state => state.cards.packName)
-  const {cards, page, pageCount, cardsTotalCount} = useAppSelector((state) => state.cards);
+  const {cards, page, pageCount, cardsTotalCount, packDeckCover} = useAppSelector((state) => state.cards);
   const status = useAppSelector(state => state.app.status)
   const dispatch = useDispatch<AppDispatchType>();
 
@@ -56,17 +57,20 @@ const Cards = () => {
     <div className={s.wrapper}>
       <BackToLink/>
       {cards.length || draw ? <>
-        <div className={s.wrapper__header}>
-          <h2 className={s.wrapper__title}>{packName}</h2>
-          {compareIdForDraw
-            ? <AddCardModal packId={packId} rowsPerPage={rowsPerPage}/>
-            : <SuperButton
-              disabled={status === 'loading'}
-              onClick={addNewCardHandler}
-              className={status === 'loading' ? s.wrapper__btnDisabled : s.wrapper__btn}
-            >
-              {buttonName}
-            </SuperButton>}
+        <div>
+          <div className={s.wrapper__header}>
+            <h2 className={s.wrapper__title}>{packName}</h2>
+            {compareIdForDraw
+              ? <AddCardModal packId={packId} rowsPerPage={rowsPerPage}/>
+              : <SuperButton
+                disabled={status === 'loading'}
+                onClick={addNewCardHandler}
+                className={status === 'loading' ? s.wrapper__btnDisabled : s.wrapper__btn}
+              >
+                {buttonName}
+              </SuperButton>}
+          </div>
+          <img className={s.img} src={packDeckCover ? packDeckCover : baseCover} alt="PackImg photo"/>
         </div>
         <div className={s.search}>
           <div

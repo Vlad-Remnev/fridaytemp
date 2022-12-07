@@ -64,7 +64,7 @@ export const Pack: FC<PackPropsType> = ({
           <TableCell align="center">
             <div style={{display: 'flex', justifyContent: 'center'}}>
               <SchoolIcon onClick={learnPackHandler} sx={{marginRight: "20px"}}/>
-              <EditModal id={packId} packName={packName}/>
+              <EditModal id={packId} packName={packName} deckCover={deckCover}/>
               <DeleteModal id={packId} name={packName}/>
             </div>
           </TableCell>
