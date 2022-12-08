@@ -11,12 +11,6 @@
     flex-direction: column;
     justify-content: space-around;
 }
-.packTitle {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 25px;
-}
-
 .packImg {
     display: block;
     margin-left: auto;
