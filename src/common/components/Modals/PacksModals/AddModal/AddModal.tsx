@@ -10,7 +10,7 @@ import Checkbox from "@mui/material/Checkbox";
 import SuperButton from "../../../SuperButton/SuperButton";
 import {RequestStatusType, setAppErrorAC} from "../../../../../app/appReducer";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
-import baseCover from "../../../../../assets/img/ava.png";
+import baseCover from "../../../../../assets/img/1647366034_12-gamerwall-pro-p-geim-arti-krasivie-oboi-22 (1) (1).jpg";
 import {convertFileToBase64} from "../../../../utils/convertFileToBase64";
 import {minFileSize} from "../../../../../features/Profile/Profile";
 

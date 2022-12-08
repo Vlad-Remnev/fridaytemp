@@ -10,7 +10,7 @@ import DeleteModal from "../../../common/components/Modals/PacksModals/DeleteMod
 import {AppDispatchType, useAppSelector} from '../../../app/store';
 import {setCardsAC} from '../Cards/cardsPeducer';
 import {useDispatch} from 'react-redux';
-import baseCover from '../../../assets/img/ava.png'
+import baseCover from '../../../assets/img/1647366034_12-gamerwall-pro-p-geim-arti-krasivie-oboi-22 (1) (1).jpg'
 
 type PackPropsType = {
   packId: string

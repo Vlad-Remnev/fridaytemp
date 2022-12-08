@@ -58,7 +58,7 @@ export const cardsReducer = (
     case 'cards/UPDATE_CARD':
       return {...state, cards: state.cards.map(el =>
           el._id === action.payload.updateData._id
-            ? {...el, question: action.payload.updateData.question, answer: action.payload.updateData.answer}
+            ? {...action.payload.updateData}
             : el )}
     case 'cards/SET_RATING_CARD':
       return {...state,

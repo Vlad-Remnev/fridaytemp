@@ -22,7 +22,15 @@ type TableBodyComponentType = {
   rowsPerPage: number
 }
 
-export const TableBodyComponent = ({compareIdForDraw, emptyRows, cards, name, packName, packId, rowsPerPage}: TableBodyComponentType) => {
+export const TableBodyComponent = ({
+                                     compareIdForDraw,
+                                     emptyRows,
+                                     cards,
+                                     name,
+                                     packName,
+                                     packId,
+                                     rowsPerPage
+                                   }: TableBodyComponentType) => {
 
   const dispatch = useDispatch<AppDispatchType>();
 
@@ -33,6 +41,8 @@ export const TableBodyComponent = ({compareIdForDraw, emptyRows, cards, name, pa
   return (
     <TableBody className={name.trim() === packName?.trim() ? '' : s.visibilityHidden}>
       {cards.map((card) => {
+        const questionImg = card.questionImg
+        const answerImg = card.answerImg
         return (
           <TableRow
             key={card._id}
@@ -40,9 +50,9 @@ export const TableBodyComponent = ({compareIdForDraw, emptyRows, cards, name, pa
             className={s.tableRow}
           >
             <TableCell component="th" scope="row" align="center">
-              {card.question}
+              {questionImg ? <img src={questionImg} alt="Question photo"/> : card.question}
             </TableCell>
-            <TableCell align="center">{card.answer}</TableCell>
+            <TableCell align="center">{answerImg ? <img src={answerImg} alt="Answer photo"/> : card.answer}</TableCell>
             <TableCell align="center">{editDate(card.updated)}</TableCell>
             <TableCell align="center">
               <Rating
@@ -54,9 +64,11 @@ export const TableBodyComponent = ({compareIdForDraw, emptyRows, cards, name, pa
               />
             </TableCell>
             {compareIdForDraw && (
-              <TableCell align="center" sx={{display: 'flex', justifyContent: 'center'}}>
-                <EditCardModal cardId={card._id} cardAnswer={card.answer} cardQuestion={card.question}/>
-                <DeleteCardModal id={card._id} name={card.question} packId={packId} rowsPerPage={rowsPerPage}/>
+              <TableCell align="center">
+                <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                  <EditCardModal cardId={card._id} cardAnswer={card.answer} cardQuestion={card.question} questionImgCard={card.questionImg} answerImgCard={card.answerImg}/>
+                  <DeleteCardModal id={card._id} name={card.question} packId={packId} rowsPerPage={rowsPerPage}/>
+                </div>
               </TableCell>
             )}
           </TableRow>
