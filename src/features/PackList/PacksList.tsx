@@ -44,7 +44,7 @@ export const PacksList = () => {
     setValue([minCardsCount, maxCardsCount]);
     setBtnColor(false);
     setSearchValue("");
-    dispatch(fetchPacksTC({}))
+    dispatch(fetchPacksTC({pageCount: 5}))
   };
 
   return (

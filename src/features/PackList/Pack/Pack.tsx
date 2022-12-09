@@ -11,6 +11,7 @@ import {AppDispatchType, useAppSelector} from '../../../app/store';
 import {setCardsAC} from '../Cards/cardsPeducer';
 import {useDispatch} from 'react-redux';
 import baseCover from '../../../assets/img/1647366034_12-gamerwall-pro-p-geim-arti-krasivie-oboi-22 (1) (1).jpg'
+import {IconButton} from "@mui/material";
 
 type PackPropsType = {
   packId: string
@@ -41,8 +42,10 @@ export const Pack: FC<PackPropsType> = ({
     navigate(`/cards/${packId}/${userId}/${packName}`)
   }
 
+  const status = useAppSelector(state => state.app.status)
   const dispatch = useDispatch<AppDispatchType>();
   const cards = useAppSelector(state => state.cards)
+  const disabledButton = status === 'loading'
 
   const learnPackHandler = () => {
     dispatch(setCardsAC({...cards, cards: []}))
@@ -63,14 +66,18 @@ export const Pack: FC<PackPropsType> = ({
         {userId === mainUserId ? (
           <TableCell align="center">
             <div style={{display: 'flex', justifyContent: 'center'}}>
-              <SchoolIcon onClick={learnPackHandler} sx={{marginRight: "20px"}}/>
-              <EditModal id={packId} packName={packName} deckCover={deckCover}/>
-              <DeleteModal id={packId} name={packName}/>
+              <IconButton color={"inherit"} disabled={disabledButton}>
+                <SchoolIcon onClick={learnPackHandler}/>
+              </IconButton>
+                <EditModal  id={packId} packName={packName} deckCover={deckCover}/>
+                <DeleteModal id={packId} name={packName}/>
             </div>
           </TableCell>
         ) : (
           <TableCell align="center">
-            <SchoolIcon onClick={learnPackHandler}/>
+            <IconButton color={"inherit"} disabled={disabledButton}>
+              <SchoolIcon onClick={learnPackHandler}/>
+            </IconButton>
           </TableCell>
         )}
       </TableRow>

@@ -1,7 +1,7 @@
 import React, {FC, useState} from 'react';
 import {BasicModal} from "../../BasicModal";
 import s from "./EditCardModal.module.css";
-import {AppDispatchType} from "../../../../../app/store";
+import {AppDispatchType, useAppSelector} from "../../../../../app/store";
 import {useDispatch} from "react-redux";
 import {updateCardTC} from "../../../../../features/PackList/Cards/cardsPeducer";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
@@ -12,6 +12,7 @@ import baseAnswer from "../../../../../assets/img/The-Answer-698x428-e1445614683
 import AggFileJpg from "../../AddFileJPG/AggFileJpg";
 import TextFieldInModals from "../../TextFieldInModals/TextFieldInModals";
 import HeaderInModals from "../../HeaderInModals/HeaderInModals";
+import {IconButton} from "@mui/material";
 
 type EditCardModalType = {
   cardId: string
@@ -29,6 +30,8 @@ const EditCardModal: FC<EditCardModalType> = ({cardId, cardQuestion, cardAnswer,
   const [answerImg, setAnswerImg] = useState<string | undefined>(answerImgCard)
   const [question, setQuestion] = useState(cardQuestion)
   const [answer, setAnswer] = useState(cardAnswer)
+  const status = useAppSelector(state => state.app.status)
+  const disabledButton = status === 'loading'
 
   const editCardHandler = (handleClose: () => void) => {
     cardId && dispatch(updateCardTC({_id: cardId, question, answer, answerImg, questionImg}))
@@ -38,7 +41,7 @@ const EditCardModal: FC<EditCardModalType> = ({cardId, cardQuestion, cardAnswer,
   }
 
   return (
-    <BasicModal children2={<BorderColorIcon sx={{marginRight: "20px", cursor: 'pointer'}}/>}>
+    <BasicModal children2={<IconButton disabled={disabledButton} color={"inherit"}><BorderColorIcon/></IconButton>}>
       {(handleClose) => <>
         <HeaderInModals handleClose={handleClose}>
           Edit card

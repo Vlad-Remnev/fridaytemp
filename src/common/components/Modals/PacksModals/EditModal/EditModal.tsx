@@ -2,7 +2,7 @@ import React, {FC, useState} from 'react';
 import s from './EditModal.module.css'
 import {BasicModal} from "../../BasicModal";
 import {useDispatch} from "react-redux";
-import {AppDispatchType} from "../../../../../app/store";
+import {AppDispatchType, useAppSelector} from "../../../../../app/store";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
@@ -12,6 +12,7 @@ import baseCover from "../../../../../assets/img/ava.png";
 import AggFileJpg from "../../AddFileJPG/AggFileJpg";
 import TextFieldInModals from "../../TextFieldInModals/TextFieldInModals";
 import HeaderInModals from "../../HeaderInModals/HeaderInModals";
+import {IconButton} from "@mui/material";
 
 type EditModalType = {
   id: string
@@ -24,6 +25,8 @@ export const EditModal: FC<EditModalType> = ({id, packName, deckCover}) => {
   const [privateProp, setPrivateProp] = useState(false)
   const [packImg, setPackImg] = useState<string>(deckCover)
 
+  const status = useAppSelector(state => state.app.status)
+  const disabledButton = status === 'loading'
   const dispatch = useDispatch<AppDispatchType>();
 
   const updatePack = (handleClose: () => void) => {
@@ -33,7 +36,7 @@ export const EditModal: FC<EditModalType> = ({id, packName, deckCover}) => {
   }
 
   return (
-    <BasicModal children2={<BorderColorIcon sx={{marginRight: "20px"}}/>}>
+    <BasicModal children2={<IconButton color={"inherit"} disabled={disabledButton}><BorderColorIcon/></IconButton>}>
       {(handleClose) => <>
         <HeaderInModals handleClose={handleClose}>
           Edit pack
