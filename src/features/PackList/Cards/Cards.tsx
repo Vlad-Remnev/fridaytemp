@@ -91,7 +91,7 @@ const Cards = () => {
               packId={packId}
               rowsPerPage={rowsPerPage}
             />
-            {cards.length !== 0 ? <TableBodyComponent
+            {cards.length !== 0 && packId ? <TableBodyComponent
               name={name}
               packId={packId}
               packName={packName}

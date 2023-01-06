@@ -56,6 +56,7 @@ export const cardsReducer = (
     case 'cards/REMOVE_CARD':
       return {...state, cards: state.cards.filter(el => el._id !== action.payload.cardId)}
     case 'cards/UPDATE_CARD':
+      debugger
       return {...state, cards: state.cards.map(el =>
           el._id === action.payload.updateData._id
             ? {...action.payload.updateData}
@@ -142,11 +143,12 @@ export const removeCardTC = (cardId: string, domainModel: fetchDomainCardsModelT
   }
 }
 
-export const updateCardTC = (updateData:UpdateCardPutType):AppThunkType => async (dispatch) => {
+export const updateCardTC = (updateData:UpdateCardPutType, domainModel: fetchDomainCardsModelType):AppThunkType => async (dispatch) => {
   dispatch(setAppStatusAC('loading'));
   try {
     const res = await cardsAPI.updateCard(updateData)
     dispatch(updateCardAC(res.data.updatedCard))
+    dispatch(fetchCardsTC(domainModel))
     dispatch(setAppStatusAC('succeeded'))
   } catch (e) {
     handleServerAppError(e as Error | AxiosError, dispatch)

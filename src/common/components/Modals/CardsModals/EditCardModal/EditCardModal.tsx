@@ -20,9 +20,11 @@ type EditCardModalType = {
   cardQuestion: string
   questionImgCard: string | undefined
   answerImgCard: string | undefined
+  packId: string
+  rowsPerPage: number
 }
 
-const EditCardModal: FC<EditCardModalType> = ({cardId, cardQuestion, cardAnswer, questionImgCard, answerImgCard}) => {
+const EditCardModal: FC<EditCardModalType> = ({cardId, cardQuestion, cardAnswer, questionImgCard, answerImgCard, rowsPerPage, packId}) => {
 
   const dispatch = useDispatch<AppDispatchType>();
 
@@ -34,9 +36,7 @@ const EditCardModal: FC<EditCardModalType> = ({cardId, cardQuestion, cardAnswer,
   const disabledButton = status === 'loading'
 
   const editCardHandler = (handleClose: () => void) => {
-    cardId && dispatch(updateCardTC({_id: cardId, question, answer, answerImg, questionImg}))
-    setQuestion('')
-    setAnswer('')
+    cardId && dispatch(updateCardTC({_id: cardId, question, answer, answerImg, questionImg}, {cardsPack_id: packId, pageCount: rowsPerPage}))
     handleClose()
   }
 

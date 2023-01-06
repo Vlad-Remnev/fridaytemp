@@ -17,6 +17,7 @@ import Paper from '@mui/material/Paper';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { buttonStyles, eyeStyles } from '../../../common/themes/themeMaterialUi';
+import {FormLabel} from "@mui/material";
 
 export const Login = () => {
   const [type, setType] = useState('password');
@@ -52,6 +53,14 @@ export const Login = () => {
   }
   return (
     <div className={s.container}>
+      <FormLabel>
+        <p>
+          Register your account
+        </p>
+        <p>or use common test account credentials:</p>
+        <p>Email: facount779@gmail.com</p>
+        <p>Password: freeAccount777</p>
+      </FormLabel>
       <Paper elevation={1} className={s.paper + ' ' + s.common}>
         <h2 className={s.title}>Sign In</h2>
         <form onSubmit={formik.handleSubmit}>

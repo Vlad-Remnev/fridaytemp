@@ -14,7 +14,7 @@ import {AppDispatchType} from "../../../../app/store";
 
 type TableBodyComponentType = {
   cards: CardType[]
-  packId: string | undefined
+  packId: string
   compareIdForDraw: boolean
   emptyRows: number
   name: string
@@ -66,7 +66,7 @@ export const TableBodyComponent = ({
             {compareIdForDraw && (
               <TableCell align="center">
                 <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                  <EditCardModal cardId={card._id} cardAnswer={card.answer} cardQuestion={card.question} questionImgCard={card.questionImg} answerImgCard={card.answerImg}/>
+                  <EditCardModal cardId={card._id} cardAnswer={card.answer} cardQuestion={card.question} questionImgCard={card.questionImg} answerImgCard={card.answerImg} packId={packId} rowsPerPage={rowsPerPage}/>
                   <DeleteCardModal id={card._id} name={card.question} packId={packId} rowsPerPage={rowsPerPage}/>
                 </div>
               </TableCell>
